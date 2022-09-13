@@ -1,0 +1,9 @@
+uuid使い方
+import { v4 as uuidv4 } from 'uuid';
+uuidv4();
+
+
+環境変数の呼び出し方
+process.env.環境変数名
+ブラウザ
+NEXT_PUBLIC_ を追記
