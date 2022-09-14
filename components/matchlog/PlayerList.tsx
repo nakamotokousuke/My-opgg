@@ -4,7 +4,7 @@ import { Data } from "../../pages/_app";
 import { PlayerListType } from "../../types/PlayerListType";
 
 const PlayerList = (data: PlayerListType) => {
-  const { latest } = useContext(Data);
+  const { latest, player } = useContext(Data);
   return (
     <li className="list-none">
       <div className="flex h-4 items-center">
@@ -14,7 +14,11 @@ const PlayerList = (data: PlayerListType) => {
           src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/champion/${data.championName}.png`}
           alt=""
         />
-        <div className="text-[12px] truncate ... w-[100%] font-bold cursor-pointer">
+        <div
+          className={`text-[12px] truncate ... w-[100%] font-bold cursor-pointer text-white ${
+            player?.puuid === data.puuid ? "opacity-90" : "opacity-60"
+          }`}
+        >
           {data.summonerName}
         </div>
       </div>

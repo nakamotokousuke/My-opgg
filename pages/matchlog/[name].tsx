@@ -3,7 +3,6 @@ import MatchLogList from "../../components/matchlog/MatchLogList";
 import Profile from "../../components/matchlog/Profile";
 import { PlayerData } from "../../types/PlayerType";
 import { Data } from "../_app";
-import BuildLog from "../../components/BuildLog/BuildLog";
 
 export async function getServerSideProps(params: {
   query: { name: string; region: string; platform: string };
@@ -19,22 +18,30 @@ export async function getServerSideProps(params: {
   console.log(data);
   console.log(matchIDs);
   console.log(process.env.API_KEY);
+
   return {
     props: {
-      data,
-      matchIDs,
+      data: data,
+      matchIds: matchIDs,
     },
   };
 }
+type MatchLogProps = {
+  data: PlayerData;
+  matchIds: string[];
+};
 
-const MatchLog = (props: { data: PlayerData; matchIDs: string[] }) => {
+const MatchLog = ({ data, matchIds }: MatchLogProps) => {
   const { setPlayer } = useContext(Data);
   const [button, setButton] = useState("");
 
   useEffect(() => {
-    setPlayer(props.data);
+    setPlayer(data);
+    console.log(data);
+    console.log(matchIds);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.data]);
+  }, [data, matchIds]);
 
   const handleBuild = (matchData: string) => {
     if (matchData === button) {
@@ -43,34 +50,31 @@ const MatchLog = (props: { data: PlayerData; matchIDs: string[] }) => {
       setButton(matchData);
     }
   };
+  // console.log("レンダリング");
 
   return (
-    <div>
-      <div>matchlog</div>
-      <Profile data={props.data} />
-      <ul className="w-[710px] p-[10px] bg-[#2e2e4e] mt-8 m-auto">
-        {props.matchIDs.map((matchId) => (
-          <div key={matchId}>
-            <div
-              className="rounded-l-lg mb-2 flex"
-              onClick={() => handleBuild(matchId)}
-            >
-              <MatchLogList key={matchId} matchId={matchId} />
-              <div
-                onClick={() => handleBuild(matchId)}
-                className="flex rounded-r-lg bg-zinc-400 max-h-max items-end"
-              >
-                <div className="w-[20px] text-center">
-                  {button === matchId ? "-" : "+"}
+    <div className="md:grid md:grid-cols-4 min-w-max min-h-screen">
+      <div>
+        <Profile data={data} />
+      </div>
+      <div className="col-span-2">
+        <ul className="w-[710px] p-[10px] bg-[#2e2e4e] mt-8 m-auto">
+          {Array.isArray(matchIds)
+            ? matchIds?.map((matchId: string) => (
+                <div key={matchId}>
+                  <div
+                    className="rounded-l-lg mb-2"
+                    onClick={() => handleBuild(matchId)}
+                  >
+                    <MatchLogList key={matchId} matchId={matchId} />
+                  </div>
                 </div>
-                <div>
-                  {button === matchId ? <BuildLog matchId={matchId} /> : <></>}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </ul>
+              ))
+            : // ここに検索できなかった時の表示
+              null}
+        </ul>
+      </div>
+      <div>amari</div>
     </div>
   );
 };

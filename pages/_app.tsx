@@ -26,6 +26,20 @@ export const Data = createContext({} as ContextData);
 function MyApp({ Component, pageProps }: AppProps) {
   const [player, setPlayer] = useState<PlayerData>();
   const latest = "12.16.1";
+  const [region, setRegion] = useState({ platform: "jp1", region: "asia" });
+  const [playerRegion, setPlayerRegion] = useState<number>(0);
+
+  const regionArry = [
+    { platform: "jp1", region: "asia" },
+    { platform: "kr", region: "asia" },
+  ];
+
+  const regionChange = (value: number) => {
+    // console.log(value);
+    const newnumber = Number(value);
+    // console.log(newnumber);
+    setRegion(regionArry[newnumber]);
+  };
 
   //ChampionData
   const [champs, setChamp] = useState<any[]>([]);
@@ -44,6 +58,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     fetchChampion();
   }, []);
 
+  //spell
   const [spellList, setSpellList] = useState<any>([]);
   useEffect(() => {
     axios
@@ -120,11 +135,19 @@ function MyApp({ Component, pageProps }: AppProps) {
     spellList,
     runeIcon,
     RuneLists,
+    region,
+    setRegion,
+    setPlayerRegion,
+    regionChange,
+    regionArry,
+    playerRegion,
   };
   return (
     <Data.Provider value={value}>
-      <Navbar />
-      <Component {...pageProps} />
+      <div className="bg-slate-900 min-w-max w-screen overflow-hidden">
+        <Navbar />
+        <Component {...pageProps} />
+      </div>
     </Data.Provider>
   );
 }

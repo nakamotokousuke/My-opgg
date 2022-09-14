@@ -1,6 +1,6 @@
 export type PlayerData = {
   //   data: {
-  //   id: string;
+  id: string;
   //   accoungId: string;
   puuid: string;
   name: string;

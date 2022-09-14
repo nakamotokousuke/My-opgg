@@ -1,13 +1,9 @@
-export type PlayerMatchDataType = {
-  puuid: string;
+export type BuidlPlayerListProps = {
+  summonerName: string;
   championName: string;
   kills: number;
   deaths: number;
   assists: number;
-  win: boolean;
-  summoner1Id: number;
-  summoner2Id: number;
-  perks: any;
   item0: number;
   item1: number;
   item2: number;
@@ -16,6 +12,9 @@ export type PlayerMatchDataType = {
   item5: number;
   item6: number;
   cs: number;
-  setIssue: React.Dispatch<React.SetStateAction<boolean>>;
-  gameTime: string;
+  wardsKilled: number;
+  spell1: number;
+  spell2: number;
+  perks: any;
+  puuid: string;
 };
