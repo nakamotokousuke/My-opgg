@@ -62,12 +62,10 @@ const BuildLog = ({
                 }`}
               >
                 <div className="flex">
-                  {blueTeam[0] !== undefined ? (
-                    <div className="w-[8%] text-right pr-1">
+                  {blueTeam[0] !== undefined && (
+                    <div className="pr-1">
                       {blueTeam[0].win ? "win" : "defeat"}
                     </div>
-                  ) : (
-                    <></>
                   )}
                   <div>(blue team)</div>
                 </div>

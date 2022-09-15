@@ -58,13 +58,13 @@ const MatchLog = ({ data, matchIds }: MatchLogProps) => {
         <Profile data={data} />
       </div>
       <div className="col-span-2">
-        <ul className="w-[710px] p-[10px] bg-[#2e2e4e] mt-8 m-auto">
+        <ul className="w-[500px] sm:w-[710px] p-[10px] bg-[#2e2e4e] mt-8 m-auto">
           {Array.isArray(matchIds)
             ? matchIds?.map((matchId: string) => (
                 <div key={matchId}>
                   <div
                     className="rounded-l-lg mb-2"
-                    onClick={() => handleBuild(matchId)}
+                    // onClick={() => handleBuild(matchId)}
                   >
                     <MatchLogList key={matchId} matchId={matchId} />
                   </div>

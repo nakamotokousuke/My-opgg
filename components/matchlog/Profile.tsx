@@ -23,7 +23,7 @@ const Profile = ({ data }: ProfileType) => {
         params: { id: data.id, platform: getQuery("platform") },
       })
       .then(function (res) {
-        console.log(res.data.tier[0]);
+        console.log("tier", res.data.tier);
         setTier(res.data.tier[0]);
       })
       .catch(function (err) {

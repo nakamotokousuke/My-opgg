@@ -110,46 +110,46 @@ const BuildPlayer = (data: BuildPlayerType) => {
     if (skill === 1) {
       return (
         <div className="">
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
             {index + 1}
           </div>
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
         </div>
       );
     }
     if (skill === 2) {
       return (
         <div className="">
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
             {index + 1}
           </div>
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
         </div>
       );
     }
     if (skill === 3) {
       return (
         <div className="">
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
             {index + 1}
           </div>
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
         </div>
       );
     }
     if (skill === 4) {
       return (
         <div className="">
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-6 w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
             {index + 1}
           </div>
         </div>
@@ -689,7 +689,7 @@ const BuildPlayer = (data: BuildPlayerType) => {
                 Item Build
               </div>
               {JSON.stringify(itemLog) !== "[]" && (
-                <div className="flex flex-wrap w-[690px] m-2 items-center">
+                <div className="flex flex-wrap w-[450px] sm:w-[690px] m-2 items-center">
                   {itemLog.map((items, index) => (
                     <>
                       {items.length !== 0 && (
@@ -720,21 +720,32 @@ const BuildPlayer = (data: BuildPlayerType) => {
               <div className="bg-[#4b4e87] rounded-t-md font-bold pl-2">
                 Skill Build
               </div>
-              <div className="flex m-2 items-center">
+              <div className="flex items-center mt-3 mb-2">
                 <div>
-                  <div className="h-6 w-6 ml-1 mb-1 text-center">Q</div>
-                  <div className="h-6 w-6 ml-1 mb-1 text-center">W</div>
-                  <div className="h-6 w-6 ml-1 mb-1 text-center">E</div>
-                  <div className="h-6 w-6 ml-1 mb-1 text-center">R</div>
+                  <div className="h-5 w-5 sm:h-6 sm:w-6 sm:ml-1 mb-1 text-center">
+                    Q
+                  </div>
+                  <div className="h-5 w-5 sm:h-6 sm:w-6 sm:ml-1 mb-1 text-center">
+                    W
+                  </div>
+                  <div className="h-5 w-5 sm:h-6 sm:w-6 sm:ml-1 mb-1 text-center">
+                    E
+                  </div>
+                  <div className="h-5 w-5 sm:h-6 sm:w-6 sm:ml-1 mb-1 text-center">
+                    R
+                  </div>
                 </div>
                 {JSON.stringify(skillSet) !== "[]" ? (
                   <div className="">
                     {skillSet.map((skill) => (
-                      <div key={skill.image.full}>
+                      <div
+                        key={skill.image.full}
+                        className="h-5 w-5 sm:h-6 sm:w-6 ml-1 mb-1 relative"
+                      >
                         <Image
-                          className="ml-1 mb-1"
-                          height={24}
-                          width={24}
+                          className=""
+                          layout="fill"
+                          objectFit="contain"
                           src={`
                         https://ddragon.leagueoflegends.com/cdn/${latest}/img/spell/${skill.image.full}`}
                           alt=""

@@ -185,7 +185,7 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
           </div>
         </div>
       </div>
-      <div>
+      <div className="w-[480px] sm:w-[690px]">
         {button === matchId && (
           <BuildLog
             matchId={matchId}

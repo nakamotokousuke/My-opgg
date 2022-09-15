@@ -58,24 +58,22 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
       }`}
     >
       <div className="flex w-[45%] items-center">
-        <Image
-          className=""
-          height={32}
-          width={32}
-          src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/champion/${data.championName}.png`}
-          alt=""
-        />
-        {data.spell1 !== undefined ? (
-          <div className="pb-[3px]">
-            <div className="h-4">
+        <div className="flex">
+          <Image
+            className=""
+            height={32}
+            width={32}
+            src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/champion/${data.championName}.png`}
+            alt=""
+          />
+          {data.spell1 !== undefined ? (
+            <div className="flex flex-col">
               <Image
                 height={16}
                 width={16}
                 src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/spell/${spell1ID}.png`}
                 alt=""
               />
-            </div>
-            <div className="h-4">
               <Image
                 height={16}
                 width={16}
@@ -83,21 +81,17 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
                 alt=""
               />
             </div>
-          </div>
-        ) : (
-          <></>
-        )}
-        {mainrune !== "" ? (
-          <div className="pb-[3px] mr-2">
-            <div className="h-4">
+          ) : (
+            <></>
+          )}
+          {mainrune !== "" ? (
+            <div className="flex flex-col">
               <Image
                 height={16}
                 width={16}
                 src={`https://ddragon.leagueoflegends.com/cdn/img/${mainrune}`}
                 alt=""
               />
-            </div>
-            <div className="h-4">
               <Image
                 height={16}
                 width={16}
@@ -105,10 +99,10 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
                 alt=""
               />
             </div>
-          </div>
-        ) : (
-          <></>
-        )}
+          ) : (
+            <></>
+          )}
+        </div>
         <div
           className="font-bold truncate ... w-[60%] cursor-pointer"
           onClick={() => handleClick(`/matchlog/${data.summonerName}`)}
@@ -124,80 +118,94 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
         {data.cs}cs
       </div>
 
-      <div className="flex ml-2 w-[35%] min-h-max min-w-max gap-[2px]">
+      <div className="flex ml-2 w-[35%] gap-[2px]">
         {data.item0 !== 0 ? (
-          <Image
-            className="rounded-md"
-            height={32}
-            width={32}
-            src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item0}.png`}
-            alt=""
-          />
+          <div className="h-5 w-5 sm:h-8 sm:w-8 relative">
+            <Image
+              className="rounded-md"
+              layout="fill"
+              objectFit="contain"
+              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item0}.png`}
+              alt=""
+            />
+          </div>
         ) : (
-          <div className="w-8 h-8 bg-white rounded-md opacity-20"></div>
+          <div className="h-5 w-5 sm:h-8 sm:w-8 bg-white rounded-md opacity-20"></div>
         )}
         {data.item1 !== 0 ? (
-          <Image
-            className="rounded-md"
-            height={32}
-            width={32}
-            src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item1}.png`}
-            alt=""
-          />
+          <div className="h-5 w-5 sm:h-8 sm:w-8 relative">
+            <Image
+              className="rounded-md"
+              layout="fill"
+              objectFit="contain"
+              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item1}.png`}
+              alt=""
+            />
+          </div>
         ) : (
-          <div className="w-8 h-8 bg-white rounded-md opacity-20"></div>
+          <div className="h-5 w-5 sm:h-8 sm:w-8 bg-white rounded-md opacity-20"></div>
         )}
         {data.item2 !== 0 ? (
-          <Image
-            className="rounded-md"
-            height={32}
-            width={32}
-            src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item2}.png`}
-            alt=""
-          />
+          <div className="h-5 w-5 sm:h-8 sm:w-8 relative">
+            <Image
+              className="rounded-md"
+              layout="fill"
+              objectFit="contain"
+              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item2}.png`}
+              alt=""
+            />
+          </div>
         ) : (
-          <div className="w-8 h-8 bg-white rounded-md opacity-20"></div>
+          <div className="h-5 w-5 sm:h-8 sm:w-8 bg-white rounded-md opacity-20"></div>
         )}
         {data.item3 !== 0 ? (
-          <Image
-            className="rounded-md"
-            height={32}
-            width={32}
-            src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item3}.png`}
-            alt=""
-          />
+          <div className="h-5 w-5 sm:h-8 sm:w-8 relative">
+            <Image
+              className="rounded-md"
+              layout="fill"
+              objectFit="contain"
+              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item3}.png`}
+              alt=""
+            />
+          </div>
         ) : (
-          <div className="w-8 h-8 bg-white rounded-md opacity-20"></div>
+          <div className="h-5 w-5 sm:h-8 sm:w-8 bg-white rounded-md opacity-20"></div>
         )}
         {data.item4 !== 0 ? (
-          <Image
-            className="rounded-md"
-            height={32}
-            width={32}
-            src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item4}.png`}
-            alt=""
-          />
+          <div className="h-5 w-5 sm:h-8 sm:w-8 relative">
+            <Image
+              className="rounded-md"
+              layout="fill"
+              objectFit="contain"
+              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item4}.png`}
+              alt=""
+            />
+          </div>
         ) : (
-          <div className="w-8 h-8 bg-white rounded-md opacity-20"></div>
+          <div className="h-5 w-5 sm:h-8 sm:w-8 bg-white rounded-md opacity-20"></div>
         )}
         {data.item5 !== 0 ? (
+          <div className="h-5 w-5 sm:h-8 sm:w-8 relative">
+            <Image
+              className="rounded-md"
+              layout="fill"
+              objectFit="contain"
+              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item5}.png`}
+              alt=""
+            />
+          </div>
+        ) : (
+          <div className="h-5 w-5 sm:h-8 sm:w-8 bg-white rounded-md opacity-20"></div>
+        )}
+        <div className="h-5 w-5 sm:h-8 sm:w-8 relative">
           <Image
             className="rounded-md"
-            height={32}
-            width={32}
-            src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item5}.png`}
+            layout="fill"
+            objectFit="contain"
+            src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item6}.png`}
             alt=""
           />
-        ) : (
-          <div className="w-8 h-8 bg-white rounded-md opacity-20"></div>
-        )}
-        <Image
-          className="rounded-md"
-          height={32}
-          width={32}
-          src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item6}.png`}
-          alt=""
-        />
+        </div>
       </div>
     </li>
   );
