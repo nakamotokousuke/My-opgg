@@ -1,6 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useAuth } from "../context/auth";
 import { Data } from "../pages/_app";
 
 const Navbar = () => {
@@ -9,6 +11,8 @@ const Navbar = () => {
   const ref = useRef<any>();
   const { regionChange, setPlayerRegion, playerRegion, region } =
     useContext(Data);
+  const { fbUser } = useAuth();
+
   const handleClick = (path: string) => {
     router.push({
       pathname: path,
@@ -39,6 +43,7 @@ const Navbar = () => {
         <div className="space-x-3 pr-5">
           <Link href={"/"}>myPege</Link>
           <Link href="/pros">Pros</Link>
+          {fbUser && <div>{fbUser.displayName}</div>}
         </div>
       </div>
       <div className="text-center">

@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import BuildLog from "../BuildLog/BuildLog";
 import { msConversion } from "../../lib/msConverter";
 import { getQuery } from "../../lib/getQuery";
+import { useAuth } from "../../context/auth";
 
 type MatchIDsType = {
   matchId: string;
@@ -21,6 +22,7 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
   const [issue, setIssue] = useState(true);
   const { player, region } = useContext(Data);
   const [gameTime, setGameTime] = useState<string>("");
+  const { fbUser, user } = useAuth();
 
   const [timeLine, setTimeLine] = useState<any>({});
 
@@ -42,7 +44,7 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
   const getMatchData = useCallback(async () => {
     axios
       .get(`http://localhost:3000/api/lol/${matchId}`, {
-        params: { matchID: matchId, region: getQuery("region") },
+        params: { matchID: matchId, region: getQuery("region", user?.region) },
       })
       .then(function (res) {
         console.log("matchdata", res.data);
@@ -69,7 +71,7 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
 
     axios
       .get(`http://localhost:3000/api/timeline/${matchId}`, {
-        params: { matchID: matchId, region: getQuery("region") },
+        params: { matchID: matchId, region: getQuery("region", fbUser?.uid) },
       })
       .then(function (res) {
         console.log("timeline", res.data);

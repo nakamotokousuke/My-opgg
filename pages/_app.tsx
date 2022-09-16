@@ -5,6 +5,7 @@ import { ContextData } from "../types/ContextDataType";
 import { createContext, useEffect, useState } from "react";
 import { PlayerData } from "../types/PlayerType";
 import axios from "axios";
+import { AuthProvider } from "../context/auth";
 
 //SSG
 // export async function getStaticProps() {
@@ -143,12 +144,14 @@ function MyApp({ Component, pageProps }: AppProps) {
     playerRegion,
   };
   return (
-    <Data.Provider value={value}>
-      <div className="bg-slate-900 min-w-max w-screen overflow-hidden">
-        <Navbar />
-        <Component {...pageProps} />
-      </div>
-    </Data.Provider>
+    <AuthProvider>
+      <Data.Provider value={value}>
+        <div className="bg-slate-900 min-w-max w-screen overflow-hidden">
+          <Navbar />
+          <Component {...pageProps} />
+        </div>
+      </Data.Provider>
+    </AuthProvider>
   );
 }
 

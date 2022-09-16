@@ -1,20 +1,22 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
+import { useAuth } from "../../context/auth";
 import { getQuery } from "../../lib/getQuery";
 import { Data } from "../../pages/_app";
 import { PlayerListType } from "../../types/PlayerListType";
 
 const PlayerList = (data: PlayerListType) => {
   const { latest, player } = useContext(Data);
+  const { fbUser, user } = useAuth();
   const router = useRouter();
 
   const handleClick = (path: string) => {
     router.push({
       pathname: path,
       query: {
-        region: getQuery("region"),
-        platform: getQuery("platform"),
+        region: getQuery("region", user?.region),
+        platform: getQuery("platform", user?.platform),
       },
     });
   };
