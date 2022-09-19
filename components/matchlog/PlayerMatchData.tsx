@@ -82,7 +82,8 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
             {data.kills}/<span className="text-red-700">{data.deaths}</span>/
             {data.assists}
           </div>
-          {data.gameTime}
+          <div>{data.gameTime}</div>
+          {/* <div>{data.totalDamageDealtToChampions}</div> */}
         </div>
         <div className="flex items-center">
           <div className="relative sm:h-14 sm:w-14 w-[32px] h-[32px]">

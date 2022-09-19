@@ -22,6 +22,7 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
   const [issue, setIssue] = useState(true);
   const { player, region } = useContext(Data);
   const [gameTime, setGameTime] = useState<string>("");
+  const [damage, setDamage] = useState<number>(0);
   const { fbUser, user } = useAuth();
 
   const [timeLine, setTimeLine] = useState<any>({});
@@ -37,6 +38,7 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
 
   useEffect(() => {
     console.log(matchId);
+
     getMatchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matchId]);
@@ -64,6 +66,15 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
         setMatchPaticipants(res.data.matchData.info.participants);
         setBlueTeam(res.data.matchData.info.participants.slice(0, 5));
         setRedTeam(res.data.matchData.info.participants.slice(5, 10));
+        let tmp = 0;
+        res.data.matchData.info.participants.forEach(
+          (data: { totalDamageDealtToChampions: number }) => {
+            if (tmp < data.totalDamageDealtToChampions) {
+              tmp = data.totalDamageDealtToChampions;
+            }
+          }
+        );
+        setDamage((prev) => (prev = tmp));
       })
       .catch(function (err) {
         console.log(err);
@@ -71,7 +82,7 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
 
     axios
       .get(`http://localhost:3000/api/timeline/${matchId}`, {
-        params: { matchID: matchId, region: getQuery("region", fbUser?.uid) },
+        params: { matchID: matchId, region: getQuery("region", user?.region) },
       })
       .then(function (res) {
         console.log("timeline", res.data);
@@ -103,23 +114,24 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
                     {data.puuid === player?.puuid && (
                       <PlayerMatchData
                         key={uuidv4()}
-                        puuid={data.puuid}
-                        championName={data.championName}
-                        kills={data.kills}
-                        deaths={data.deaths}
-                        assists={data.assists}
-                        win={data.win}
-                        summoner1Id={data.summoner1Id}
-                        summoner2Id={data.summoner2Id}
-                        perks={data.perks}
-                        item0={data.item0}
-                        item1={data.item1}
-                        item2={data.item2}
-                        item3={data.item3}
-                        item4={data.item4}
-                        item5={data.item5}
-                        item6={data.item6}
+                        // puuid={data.puuid}
+                        // championName={data.championName}
+                        // kills={data.kills}
+                        // deaths={data.deaths}
+                        // assists={data.assists}
+                        // win={data.win}
+                        // summoner1Id={data.summoner1Id}
+                        // summoner2Id={data.summoner2Id}
+                        // perks={data.perks}
+                        // item0={data.item0}
+                        // item1={data.item1}
+                        // item2={data.item2}
+                        // item3={data.item3}
+                        // item4={data.item4}
+                        // item5={data.item5}
+                        // item6={data.item6}
                         cs={data.totalMinionsKilled + data.neutralMinionsKilled}
+                        {...data}
                         setIssue={setIssue}
                         gameTime={gameTime}
                       />
@@ -132,19 +144,20 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
                   {blueTeam.map((data: TeamType, index: number) => (
                     <PlayerList
                       key={index}
-                      champExperience={data.champExperience}
-                      championName={data.championName}
-                      kills={data.kills}
-                      deaths={data.deaths}
-                      assists={data.assists}
-                      item0={data.item0}
-                      item1={data.item1}
-                      item2={data.item2}
-                      item3={data.item3}
-                      item4={data.item4}
-                      item5={data.item5}
-                      item6={data.item6}
+                      // champExperience={data.champExperience}
+                      // championName={data.championName}
+                      // kills={data.kills}
+                      // deaths={data.deaths}
+                      // assists={data.assists}
+                      // item0={data.item0}
+                      // item1={data.item1}
+                      // item2={data.item2}
+                      // item3={data.item3}
+                      // item4={data.item4}
+                      // item5={data.item5}
+                      // item6={data.item6}
                       cs={data.totalMinionsKilled + data.neutralMinionsKilled}
+                      {...data}
                       wardsKilled={data.wardsKilled}
                       summonerName={data.summonerName}
                       puuid={data.puuid}
@@ -155,19 +168,20 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
                   {redTeam.map((data: TeamType, index: number) => (
                     <PlayerList
                       key={index}
-                      champExperience={data.champExperience}
-                      championName={data.championName}
-                      kills={data.kills}
-                      deaths={data.deaths}
-                      assists={data.assists}
-                      item0={data.item0}
-                      item1={data.item1}
-                      item2={data.item2}
-                      item3={data.item3}
-                      item4={data.item4}
-                      item5={data.item5}
-                      item6={data.item6}
+                      // champExperience={data.champExperience}
+                      // championName={data.championName}
+                      // kills={data.kills}
+                      // deaths={data.deaths}
+                      // assists={data.assists}
+                      // item0={data.item0}
+                      // item1={data.item1}
+                      // item2={data.item2}
+                      // item3={data.item3}
+                      // item4={data.item4}
+                      // item5={data.item5}
+                      // item6={data.item6}
                       cs={data.totalMinionsKilled + data.neutralMinionsKilled}
+                      {...data}
                       wardsKilled={data.wardsKilled}
                       summonerName={data.summonerName}
                       puuid={data.puuid}
@@ -183,7 +197,7 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
           className="flex rounded-r-lg bg-zinc-400 max-h-max items-end"
         >
           <div className="w-[20px] text-center">
-            {button === matchId ? "-" : "+"}
+            {button === matchId ? "↑" : "↓"}
           </div>
         </div>
       </div>
@@ -195,6 +209,7 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
             redTeam={redTeam}
             participants={matchParticipants}
             timeLine={timeLine}
+            damage={damage}
           />
         )}
       </div>

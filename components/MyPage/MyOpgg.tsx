@@ -43,13 +43,29 @@ const MyOpgg = () => {
 
   return (
     <div>
-      <div></div>
       {data && (
-        <div>
-          <Profile data={data} />
-          {matchIDs.map((matchId, index: number) => (
-            <MatchLogList key={index} matchId={matchId} />
-          ))}
+        <div className="md:grid md:grid-cols-4 min-w-max min-h-screen">
+          <div>
+            <Profile data={data} />
+          </div>
+          <div className="col-span-2">
+            <ul className="w-[500px] sm:w-[710px] p-[10px] bg-[#2e2e4e] mt-8 m-auto">
+              {Array.isArray(matchIDs)
+                ? matchIDs?.map((matchId: string) => (
+                    <div key={matchId}>
+                      <div
+                        className="rounded-l-lg mb-2"
+                        // onClick={() => handleBuild(matchId)}
+                      >
+                        <MatchLogList key={matchId} matchId={matchId} />
+                      </div>
+                    </div>
+                  ))
+                : // ここに検索できなかった時の表示
+                  null}
+            </ul>
+          </div>
+          <div>amari</div>
         </div>
       )}
     </div>

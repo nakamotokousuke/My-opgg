@@ -17,5 +17,6 @@ export type ParticipantsType = {
   item6: number;
   totalMinionsKilled: number;
   neutralMinionsKilled: number;
+  totalDamageDealtToChampions: number;
   setIssue: React.Dispatch<React.SetStateAction<boolean>>;
 };

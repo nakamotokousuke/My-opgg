@@ -17,4 +17,10 @@ export type BuidlPlayerListProps = {
   spell2: number;
   perks: any;
   puuid: string;
+  totalDamageDealtToChampions: number;
+  champLevel: number;
+  challenges: {
+    kda: number;
+  };
+  damage: number;
 };

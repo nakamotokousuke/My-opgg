@@ -18,4 +18,9 @@ export type BuidlPlayerList = {
   summoner2Id: number;
   perks: any;
   puuid: string;
+  champLevel: number;
+  totalDamageDealtToChampions: number;
+  challenges: {
+    kda: number;
+  };
 };

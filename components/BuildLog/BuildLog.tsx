@@ -8,6 +8,7 @@ interface BuildLogProps {
   redTeam: any;
   participants: any;
   timeLine: any;
+  damage: number;
 }
 
 const BuildLog = ({
@@ -16,6 +17,7 @@ const BuildLog = ({
   redTeam,
   participants,
   timeLine,
+  damage,
 }: BuildLogProps) => {
   // const [redTeam, setRedTeam] = useState<any>([]);
   // const [blueTeam, setBlueTeam] = useState<any>([]);
@@ -61,36 +63,42 @@ const BuildLog = ({
                   blueTeam[0].win ? "bg-[#496191]" : "bg-[#84515a]"
                 }`}
               >
-                <div className="flex">
+                <div className="flex justify-between items-center">
                   {blueTeam[0] !== undefined && (
-                    <div className="pr-1">
+                    <div className="pr-1 flex w-[40%] font-bold">
                       {blueTeam[0].win ? "win" : "defeat"}
+                      <div className="font-bold">(blue team)</div>
                     </div>
                   )}
-                  <div>(blue team)</div>
+                  <div className="w-[10%] font-bold text-right">kda</div>
+                  <div className="w-[10%] font-bold text-right">dmage</div>
+                  <div className="w-[10%] font-bold text-right">cs</div>
+                  <div className="w-[15%] font-bold text-center">item</div>
                 </div>
                 <div className="">
                   {blueTeam.map((data: BuidlPlayerList) => (
                     <BuildPlayerList
                       key={data.summonerName}
-                      summonerName={data.summonerName}
-                      championName={data.championName}
-                      kills={data.kills}
-                      deaths={data.deaths}
-                      assists={data.assists}
-                      item0={data.item0}
-                      item1={data.item1}
-                      item2={data.item2}
-                      item3={data.item3}
-                      item4={data.item4}
-                      item5={data.item5}
-                      item6={data.item6}
+                      // summonerName={data.summonerName}
+                      // championName={data.championName}
+                      // kills={data.kills}
+                      // deaths={data.deaths}
+                      // assists={data.assists}
+                      // item0={data.item0}
+                      // item1={data.item1}
+                      // item2={data.item2}
+                      // item3={data.item3}
+                      // item4={data.item4}
+                      // item5={data.item5}
+                      // item6={data.item6}
                       cs={data.totalMinionsKilled + data.neutralMinionsKilled}
-                      wardsKilled={data.wardsKilled}
+                      // wardsKilled={data.wardsKilled}
                       spell1={data.summoner1Id}
                       spell2={data.summoner2Id}
-                      perks={data.perks}
-                      puuid={data.puuid}
+                      // perks={data.perks}
+                      // puuid={data.puuid}
+                      {...data}
+                      damage={damage}
                     />
                   ))}
                 </div>
@@ -104,38 +112,42 @@ const BuildLog = ({
                   redTeam[0].win ? "bg-[#496191]" : "bg-[#84515a]"
                 }`}
               >
-                <div className="flex">
-                  {redTeam[0] !== undefined ? (
-                    <div className="w-[8%] text-right pr-1">
+                <div className="flex justify-between items-center">
+                  {redTeam[0] !== undefined && (
+                    <div className="pr-1 flex w-[40%] font-bold">
                       {redTeam[0].win ? "win" : "defeat"}
+                      <div className="font-bold">(red team)</div>
                     </div>
-                  ) : (
-                    <></>
                   )}
-                  <div>(red team)</div>
+                  <div className="w-[10%] font-bold text-right">kda</div>
+                  <div className="w-[10%] font-bold text-right">dmage</div>
+                  <div className="w-[10%] font-bold text-right">cs</div>
+                  <div className="w-[15%] font-bold text-center">item</div>
                 </div>
                 <div>
                   {redTeam.map((data: BuidlPlayerList) => (
                     <BuildPlayerList
                       key={data.summonerName}
-                      summonerName={data.summonerName}
-                      championName={data.championName}
-                      kills={data.kills}
-                      deaths={data.deaths}
-                      assists={data.assists}
-                      item0={data.item0}
-                      item1={data.item1}
-                      item2={data.item2}
-                      item3={data.item3}
-                      item4={data.item4}
-                      item5={data.item5}
-                      item6={data.item6}
+                      // summonerName={data.summonerName}
+                      // championName={data.championName}
+                      // kills={data.kills}
+                      // deaths={data.deaths}
+                      // assists={data.assists}
+                      // item0={data.item0}
+                      // item1={data.item1}
+                      // item2={data.item2}
+                      // item3={data.item3}
+                      // item4={data.item4}
+                      // item5={data.item5}
+                      // item6={data.item6}
                       cs={data.totalMinionsKilled + data.neutralMinionsKilled}
-                      wardsKilled={data.wardsKilled}
+                      // wardsKilled={data.wardsKilled}
                       spell1={data.summoner1Id}
                       spell2={data.summoner2Id}
-                      perks={data.perks}
-                      puuid={data.puuid}
+                      // perks={data.perks}
+                      // puuid={data.puuid}
+                      {...data}
+                      damage={damage}
                     />
                   ))}
                 </div>

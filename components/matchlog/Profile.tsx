@@ -48,10 +48,16 @@ const Profile = ({ data }: ProfileType) => {
           objectFit="contain"
         />
       </div>
-      <div className="flex flex-col justify-center text-white">
+      <div className="flex flex-col justify-center text-white font-bold">
         <div>{data.name}</div>
         <div>
-          {tier?.tier} {tier?.rank} {tier?.leaguePoints}LP
+          {tier?.rank !== undefined ? (
+            <div>
+              {tier?.tier} {tier?.rank} {tier?.leaguePoints}LP
+            </div>
+          ) : (
+            <div>unranked</div>
+          )}
         </div>
 
         <div>

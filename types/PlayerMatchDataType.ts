@@ -16,6 +16,7 @@ export type PlayerMatchDataType = {
   item5: number;
   item6: number;
   cs: number;
+  totalDamageDealtToChampions: number;
   setIssue: React.Dispatch<React.SetStateAction<boolean>>;
   gameTime: string;
 };

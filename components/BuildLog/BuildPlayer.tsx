@@ -637,18 +637,16 @@ const BuildPlayer = (data: BuildPlayerType) => {
           ))}
         </div>
         <div className="flex">
-          {StatusRune[1].map(
-            (status: { key: any; icon: string }, index: number) => (
-              <StatRune
-                key={uuidv4()}
-                runeKey={status.key}
-                data={data.perks.statPerks.flex}
-                icon={status.icon}
-                height={32}
-                width={32}
-              />
-            )
-          )}
+          {StatusRune[1].map((status: { key: any; icon: string }) => (
+            <StatRune
+              key={uuidv4()}
+              runeKey={status.key}
+              data={data.perks.statPerks.flex}
+              icon={status.icon}
+              height={32}
+              width={32}
+            />
+          ))}
         </div>
         <div className="flex">
           {StatusRune[2].map((status: { key: any; icon: string }) => (
