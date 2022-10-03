@@ -7,6 +7,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "../firebase";
+// myPageならregionPlatをreturnする
 export const getQuery = (
   query: string,
   regionPlat: string | undefined | null
