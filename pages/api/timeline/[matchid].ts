@@ -1,13 +1,9 @@
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type Data = {
-  timeLineData: any;
-};
-
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
   const timeLineData = await axios
     .get(
@@ -15,6 +11,11 @@ export default async function handler(
     )
     .then((response) => response.data)
     .catch((err) => err);
+
+  if (timeLineData.code === "ERR_BAD_REQUEST") {
+    const err = { error: { message: "ユーザーが見つかりません" } };
+    return res.status(404).json(err);
+  }
 
   // console.log(req.query.region);
   res.status(200).json({

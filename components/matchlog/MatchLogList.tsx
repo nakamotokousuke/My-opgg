@@ -10,12 +10,16 @@ import BuildLog from "../BuildLog/BuildLog";
 import { msConversion } from "../../lib/msConverter";
 import { getQuery } from "../../lib/getQuery";
 import { useAuth } from "../../context/auth";
+import useSWR from "swr";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
 type MatchIDsType = {
   matchId: string;
+  Player: any;
 };
 
-const MatchLogList = ({ matchId }: MatchIDsType) => {
+const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
   const [matchParticipants, setMatchPaticipants] = useState<any>([]);
   const [redTeam, setRedTeam] = useState<any>([]);
   const [blueTeam, setBlueTeam] = useState<any>([]);
@@ -36,64 +40,64 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
     }
   };
 
+  //////////////////////////////////////////////////
+
+  const words = matchId.split("_");
+
+  const { data, error } = useSWR(matchId, async () => {
+    const ref = doc(db, Player.puuid, "matchIDs", "matchData", words[1]);
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      return snap.data();
+    } else {
+      const matchData = await axios
+        .get(`http://localhost:3000/api/lol/${matchId}`, {
+          params: {
+            region: getQuery("region", user?.region),
+            platform: getQuery("platform", user?.region),
+          },
+        })
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+
+      await setDoc(doc(db, Player.puuid, "matchIDs", "matchData", words[1]), {
+        data: matchData,
+      });
+
+      const ref = doc(db, Player.puuid, "matchIDs", "matchData", words[1]);
+      const newSnap = await getDoc(ref);
+
+      return newSnap.data();
+    }
+  });
+
   useEffect(() => {
-    console.log(matchId);
-
-    getMatchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [matchId]);
-
-  const getMatchData = useCallback(async () => {
-    axios
-      .get(`http://localhost:3000/api/lol/${matchId}`, {
-        params: { matchID: matchId, region: getQuery("region", user?.region) },
-      })
-      .then(function (res) {
-        console.log("matchdata", res.data);
-        setGameTime(
-          msConversion(
-            res.data.matchData.info.gameEndTimestamp -
-              res.data.matchData.info.gameStartTimestamp
-          )
-        );
-        console.log(
-          msConversion(
-            res.data.matchData.info.gameEndTimestamp -
-              res.data.matchData.info.gameStartTimestamp
-          )
-        );
-
-        setMatchPaticipants(res.data.matchData.info.participants);
-        setBlueTeam(res.data.matchData.info.participants.slice(0, 5));
-        setRedTeam(res.data.matchData.info.participants.slice(5, 10));
-        let tmp = 0;
-        res.data.matchData.info.participants.forEach(
-          (data: { totalDamageDealtToChampions: number }) => {
-            if (tmp < data.totalDamageDealtToChampions) {
-              tmp = data.totalDamageDealtToChampions;
-            }
-          }
-        );
-        setDamage((prev) => (prev = tmp));
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-
-    axios
-      .get(`http://localhost:3000/api/timeline/${matchId}`, {
-        params: { matchID: matchId, region: getQuery("region", user?.region) },
-      })
-      .then(function (res) {
-        console.log("timeline", res.data);
-        setTimeLine(res.data);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [matchId]);
-  // console.log("レンダリング");
+    console.log("index", data);
+    setGameTime(
+      msConversion(
+        data?.data.matchData.info.gameEndTimestamp -
+          data?.data.matchData.info.gameStartTimestamp
+      )
+    );
+    setMatchPaticipants(data?.data.matchData.info.participants);
+    setBlueTeam(data?.data.matchData.info.participants.slice(0, 5));
+    setRedTeam(data?.data.matchData.info.participants.slice(5, 10));
+    let tmp = 0;
+    data?.data.matchData.info.participants.forEach(
+      (data: { totalDamageDealtToChampions: number }) => {
+        if (tmp < data.totalDamageDealtToChampions) {
+          tmp = data.totalDamageDealtToChampions;
+        }
+      }
+    );
+    setDamage((prev) => (prev = tmp));
+  }, [data]);
+  if (error) return <div>failed to load</div>;
+  if (!data) return <div>loading...</div>;
 
   return (
     //修正が必要
@@ -108,21 +112,51 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
           <div className="">
             <div className="grid grid-cols-4 content-center items-center">
               <div className="col-span-3">
-                {matchParticipants.map((data: ParticipantsType) => (
-                  <>
-                    {/* uniquekeyerr */}
-                    {data.puuid === player?.puuid && (
-                      <PlayerMatchData
-                        key={uuidv4()}
-                        // puuid={data.puuid}
+                {Array.isArray(matchParticipants) &&
+                  matchParticipants.map((data: ParticipantsType) => (
+                    <>
+                      {/* uniquekeyerr */}
+                      {data.puuid === player?.puuid && (
+                        <PlayerMatchData
+                          key={uuidv4()}
+                          // puuid={data.puuid}
+                          // championName={data.championName}
+                          // kills={data.kills}
+                          // deaths={data.deaths}
+                          // assists={data.assists}
+                          // win={data.win}
+                          // summoner1Id={data.summoner1Id}
+                          // summoner2Id={data.summoner2Id}
+                          // perks={data.perks}
+                          // item0={data.item0}
+                          // item1={data.item1}
+                          // item2={data.item2}
+                          // item3={data.item3}
+                          // item4={data.item4}
+                          // item5={data.item5}
+                          // item6={data.item6}
+                          cs={
+                            data.totalMinionsKilled + data.neutralMinionsKilled
+                          }
+                          {...data}
+                          setIssue={setIssue}
+                          gameTime={gameTime}
+                        />
+                      )}
+                    </>
+                  ))}
+              </div>
+              <div className="grid grid-cols-2">
+                <div>
+                  {Array.isArray(blueTeam) &&
+                    blueTeam.map((data: TeamType, index: number) => (
+                      <PlayerList
+                        key={index}
+                        // champExperience={data.champExperience}
                         // championName={data.championName}
                         // kills={data.kills}
                         // deaths={data.deaths}
                         // assists={data.assists}
-                        // win={data.win}
-                        // summoner1Id={data.summoner1Id}
-                        // summoner2Id={data.summoner2Id}
-                        // perks={data.perks}
                         // item0={data.item0}
                         // item1={data.item1}
                         // item2={data.item2}
@@ -132,61 +166,36 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
                         // item6={data.item6}
                         cs={data.totalMinionsKilled + data.neutralMinionsKilled}
                         {...data}
-                        setIssue={setIssue}
-                        gameTime={gameTime}
+                        wardsKilled={data.wardsKilled}
+                        summonerName={data.summonerName}
+                        puuid={data.puuid}
                       />
-                    )}
-                  </>
-                ))}
-              </div>
-              <div className="grid grid-cols-2">
-                <div>
-                  {blueTeam.map((data: TeamType, index: number) => (
-                    <PlayerList
-                      key={index}
-                      // champExperience={data.champExperience}
-                      // championName={data.championName}
-                      // kills={data.kills}
-                      // deaths={data.deaths}
-                      // assists={data.assists}
-                      // item0={data.item0}
-                      // item1={data.item1}
-                      // item2={data.item2}
-                      // item3={data.item3}
-                      // item4={data.item4}
-                      // item5={data.item5}
-                      // item6={data.item6}
-                      cs={data.totalMinionsKilled + data.neutralMinionsKilled}
-                      {...data}
-                      wardsKilled={data.wardsKilled}
-                      summonerName={data.summonerName}
-                      puuid={data.puuid}
-                    />
-                  ))}
+                    ))}
                 </div>
                 <div>
-                  {redTeam.map((data: TeamType, index: number) => (
-                    <PlayerList
-                      key={index}
-                      // champExperience={data.champExperience}
-                      // championName={data.championName}
-                      // kills={data.kills}
-                      // deaths={data.deaths}
-                      // assists={data.assists}
-                      // item0={data.item0}
-                      // item1={data.item1}
-                      // item2={data.item2}
-                      // item3={data.item3}
-                      // item4={data.item4}
-                      // item5={data.item5}
-                      // item6={data.item6}
-                      cs={data.totalMinionsKilled + data.neutralMinionsKilled}
-                      {...data}
-                      wardsKilled={data.wardsKilled}
-                      summonerName={data.summonerName}
-                      puuid={data.puuid}
-                    />
-                  ))}
+                  {Array.isArray(redTeam) &&
+                    redTeam.map((data: TeamType, index: number) => (
+                      <PlayerList
+                        key={index}
+                        // champExperience={data.champExperience}
+                        // championName={data.championName}
+                        // kills={data.kills}
+                        // deaths={data.deaths}
+                        // assists={data.assists}
+                        // item0={data.item0}
+                        // item1={data.item1}
+                        // item2={data.item2}
+                        // item3={data.item3}
+                        // item4={data.item4}
+                        // item5={data.item5}
+                        // item6={data.item6}
+                        cs={data.totalMinionsKilled + data.neutralMinionsKilled}
+                        {...data}
+                        wardsKilled={data.wardsKilled}
+                        summonerName={data.summonerName}
+                        puuid={data.puuid}
+                      />
+                    ))}
                 </div>
               </div>
             </div>
@@ -210,6 +219,7 @@ const MatchLogList = ({ matchId }: MatchIDsType) => {
             participants={matchParticipants}
             timeLine={timeLine}
             damage={damage}
+            Player={Player}
           />
         )}
       </div>

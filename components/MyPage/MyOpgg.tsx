@@ -11,7 +11,7 @@ import Profile from "../matchlog/Profile";
 const MyOpgg = () => {
   const [data, setData] = useState<PlayerData>();
   const [matchIDs, setMatchIDs] = useState<string[]>([]);
-  const { setPlayer } = useContext(Data);
+  const { setPlayer, player } = useContext(Data);
   const { fbUser } = useAuth();
   const getData = async () => {
     if (fbUser) {
@@ -57,7 +57,11 @@ const MyOpgg = () => {
                         className="rounded-l-lg mb-2"
                         // onClick={() => handleBuild(matchId)}
                       >
-                        <MatchLogList key={matchId} matchId={matchId} />
+                        <MatchLogList
+                          key={matchId}
+                          matchId={matchId}
+                          Player={player}
+                        />
                       </div>
                     </div>
                   ))

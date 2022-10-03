@@ -46,6 +46,7 @@ const Profile = ({ data }: ProfileType) => {
           height={150}
           width={150}
           objectFit="contain"
+          priority={false}
         />
       </div>
       <div className="flex flex-col justify-center text-white font-bold">

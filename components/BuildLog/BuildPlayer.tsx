@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { Data } from "../../pages/_app";
@@ -8,6 +9,11 @@ import StatusRune from "../../data/StatusRune.json";
 import StatRune from "./StatRune";
 import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+import { getQuery } from "../../lib/getQuery";
+import useSWR from "swr";
+import { useAuth } from "../../context/auth";
 
 const BuildPlayer = (data: BuildPlayerType) => {
   const { player, RuneLists, runeIcon, latest } = useContext(Data);
@@ -25,10 +31,62 @@ const BuildPlayer = (data: BuildPlayerType) => {
     statRune3: "",
   });
   const [skillSet, setSkillSet] = useState<any[]>([]);
+  const { user } = useAuth();
   let itemArry2: any[] = [];
   let skillArry: number[] = [];
 
+  if (player?.puuid !== data.puuid) {
+    return null;
+  }
+
+  const words = data.matchId.split("_");
+
+  const { data: timeline, error } = useSWR(
+    data.matchId + "TimeLine",
+    async () => {
+      const ref = doc(db, data.Player.puuid, "matchIDs", "TimeLine", words[1]);
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        return snap.data();
+      } else {
+        const TimeLineData = await axios
+          .get(`http://localhost:3000/api/timeline/${data.matchId}`, {
+            params: {
+              region: getQuery("region", user?.region),
+              platform: getQuery("platform", user?.region),
+            },
+          })
+          .then(function (response) {
+            return response.data;
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+
+        await setDoc(
+          doc(db, data.Player.puuid, "matchIDs", "TimeLine", words[1]),
+          {
+            data: TimeLineData,
+          }
+        );
+
+        const ref = doc(
+          db,
+          data.Player.puuid,
+          "matchIDs",
+          "TimeLine",
+          words[1]
+        );
+        const newSnap = await getDoc(ref);
+
+        return newSnap.data();
+      }
+    }
+  );
+
   useEffect(() => {
+    console.log("timelinedesu", timeline);
+
     let Tindex = data.index + 1;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     itemArry2 = [];
@@ -36,7 +94,7 @@ const BuildPlayer = (data: BuildPlayerType) => {
     skillArry = [];
     // console.log("time", data.timeLine);
 
-    data.timeLine.timeLineData.info.frames.forEach(
+    timeline?.data.timeLineData.info.frames.forEach(
       (frame: { events: any }, framIndex: number) => {
         itemArry2.push([]);
         frame.events.forEach(
@@ -60,7 +118,7 @@ const BuildPlayer = (data: BuildPlayerType) => {
     );
     setItemLog(itemArry2);
     setSkillLog(skillArry);
-  }, []);
+  }, [timeline]);
 
   useEffect(() => {
     if (player?.puuid === data.puuid) {
@@ -663,6 +721,8 @@ const BuildPlayer = (data: BuildPlayerType) => {
       </>
     );
   }
+  if (error) return <div>failed to load</div>;
+  if (!data) return <div className="text-white">loading...</div>;
   return (
     <>
       {player?.puuid === data.puuid && (

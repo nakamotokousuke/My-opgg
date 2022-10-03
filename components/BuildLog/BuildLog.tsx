@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BuidlPlayerList } from "../../types/BuildPlayerListType";
 import BuildPlayer from "./BuildPlayer";
 import BuildPlayerList from "./BuildPlayerList";
+import { PlayerData } from "../../types/PlayerType";
 interface BuildLogProps {
   matchId: string;
   blueTeam: any;
@@ -9,6 +10,7 @@ interface BuildLogProps {
   participants: any;
   timeLine: any;
   damage: number;
+  Player: PlayerData;
 }
 
 const BuildLog = ({
@@ -18,6 +20,7 @@ const BuildLog = ({
   participants,
   timeLine,
   damage,
+  Player,
 }: BuildLogProps) => {
   // const [redTeam, setRedTeam] = useState<any>([]);
   // const [blueTeam, setBlueTeam] = useState<any>([]);
@@ -174,6 +177,8 @@ const BuildLog = ({
                     index={index}
                     perks={data.perks}
                     champion={data.championName}
+                    matchId={matchId}
+                    Player={Player}
                   />
                 )
               )}
