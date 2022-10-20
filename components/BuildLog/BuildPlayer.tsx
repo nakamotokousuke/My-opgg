@@ -16,7 +16,7 @@ import useSWR from "swr";
 import { useAuth } from "../../context/auth";
 
 const BuildPlayer = (data: BuildPlayerType) => {
-  const { player, RuneLists, runeIcon, latest } = useContext(Data);
+  const { RuneLists, runeIcon, latest } = useContext(Data);
   const [itemLog, setItemLog] = useState<any[]>([]);
   const [skillLog, setSkillLog] = useState<number[]>([]);
   const [rune, setRune] = useState({
@@ -34,10 +34,7 @@ const BuildPlayer = (data: BuildPlayerType) => {
   const { user } = useAuth();
   let itemArry2: any[] = [];
   let skillArry: number[] = [];
-
-  if (player?.puuid !== data.puuid) {
-    return null;
-  }
+  let Tindex = data.index + 1;
 
   const words = data.matchId.split("_");
 
@@ -86,8 +83,6 @@ const BuildPlayer = (data: BuildPlayerType) => {
 
   useEffect(() => {
     console.log("timelinedesu", timeline);
-
-    let Tindex = data.index + 1;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     itemArry2 = [];
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,48 +116,47 @@ const BuildPlayer = (data: BuildPlayerType) => {
   }, [timeline]);
 
   useEffect(() => {
-    if (player?.puuid === data.puuid) {
-      RuneLists.forEach((runeList: { id: number; icon: string }) => {
-        if (runeList.id === data.perks.styles[0].selections[0].perk) {
-          setRune((prev) => ({ ...prev, mainRune: runeList.icon }));
-        }
-        if (runeList.id === data.perks.styles[0].selections[1].perk) {
-          setRune((prev) => ({ ...prev, mainRune1: runeList.icon }));
-        }
-        if (runeList.id === data.perks.styles[0].selections[2].perk) {
-          setRune((prev) => ({ ...prev, mainRune2: runeList.icon }));
-        }
-        if (runeList.id === data.perks.styles[0].selections[3].perk) {
-          setRune((prev) => ({ ...prev, mainRune3: runeList.icon }));
-        }
-        if (runeList.id === data.perks.styles[1].selections[0].perk) {
-          setRune((prev) => ({ ...prev, subRune1: runeList.icon }));
-        }
-        if (runeList.id === data.perks.styles[1].selections[1].perk) {
-          setRune((prev) => ({ ...prev, subRune2: runeList.icon }));
-        }
-      });
-    }
+    RuneLists.forEach((runeList: { id: number; icon: string }) => {
+      if (runeList.id === data.perks.styles[0].selections[0].perk) {
+        setRune((prev) => ({ ...prev, mainRune: runeList.icon }));
+      }
+      if (runeList.id === data.perks.styles[0].selections[1].perk) {
+        setRune((prev) => ({ ...prev, mainRune1: runeList.icon }));
+      }
+      if (runeList.id === data.perks.styles[0].selections[2].perk) {
+        setRune((prev) => ({ ...prev, mainRune2: runeList.icon }));
+      }
+      if (runeList.id === data.perks.styles[0].selections[3].perk) {
+        setRune((prev) => ({ ...prev, mainRune3: runeList.icon }));
+      }
+      if (runeList.id === data.perks.styles[1].selections[0].perk) {
+        setRune((prev) => ({ ...prev, subRune1: runeList.icon }));
+      }
+      if (runeList.id === data.perks.styles[1].selections[1].perk) {
+        setRune((prev) => ({ ...prev, subRune2: runeList.icon }));
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (player?.puuid === data.puuid) {
-      const URL = `http://ddragon.leagueoflegends.com/cdn/12.15.1/data/en_US/champion/${data.champion}.json`;
-      axios
-        .get(URL)
-        .then(function (response) {
-          var tmp = Object.entries(response.data.data).map(
-            ([key, value]: any) => ({ key: key, value: value })
-          );
-          setSkillSet(tmp[0].value.spells);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
+    const URL = `http://ddragon.leagueoflegends.com/cdn/12.15.1/data/en_US/champion/${
+      data.champion !== "FiddleSticks" ? data.champion : "Fiddlesticks"
+    }.json`;
+    axios
+      .get(URL)
+      .then(function (response) {
+        var tmp = Object.entries(response.data.data).map(
+          ([key, value]: any) => ({ key: key, value: value })
+        );
+        setSkillSet(tmp[0].value.spells);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data.champion]);
 
   function skillCheck(skill: number, index: number) {
     if (skill === 1) {
@@ -721,11 +715,13 @@ const BuildPlayer = (data: BuildPlayerType) => {
       </>
     );
   }
+
+  if (Tindex !== data.participantID) return null;
   if (error) return <div>failed to load</div>;
-  if (!data) return <div className="text-white">loading...</div>;
+  if (!timeline) return <div className="text-white">loading...</div>;
   return (
     <>
-      {player?.puuid === data.puuid && (
+      {Tindex === data.participantID && (
         <div className="text-gray-300">
           <div className="flex flex-col">
             <div className="bg-[#172740] mb-2 rounded-md">

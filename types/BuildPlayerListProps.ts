@@ -23,4 +23,5 @@ export type BuidlPlayerListProps = {
     kda: number;
   };
   damage: number;
+  time: number;
 };

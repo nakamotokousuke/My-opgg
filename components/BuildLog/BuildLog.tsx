@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BuidlPlayerList } from "../../types/BuildPlayerListType";
 import BuildPlayer from "./BuildPlayer";
 import BuildPlayerList from "./BuildPlayerList";
 import { PlayerData } from "../../types/PlayerType";
+import ParticipantsList from "./ParticipantsList";
 interface BuildLogProps {
   matchId: string;
   blueTeam: any;
@@ -11,6 +12,7 @@ interface BuildLogProps {
   timeLine: any;
   damage: number;
   Player: PlayerData;
+  time: number;
 }
 
 const BuildLog = ({
@@ -21,6 +23,7 @@ const BuildLog = ({
   timeLine,
   damage,
   Player,
+  time,
 }: BuildLogProps) => {
   // const [redTeam, setRedTeam] = useState<any>([]);
   // const [blueTeam, setBlueTeam] = useState<any>([]);
@@ -28,6 +31,16 @@ const BuildLog = ({
     BuildPlayerList: true,
     BuildPlayer: false,
   });
+
+  const [participantID, setParticipantID] = useState(0);
+
+  useEffect(() => {
+    participants.forEach((data: { puuid: string; participantId: number }) => {
+      if (Player.puuid === data.puuid) {
+        setParticipantID(data.participantId);
+      }
+    });
+  }, [Player.puuid, participants]);
 
   const handleSwitch = () => {
     setBuildLog((prev) => ({ ...prev, BuildPlayerList: true }));
@@ -73,35 +86,21 @@ const BuildLog = ({
                       <div className="font-bold">(blue team)</div>
                     </div>
                   )}
-                  <div className="w-[10%] font-bold text-right">kda</div>
-                  <div className="w-[10%] font-bold text-right">dmage</div>
-                  <div className="w-[10%] font-bold text-right">cs</div>
-                  <div className="w-[15%] font-bold text-center">item</div>
+                  <div className="w-[10%] font-bold text-right">KDA</div>
+                  <div className="w-[10%] font-bold text-right">DMAGE</div>
+                  <div className="w-[10%] font-bold text-right">CS</div>
+                  <div className="w-[15%] font-bold text-center">ITEMS</div>
                 </div>
                 <div className="">
                   {blueTeam.map((data: BuidlPlayerList) => (
                     <BuildPlayerList
                       key={data.summonerName}
-                      // summonerName={data.summonerName}
-                      // championName={data.championName}
-                      // kills={data.kills}
-                      // deaths={data.deaths}
-                      // assists={data.assists}
-                      // item0={data.item0}
-                      // item1={data.item1}
-                      // item2={data.item2}
-                      // item3={data.item3}
-                      // item4={data.item4}
-                      // item5={data.item5}
-                      // item6={data.item6}
                       cs={data.totalMinionsKilled + data.neutralMinionsKilled}
-                      // wardsKilled={data.wardsKilled}
                       spell1={data.summoner1Id}
                       spell2={data.summoner2Id}
-                      // perks={data.perks}
-                      // puuid={data.puuid}
                       {...data}
                       damage={damage}
+                      time={time}
                     />
                   ))}
                 </div>
@@ -122,35 +121,21 @@ const BuildLog = ({
                       <div className="font-bold">(red team)</div>
                     </div>
                   )}
-                  <div className="w-[10%] font-bold text-right">kda</div>
-                  <div className="w-[10%] font-bold text-right">dmage</div>
-                  <div className="w-[10%] font-bold text-right">cs</div>
-                  <div className="w-[15%] font-bold text-center">item</div>
+                  <div className="w-[10%] font-bold text-right">KDA</div>
+                  <div className="w-[10%] font-bold text-right">DMAGE</div>
+                  <div className="w-[10%] font-bold text-right">CS</div>
+                  <div className="w-[15%] font-bold text-center">ITEMS</div>
                 </div>
                 <div>
                   {redTeam.map((data: BuidlPlayerList) => (
                     <BuildPlayerList
                       key={data.summonerName}
-                      // summonerName={data.summonerName}
-                      // championName={data.championName}
-                      // kills={data.kills}
-                      // deaths={data.deaths}
-                      // assists={data.assists}
-                      // item0={data.item0}
-                      // item1={data.item1}
-                      // item2={data.item2}
-                      // item3={data.item3}
-                      // item4={data.item4}
-                      // item5={data.item5}
-                      // item6={data.item6}
                       cs={data.totalMinionsKilled + data.neutralMinionsKilled}
-                      // wardsKilled={data.wardsKilled}
                       spell1={data.summoner1Id}
                       spell2={data.summoner2Id}
-                      // perks={data.perks}
-                      // puuid={data.puuid}
                       {...data}
                       damage={damage}
+                      time={time}
                     />
                   ))}
                 </div>
@@ -164,25 +149,67 @@ const BuildLog = ({
         )}
         {buildLog.BuildPlayer && (
           <div id="div2" className="rounded-md">
-            <div className="">
-              {participants.map(
-                (
-                  data: { puuid: string; perks: any; championName: string },
-                  index: number
-                ) => (
-                  <BuildPlayer
-                    key={data.puuid}
-                    timeLine={timeLine}
-                    puuid={data.puuid}
-                    index={index}
-                    perks={data.perks}
-                    champion={data.championName}
-                    matchId={matchId}
-                    Player={Player}
-                  />
-                )
-              )}
+            <div className="flex justify-center">
+              <div className="flex space-x-2 mr-3">
+                {blueTeam.map(
+                  (
+                    data: { championName: string; participantId: number },
+                    index: number
+                  ) => (
+                    <ParticipantsList
+                      key={data.participantId}
+                      champion={data.championName}
+                      participantId={data.participantId}
+                      participantID={participantID}
+                      setParticipantID={setParticipantID}
+                    />
+                  )
+                )}
+              </div>
+              <div className="flex space-x-2 ml-3">
+                {redTeam.map(
+                  (
+                    data: { championName: string; participantId: number },
+                    index: number
+                  ) => (
+                    <ParticipantsList
+                      key={data.participantId}
+                      champion={data.championName}
+                      participantId={data.participantId}
+                      participantID={participantID}
+                      setParticipantID={setParticipantID}
+                    />
+                  )
+                )}
+              </div>
             </div>
+            {participants.map(
+              (
+                data: {
+                  puuid: string;
+                  perks: any;
+                  championName: string;
+                  participantId: number;
+                },
+                index: number
+              ) => (
+                <>
+                  {participantID === data.participantId && (
+                    <BuildPlayer
+                      key={data.puuid}
+                      timeLine={timeLine}
+                      puuid={data.puuid}
+                      index={index}
+                      perks={data.perks}
+                      champion={data.championName}
+                      matchId={matchId}
+                      Player={Player}
+                      participantID={participantID}
+                    />
+                  )}
+                </>
+              )
+            )}
           </div>
         )}
       </div>

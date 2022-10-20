@@ -3,6 +3,7 @@ import React, { RefObject, useContext, useRef, useState } from "react";
 import { useAuth } from "../../context/auth";
 import { db } from "../../firebase";
 import { Data } from "../../pages/_app";
+import { PlayerData } from "../../types/PlayerType";
 import MyOpgg from "./MyOpgg";
 
 const MyPage = () => {
@@ -20,12 +21,6 @@ const MyPage = () => {
     await setDoc(doc(db, "Summoner", fbUser.uid), {
       SummonerName: name,
       region: region.region,
-      platform: region.platform,
-    });
-    await setDoc(doc(db, "region", fbUser.uid), {
-      region: region.region,
-    });
-    await setDoc(doc(db, "platform", fbUser.uid), {
       platform: region.platform,
     });
   };

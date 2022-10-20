@@ -16,14 +16,19 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
   const [subrune, setSubrune] = useState("");
   const router = useRouter();
   const { fbUser, user } = useAuth();
-  const [dmg, setDmg] = useState("");
+  const [dmg, setDmg] = useState("50");
+  const [cpm, setCpm] = useState(0);
 
   useEffect(() => {
     setDmg(
-      Math.floor(
-        (data.totalDamageDealtToChampions / data.damage) * 100
-      ).toFixed(0)
+      (prev) =>
+        (prev = Math.floor(
+          (data.totalDamageDealtToChampions / data.damage) * 100
+        ).toFixed(0))
     );
+
+    const min = (data.time / 1000 / 60) % 60;
+    setCpm(data.cs / min);
 
     spellList.forEach((spell: { value: { key: string; id: string } }) => {
       if (spell.value.key === String(data.spell1)) {
@@ -35,10 +40,6 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    console.log(dmg);
-  }, [dmg]);
 
   useEffect(() => {
     RuneLists.forEach((runeList: { id: number; icon: string }) => {
@@ -71,7 +72,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
   return (
     <li
       key={data.summonerName}
-      className={`flex justify-between items-center mx-[2px] px-[4px] py-[2px] ${
+      className={`flex justify-between items-center mx-[2px] px-[4px] py-[1px] ${
         data.puuid === player?.puuid && "bg-blue-500 rounded-md"
       }`}
     >
@@ -82,7 +83,11 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
               className="w-full"
               height={32}
               width={32}
-              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/champion/${data.championName}.png`}
+              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/champion/${
+                data.championName !== "FiddleSticks"
+                  ? data.championName
+                  : "Fiddlesticks"
+              }.png`}
               alt=""
             />
             <div className="absolute z-10 bottom-0 bg-gray-800 text-white text-[2px] ">
@@ -142,16 +147,19 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
       </div>
       <div className="font-bold ml-2 w-[10%] text-right text-sm">
         <div>{data.totalDamageDealtToChampions}</div>
-        <div className="relative h-1 bg-gray-600">
+        <div className="relative h-[3px] bg-gray-600">
           <div
-            className={`absolute left-0 top-0 bottom-0 m-auto w-[${dmg}%] bg-white h-1`}
-          >
-            {dmg}
-          </div>
+            className={`absolute left-0 top-0 bottom-0 m-auto bg-white h-[2px]`}
+            style={{
+              width: dmg + "%",
+            }}
+          ></div>
         </div>
+        <div className="text-sm">{dmg}%</div>
       </div>
       <div className="font-bold ml-2 w-[10%] text-right text-sm">
-        {data.cs}cs
+        <div>{data.cs}cs</div>
+        <div>{cpm.toFixed(1)}/min</div>
       </div>
 
       <div className="grid grid-cols-4 w-max ml-2 gap-[2px]">
@@ -194,15 +202,19 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
         ) : (
           <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 bg-white rounded-md opacity-20"></div>
         )}
-        <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 relative">
-          <Image
-            className="rounded-md"
-            layout="fill"
-            objectFit="contain"
-            src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item6}.png`}
-            alt=""
-          />
-        </div>
+        {data.item6 !== 0 ? (
+          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 relative">
+            <Image
+              className="rounded-md"
+              layout="fill"
+              objectFit="contain"
+              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item6}.png`}
+              alt=""
+            />
+          </div>
+        ) : (
+          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 bg-white rounded-md opacity-20"></div>
+        )}
         {data.item3 !== 0 ? (
           <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 relative">
             <Image

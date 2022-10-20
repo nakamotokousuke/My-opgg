@@ -26,7 +26,7 @@ import { AuthProvider } from "../context/auth";
 export const Data = createContext({} as ContextData);
 function MyApp({ Component, pageProps }: AppProps) {
   const [player, setPlayer] = useState<PlayerData>();
-  const latest = "12.16.1";
+  const latest = "12.18.1";
   const [region, setRegion] = useState({ platform: "jp1", region: "asia" });
   const [playerRegion, setPlayerRegion] = useState<number>(0);
 

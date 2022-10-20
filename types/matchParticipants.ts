@@ -1,4 +1,5 @@
 export type ParticipantsType = {
+  [x: string]: any;
   puuid: string;
   championName: string;
   kills: number;
@@ -19,4 +20,7 @@ export type ParticipantsType = {
   neutralMinionsKilled: number;
   totalDamageDealtToChampions: number;
   setIssue: React.Dispatch<React.SetStateAction<boolean>>;
+  challenges: {
+    kda: number;
+  };
 };

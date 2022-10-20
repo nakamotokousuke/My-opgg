@@ -74,6 +74,10 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
       return newSnap.data();
     }
   });
+  const gameMode = data?.data.matchData.info.gameMode;
+  const time =
+    data?.data.matchData.info.gameEndTimestamp -
+    data?.data.matchData.info.gameStartTimestamp;
 
   useEffect(() => {
     console.log("index", data);
@@ -104,7 +108,6 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
     <>
       <div className="flex">
         <div
-          key={matchId}
           className={`rounded-l-lg w-[670px] ${
             issue ? "bg-[#496191]" : "bg-[#84515a]"
           }`}
@@ -119,51 +122,25 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
                       {data.puuid === player?.puuid && (
                         <PlayerMatchData
                           key={uuidv4()}
-                          // puuid={data.puuid}
-                          // championName={data.championName}
-                          // kills={data.kills}
-                          // deaths={data.deaths}
-                          // assists={data.assists}
-                          // win={data.win}
-                          // summoner1Id={data.summoner1Id}
-                          // summoner2Id={data.summoner2Id}
-                          // perks={data.perks}
-                          // item0={data.item0}
-                          // item1={data.item1}
-                          // item2={data.item2}
-                          // item3={data.item3}
-                          // item4={data.item4}
-                          // item5={data.item5}
-                          // item6={data.item6}
                           cs={
                             data.totalMinionsKilled + data.neutralMinionsKilled
                           }
                           {...data}
                           setIssue={setIssue}
                           gameTime={gameTime}
+                          gameMode={gameMode}
+                          time={time}
                         />
                       )}
                     </>
                   ))}
               </div>
               <div className="grid grid-cols-2">
-                <div>
+                <div key={uuidv4()}>
                   {Array.isArray(blueTeam) &&
                     blueTeam.map((data: TeamType, index: number) => (
                       <PlayerList
                         key={index}
-                        // champExperience={data.champExperience}
-                        // championName={data.championName}
-                        // kills={data.kills}
-                        // deaths={data.deaths}
-                        // assists={data.assists}
-                        // item0={data.item0}
-                        // item1={data.item1}
-                        // item2={data.item2}
-                        // item3={data.item3}
-                        // item4={data.item4}
-                        // item5={data.item5}
-                        // item6={data.item6}
                         cs={data.totalMinionsKilled + data.neutralMinionsKilled}
                         {...data}
                         wardsKilled={data.wardsKilled}
@@ -177,18 +154,6 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
                     redTeam.map((data: TeamType, index: number) => (
                       <PlayerList
                         key={index}
-                        // champExperience={data.champExperience}
-                        // championName={data.championName}
-                        // kills={data.kills}
-                        // deaths={data.deaths}
-                        // assists={data.assists}
-                        // item0={data.item0}
-                        // item1={data.item1}
-                        // item2={data.item2}
-                        // item3={data.item3}
-                        // item4={data.item4}
-                        // item5={data.item5}
-                        // item6={data.item6}
                         cs={data.totalMinionsKilled + data.neutralMinionsKilled}
                         {...data}
                         wardsKilled={data.wardsKilled}
@@ -205,8 +170,38 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
           onClick={() => handleBuild(matchId)}
           className="flex rounded-r-lg bg-zinc-400 max-h-max items-end"
         >
-          <div className="w-[20px] text-center">
-            {button === matchId ? "↑" : "↓"}
+          <div className="w-[20px] flex justify-center">
+            {button === matchId ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75"
+                />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75"
+                />
+              </svg>
+            )}
           </div>
         </div>
       </div>
@@ -220,6 +215,10 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
             timeLine={timeLine}
             damage={damage}
             Player={Player}
+            time={
+              data?.data.matchData.info.gameEndTimestamp -
+              data?.data.matchData.info.gameStartTimestamp
+            }
           />
         )}
       </div>

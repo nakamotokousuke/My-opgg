@@ -19,4 +19,9 @@ export type PlayerMatchDataType = {
   totalDamageDealtToChampions: number;
   setIssue: React.Dispatch<React.SetStateAction<boolean>>;
   gameTime: string;
+  gameMode: string;
+  challenges: {
+    kda: number;
+  };
+  time: number;
 };

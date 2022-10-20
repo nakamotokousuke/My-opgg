@@ -14,7 +14,7 @@ export async function getServerSideProps(params: {
   );
   const data = await res.json();
   console.log(data.puuid);
-  const URL: string = `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=10&api_key=${process.env.API_KEY}`;
+  const URL: string = `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=100&api_key=${process.env.API_KEY}`;
 
   const matchID = await fetch(URL);
   let matchIDs = await matchID.json();
@@ -87,7 +87,7 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
           <div>
             <Profile data={data} />
           </div>
-          <div className="col-span-2">
+          <div className="col-span-2 flex flex-col items-center">
             <ul className="w-[500px] sm:w-[710px] p-[10px] bg-[#2e2e4e] mt-8 m-auto">
               {Array.isArray(matchIDs)
                 ? matchIDs.slice(0, loadIndex)?.map((matchId: string) => (
@@ -106,8 +106,40 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
                   ))
                 : null}
             </ul>
-            <button disabled={isEmpty ? true : false} onClick={displayMore}>
-              さらに表示
+            <button
+              disabled={isEmpty ? true : false}
+              onClick={displayMore}
+              className="flex w-[80%] h-max items-center justify-center text-white bg-slate-600 m-4 rounded-md"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-10 h-10 text-white"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+              <div className="text-xl font-bold">show more</div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-10 h-10 text-white"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
             </button>
           </div>
           <div>amari</div>

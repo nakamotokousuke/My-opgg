@@ -21,6 +21,7 @@ const MyOpgg = () => {
       const name = docSnap.data()?.SummonerName;
       const region = docSnap.data()?.region;
       const platform = docSnap.data()?.platform;
+      console.log(docSnap.data());
 
       axios
         .get("http://localhost:3000/api/data", {
@@ -40,9 +41,19 @@ const MyOpgg = () => {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const [loadIndex, setLoadIndex] = useState(5);
+  const [isEmpty, setIsEmpty] = useState(false);
+
+  const displayMore = () => {
+    if (loadIndex > matchIDs.length) {
+      setIsEmpty(true);
+    } else {
+      setLoadIndex((prev) => prev + 5);
+    }
+  };
 
   return (
-    <div>
+    <>
       {data && (
         <div className="md:grid md:grid-cols-4 min-w-max min-h-screen">
           <div>
@@ -51,7 +62,7 @@ const MyOpgg = () => {
           <div className="col-span-2">
             <ul className="w-[500px] sm:w-[710px] p-[10px] bg-[#2e2e4e] mt-8 m-auto">
               {Array.isArray(matchIDs)
-                ? matchIDs?.map((matchId: string) => (
+                ? matchIDs.slice(0, loadIndex)?.map((matchId: string) => (
                     <div key={matchId}>
                       <div
                         className="rounded-l-lg mb-2"
@@ -60,19 +71,21 @@ const MyOpgg = () => {
                         <MatchLogList
                           key={matchId}
                           matchId={matchId}
-                          Player={player}
+                          Player={data}
                         />
                       </div>
                     </div>
                   ))
-                : // ここに検索できなかった時の表示
-                  null}
+                : null}
             </ul>
+            <button disabled={isEmpty ? true : false} onClick={displayMore}>
+              さらに表示
+            </button>
           </div>
           <div>amari</div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

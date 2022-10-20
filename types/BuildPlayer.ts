@@ -8,4 +8,5 @@ export type BuildPlayerType = {
   index: number;
   matchId: string;
   Player: PlayerData;
+  participantID: number;
 };
