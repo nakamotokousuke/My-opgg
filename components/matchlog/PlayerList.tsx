@@ -35,8 +35,8 @@ const PlayerList = (data: PlayerListType) => {
           alt=""
         />
         <div
-          className={`text-[12px] truncate ... w-[100%] font-normal cursor-pointer text-white ${
-            player?.puuid === data.puuid ? "opacity-90" : "opacity-60"
+          className={`text-[12px] truncate ... w-[100%] font-normal cursor-pointer ${
+            player?.puuid === data.puuid ? "text-white" : "text-slate-300"
           }`}
           onClick={() => handleClick(`/matchlog/${data.summonerName}`)}
         >

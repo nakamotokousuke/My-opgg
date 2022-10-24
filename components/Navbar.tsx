@@ -49,7 +49,20 @@ const Navbar = () => {
         <div className="space-x-3 pr-5">
           <Link href={"/"}>myPege</Link>
           <Link href="/pros">Pros</Link>
-          {fbUser && <div>{fbUser.displayName}</div>}
+          <div className="flex">
+            {fbUser && <div>{fbUser.displayName}</div>}
+            {fbUser?.photoURL && (
+              <div>
+                <Image
+                  className="rounded-full"
+                  height={30}
+                  width={30}
+                  src={fbUser.photoURL}
+                  alt=""
+                ></Image>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div className="flex justify-center items-center text-center">

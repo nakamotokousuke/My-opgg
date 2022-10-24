@@ -1,4 +1,5 @@
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import MatchLogList from "../../components/matchlog/MatchLogList";
 import Profile from "../../components/matchlog/Profile";
@@ -51,7 +52,6 @@ type MatchLogProps = {
 
 const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
   const { setPlayer } = useContext(Data);
-  const [button, setButton] = useState("");
 
   useEffect(() => {
     setPlayer(data);
@@ -61,16 +61,24 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, matchIDs]);
 
-  const handleBuild = (matchData: string) => {
-    if (matchData === button) {
-      setButton("");
-    } else {
-      setButton(matchData);
-    }
-  };
   // console.log("レンダリング");
   const [loadIndex, setLoadIndex] = useState(5);
   const [isEmpty, setIsEmpty] = useState(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    router.events.on("routeChangeComplete", handleChangeRoute);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleChangeRoute);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleChangeRoute = () => {
+    setLoadIndex(5);
+  };
 
   const displayMore = () => {
     if (loadIndex > matchIDs.length) {
@@ -87,15 +95,12 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
           <div>
             <Profile data={data} />
           </div>
-          <div className="col-span-2 flex flex-col items-center">
-            <ul className="w-[500px] sm:w-[710px] p-[10px] bg-[#2e2e4e] mt-8 m-auto">
+          <div className="col-span-2">
+            <ul className="w-[500px] h-max sm:w-[710px] p-[10px] bg-[#2e2e4e] mt-8 m-auto">
               {Array.isArray(matchIDs)
                 ? matchIDs.slice(0, loadIndex)?.map((matchId: string) => (
                     <div key={matchId}>
-                      <div
-                        className="rounded-l-lg mb-2"
-                        // onClick={() => handleBuild(matchId)}
-                      >
+                      <div className="rounded-l-lg mb-2">
                         <MatchLogList
                           key={matchId}
                           matchId={matchId}
@@ -105,42 +110,14 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
                     </div>
                   ))
                 : null}
+              <button
+                disabled={isEmpty ? true : false}
+                onClick={displayMore}
+                className="flex w-full h-max items-center justify-center text-white bg-slate-600 rounded-md"
+              >
+                <div className="text-xl font-bold">show more</div>
+              </button>
             </ul>
-            <button
-              disabled={isEmpty ? true : false}
-              onClick={displayMore}
-              className="flex w-[80%] h-max items-center justify-center text-white bg-slate-600 m-4 rounded-md"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-10 h-10 text-white"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-              <div className="text-xl font-bold">show more</div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-10 h-10 text-white"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </button>
           </div>
           <div>amari</div>
         </div>

@@ -62,8 +62,20 @@ const Profile = ({ data }: ProfileType) => {
         </div>
 
         <div>
-          win {tier?.wins} / lose {tier?.losses}
+          WIN {tier?.wins} / LOSE {tier?.losses}
         </div>
+        {tier && (
+          <div>
+            WIN RATE{" "}
+            {((tier?.wins / (tier?.wins + tier?.losses)) * 100).toFixed(0)}%
+          </div>
+        )}
+        {/* <div className="w-6 h-6 bg-[#17172e]"></div>
+        <div className="w-6 h-6 bg-[#31334a]"></div>
+        <div className="w-6 h-6 bg-[#28283e]"></div>
+        <div className="w-6 h-6 bg-[#08a6ff]"></div>
+        <div className="w-6 h-6 bg-[#383864]"></div>
+        <div className="w-6 h-6 bg-[#064b80]"></div> */}
       </div>
     </div>
   );

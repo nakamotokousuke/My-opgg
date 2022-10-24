@@ -14,6 +14,7 @@ import { db } from "../../firebase";
 import { getQuery } from "../../lib/getQuery";
 import useSWR from "swr";
 import { useAuth } from "../../context/auth";
+import RuneTree from "./RuneTree";
 
 const BuildPlayer = (data: BuildPlayerType) => {
   const { RuneLists, runeIcon, latest } = useContext(Data);
@@ -212,252 +213,282 @@ const BuildPlayer = (data: BuildPlayerType) => {
   function mainRuneTree() {
     if (8100 === data.perks.styles[0].style) {
       return (
-        <div>
-          <div className="flex">
-            {runeIcon[0].slots[0].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune}
-                icon={data.icon}
-                height={40}
-                width={40}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[0].slots[1].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune1}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[0].slots[2].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune2}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[0].slots[3].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune3}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-        </div>
+        // <div>
+        //   <div className="flex">
+        //     {runeIcon[0].slots[0].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune}
+        //         icon={data.icon}
+        //         height={40}
+        //         width={40}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[0].slots[1].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune1}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[0].slots[2].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune2}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[0].slots[3].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune3}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        // </div>
+        <RuneTree
+          runeIcon={runeIcon}
+          rune={rune}
+          runeIconIndex={0}
+          perks={data.perks}
+        />
       );
     }
     if (8300 === data.perks.styles[0].style) {
       return (
-        <div>
-          <div className="flex">
-            {runeIcon[1].slots[0].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune}
-                icon={data.icon}
-                height={40}
-                width={40}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[1].slots[1].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune1}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[1].slots[2].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune2}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[1].slots[3].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune3}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-        </div>
+        // <div>
+        //   <div className="flex">
+        //     {runeIcon[1].slots[0].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune}
+        //         icon={data.icon}
+        //         height={40}
+        //         width={40}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[1].slots[1].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune1}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[1].slots[2].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune2}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[1].slots[3].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune3}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        // </div>
+        <RuneTree
+          runeIcon={runeIcon}
+          rune={rune}
+          runeIconIndex={1}
+          perks={data.perks}
+        />
       );
     }
     if (8000 === data.perks.styles[0].style) {
       return (
-        <div className="">
-          <div className="flex">
-            {runeIcon[2].slots[0].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune}
-                icon={data.icon}
-                height={40}
-                width={40}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[2].slots[1].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune1}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[2].slots[2].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune2}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[2].slots[3].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune3}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-        </div>
+        // <div className="">
+        //   <div className="flex">
+        //     {runeIcon[2].slots[0].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune}
+        //         icon={data.icon}
+        //         height={40}
+        //         width={40}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[2].slots[1].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune1}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[2].slots[2].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune2}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[2].slots[3].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune3}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        // </div>
+        <RuneTree
+          runeIcon={runeIcon}
+          rune={rune}
+          runeIconIndex={2}
+          perks={data.perks}
+        />
       );
     }
     if (8400 === data.perks.styles[0].style) {
       return (
-        <div>
-          <div className="flex">
-            {runeIcon[3].slots[0].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune}
-                icon={data.icon}
-                height={40}
-                width={40}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[3].slots[1].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune1}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[3].slots[2].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune2}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[3].slots[3].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune3}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-        </div>
+        // <div>
+        //   <div className="flex">
+        //     {runeIcon[3].slots[0].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune}
+        //         icon={data.icon}
+        //         height={40}
+        //         width={40}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[3].slots[1].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune1}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[3].slots[2].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune2}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[3].slots[3].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune3}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        // </div>
+        <RuneTree
+          runeIcon={runeIcon}
+          rune={rune}
+          runeIconIndex={3}
+          perks={data.perks}
+        />
       );
     }
     if (8200 === data.perks.styles[0].style) {
       return (
-        <div>
-          <div className="flex">
-            {runeIcon[4].slots[0].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune}
-                icon={data.icon}
-                height={40}
-                width={40}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[4].slots[1].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune1}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[4].slots[2].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune2}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {runeIcon[4].slots[3].runes.map((data: { icon: string }) => (
-              <Rune
-                key={uuidv4()}
-                Rune={rune.mainRune3}
-                icon={data.icon}
-                height={32}
-                width={32}
-              />
-            ))}
-          </div>
-        </div>
+        // <div>
+        //   <div className="flex">
+        //     {runeIcon[4].slots[0].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune}
+        //         icon={data.icon}
+        //         height={40}
+        //         width={40}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[4].slots[1].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune1}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[4].slots[2].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune2}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        //   <div className="flex justify-center">
+        //     {runeIcon[4].slots[3].runes.map((data: { icon: string }) => (
+        //       <Rune
+        //         key={uuidv4()}
+        //         Rune={rune.mainRune3}
+        //         icon={data.icon}
+        //         height={32}
+        //         width={32}
+        //       />
+        //     ))}
+        //   </div>
+        // </div>
+        <RuneTree
+          runeIcon={runeIcon}
+          rune={rune}
+          runeIconIndex={4}
+          perks={data.perks}
+        />
       );
     }
   }

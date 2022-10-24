@@ -89,17 +89,25 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
   return (
     <div className="grid grid-cols-7">
       <div className="flex justify-between col-span-3">
-        <div className="font-bold ml-4 my-1 text-center">
-          {data.gameMode === "CLASSIC" ? (
+        <div className="font-bold ml-2 sm:ml-4 my-1 text-left">
+          {data.gameMode === 420 ? (
             <div>Rank</div>
+          ) : data.gameMode === 430 ? (
+            <div className="text-sm">Normal</div>
+          ) : data.gameMode === 440 ? (
+            <div className="text-sm">FlexRank</div>
+          ) : data.gameMode === 450 ? (
+            <div>ARAM</div>
           ) : (
             <div>{data.gameMode}</div>
           )}
           <div className="h-[1px] w-full bg-white opacity-10"></div>
-          {data.win ? (
-            <div className="text-blue-400">win</div>
+          {data.time < 720000 ? (
+            <div className="text-sm">Remake</div>
+          ) : data.win ? (
+            <div className="text-blue-500">WIN</div>
           ) : (
-            <div className="text-red-400">Loss</div>
+            <div className="text-red-500">LOSS</div>
           )}
           <div>{data.gameTime}</div>
           {/* <div>{data.totalDamageDealtToChampions}</div> */}

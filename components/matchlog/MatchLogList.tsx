@@ -74,7 +74,7 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
       return newSnap.data();
     }
   });
-  const gameMode = data?.data.matchData.info.gameMode;
+  const gameMode = data?.data.matchData.info.queueId;
   const time =
     data?.data.matchData.info.gameEndTimestamp -
     data?.data.matchData.info.gameStartTimestamp;
@@ -109,7 +109,11 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
       <div className="flex">
         <div
           className={`rounded-l-lg w-[670px] ${
-            issue ? "bg-[#496191]" : "bg-[#84515a]"
+            time < 720000
+              ? "bg-[#5a5a5a]"
+              : issue
+              ? "bg-[#496191]"
+              : "bg-[#84515a]"
           }`}
         >
           <div className="">
