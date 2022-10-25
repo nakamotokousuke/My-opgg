@@ -44,10 +44,12 @@ const Navbar = () => {
 
   return (
     <div className="bg-blue-900 pb-3">
-      <div className="flex justify-between">
+      <div className="flex justify-between mx-4 py-2">
         <div className="pl-5">Logo</div>
-        <div className="space-x-3 pr-5">
-          <Link href={"/"}>myPege</Link>
+        <div className="space-x-3 pr-5 text-lg font-bold text-white">
+          <Link href={"/"} className="">
+            myPege
+          </Link>
           <Link href="/pros">Pros</Link>
           <div className="flex">
             {fbUser && <div>{fbUser.displayName}</div>}

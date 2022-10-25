@@ -121,11 +121,10 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
               <div className="col-span-3">
                 {Array.isArray(matchParticipants) &&
                   matchParticipants.map((data: ParticipantsType) => (
-                    <>
+                    <div key={uuidv4()}>
                       {/* uniquekeyerr */}
                       {data.puuid === player?.puuid && (
                         <PlayerMatchData
-                          key={uuidv4()}
                           cs={
                             data.totalMinionsKilled + data.neutralMinionsKilled
                           }
@@ -136,7 +135,7 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
                           time={time}
                         />
                       )}
-                    </>
+                    </div>
                   ))}
               </div>
               <div className="grid grid-cols-2">
@@ -153,7 +152,7 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
                       />
                     ))}
                 </div>
-                <div>
+                <div key={uuidv4()}>
                   {Array.isArray(redTeam) &&
                     redTeam.map((data: TeamType, index: number) => (
                       <PlayerList

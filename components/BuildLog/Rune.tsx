@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ReactElement, ReactNode, useRef } from "react";
+import RuneEffect from "./RuneEffect";
 type runeType = {
   Rune: string;
   icon: string;
@@ -47,8 +48,20 @@ const Rune = ({
             className="flex before:block absolute before:absolute top-full before:-top-1 left-1/2 before:left-1/2 invisible z-10 before:z-0 items-center py-[2px] px-2 mx-auto mt-2 before:w-2 before:h-2 text-xs text-white whitespace-nowrap before:bg-black bg-black rounded transition-all duration-150 transform before:transform before:rotate-45 -translate-x-1/2 before:-translate-x-1/2"
             ref={ref}
           >
-            {/* ここにコンポーネントをつくる */}
-            test{selection && <div>{selection.perk}</div>}
+            {selection && (
+              <div>
+                <RuneEffect
+                  perk={selection.perk}
+                  var1={selection.var1}
+                  var2={selection.var2}
+                  var3={selection.var3}
+                />
+                <div>perk {selection.perk} </div>
+                <div>var1 {selection.var1} </div>
+                <div>var2 {selection.var2} </div>
+                <div>var3 {selection.var3} </div>
+              </div>
+            )}
           </div>
           <Image
             height={height}

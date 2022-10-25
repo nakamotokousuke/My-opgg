@@ -193,7 +193,7 @@ const BuildLog = ({
                 },
                 index: number
               ) => (
-                <>
+                <div key={data.puuid}>
                   {participantID === data.participantId && (
                     <BuildPlayer
                       key={data.puuid}
@@ -207,7 +207,7 @@ const BuildLog = ({
                       participantID={participantID}
                     />
                   )}
-                </>
+                </div>
               )
             )}
           </div>
