@@ -16,6 +16,31 @@ const Profile = ({ data }: ProfileType) => {
   const [tier, setTier] = useState<TierType | null>(null);
   useEffect(() => {
     getTier();
+
+    if (!localStorage) return;
+    const t = localStorage.getItem("history");
+    if (t === null) {
+      let array = [data.name];
+      let json = JSON.stringify(array, undefined, 1);
+      localStorage.setItem("history", json);
+      return;
+    }
+    if (t) {
+      let history = JSON.parse(t);
+      console.log(history.length);
+      let history2 = history.filter((local: any) => data.name !== local.name);
+      data.platform = getQuery("platform", user?.platform);
+      history2.push(data);
+      if (history2.length > 5) {
+        history2.shift();
+      }
+      // const history2 = Array.from(new Set(history));
+      let json = JSON.stringify(history2, undefined, 1);
+      localStorage.setItem("history", json);
+      console.log("history", history);
+      console.log(history2);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.puuid]);
 
@@ -41,7 +66,7 @@ const Profile = ({ data }: ProfileType) => {
       <div className="mr-5">
         <Image
           className=""
-          src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/profileicon/${data.profileIconId}.png`}
+          src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/profileicon/${data.profileIconId}.png`}
           alt=""
           height={150}
           width={150}

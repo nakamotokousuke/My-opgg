@@ -21,7 +21,9 @@ const ParticipantsList = (data: ParticipantsListType) => {
         }`}
         height={32}
         width={32}
-        src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/champion/${
+        src={`http://ddragon.leagueoflegends.com/cdn/${
+          process.env.NEXT_PUBLIC_LATEST
+        }/img/champion/${
           data.champion !== "FiddleSticks" ? data.champion : "Fiddlesticks"
         }.png`}
         alt=""

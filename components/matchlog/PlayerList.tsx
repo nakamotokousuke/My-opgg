@@ -27,7 +27,9 @@ const PlayerList = (data: PlayerListType) => {
         <Image
           height={16}
           width={16}
-          src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/champion/${
+          src={`http://ddragon.leagueoflegends.com/cdn/${
+            process.env.NEXT_PUBLIC_LATEST
+          }/img/champion/${
             data.championName !== "FiddleSticks"
               ? data.championName
               : "Fiddlesticks"

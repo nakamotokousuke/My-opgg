@@ -14,7 +14,7 @@ const Item = ({ item, latest }: itemType) => {
             layout="fill"
             objectFit="contain"
             className="rounded-md"
-            src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${item}.png`}
+            src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${item}.png`}
             alt=""
           />
         </div>

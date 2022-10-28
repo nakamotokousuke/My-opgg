@@ -83,7 +83,9 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
               className="w-full"
               height={32}
               width={32}
-              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/champion/${
+              src={`http://ddragon.leagueoflegends.com/cdn/${
+                process.env.NEXT_PUBLIC_LATEST
+              }/img/champion/${
                 data.championName !== "FiddleSticks"
                   ? data.championName
                   : "Fiddlesticks"
@@ -99,13 +101,13 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
               <Image
                 height={16}
                 width={16}
-                src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/spell/${spell1ID}.png`}
+                src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/spell/${spell1ID}.png`}
                 alt=""
               />
               <Image
                 height={16}
                 width={16}
-                src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/spell/${spell2ID}.png`}
+                src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/spell/${spell2ID}.png`}
                 alt=""
               />
             </div>
@@ -169,7 +171,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
               className="rounded-md"
               layout="fill"
               objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item0}.png`}
+              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item0}.png`}
               alt=""
             />
           </div>
@@ -182,7 +184,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
               className="rounded-md"
               layout="fill"
               objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item1}.png`}
+              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item1}.png`}
               alt=""
             />
           </div>
@@ -195,7 +197,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
               className="rounded-md"
               layout="fill"
               objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item2}.png`}
+              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item2}.png`}
               alt=""
             />
           </div>
@@ -208,7 +210,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
               className="rounded-md"
               layout="fill"
               objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item6}.png`}
+              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item6}.png`}
               alt=""
             />
           </div>
@@ -221,7 +223,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
               className="rounded-md"
               layout="fill"
               objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item3}.png`}
+              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item3}.png`}
               alt=""
             />
           </div>
@@ -234,7 +236,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
               className="rounded-md"
               layout="fill"
               objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item4}.png`}
+              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item4}.png`}
               alt=""
             />
           </div>
@@ -247,7 +249,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
               className="rounded-md"
               layout="fill"
               objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item5}.png`}
+              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item5}.png`}
               alt=""
             />
           </div>

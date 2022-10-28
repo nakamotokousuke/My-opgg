@@ -7,3 +7,5 @@ uuidv4();
 process.env.環境変数名
 ブラウザ
 NEXT_PUBLIC_ を追記
+
+riotapiが死んでる時用の処理をいつかやる

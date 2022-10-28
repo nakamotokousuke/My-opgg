@@ -7,5 +7,6 @@ export type PlayerData = {
   profileIconId: number;
   //   revisionDate: number;
   summonerLevel: number;
+  platform?: string;
   //   };
 };

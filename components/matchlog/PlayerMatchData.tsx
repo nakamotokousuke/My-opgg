@@ -117,7 +117,9 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
             <Image
               layout="fill"
               objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/champion/${
+              src={`http://ddragon.leagueoflegends.com/cdn/${
+                process.env.NEXT_PUBLIC_LATEST
+              }/img/champion/${
                 data.championName !== "FiddleSticks"
                   ? data.championName
                   : "Fiddlesticks"
@@ -131,7 +133,7 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
               <Image
                 layout="fill"
                 objectFit="contain"
-                src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/spell/${spell.spell1}.png`}
+                src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/spell/${spell.spell1}.png`}
                 alt=""
                 className="rounded-md"
               ></Image>
@@ -140,7 +142,7 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
               <Image
                 layout="fill"
                 objectFit="contain"
-                src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/spell/${spell.spell2}.png`}
+                src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/spell/${spell.spell2}.png`}
                 alt=""
                 className="rounded-md"
               ></Image>
@@ -198,7 +200,7 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
                 className="rounded-md ml-[2px] mb-[2px] max-h-max"
                 layout="fill"
                 objectFit="contain"
-                src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${data.item6}.png`}
+                src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item6}.png`}
                 alt=""
               />
             </div>

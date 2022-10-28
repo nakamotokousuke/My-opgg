@@ -1,6 +1,9 @@
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
+import Favorite from "../../components/matchlog/Favorite";
+import History from "../../components/matchlog/History";
+import LogFav from "../../components/matchlog/LogFav";
 import MatchLogList from "../../components/matchlog/MatchLogList";
 import Profile from "../../components/matchlog/Profile";
 import { db } from "../../firebase";
@@ -119,7 +122,9 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
               </button>
             </ul>
           </div>
-          <div>amari</div>
+          <div className="flex justify-center md:justify-start">
+            <LogFav name={data.name} />
+          </div>
         </div>
       ) : (
         <>empty</>

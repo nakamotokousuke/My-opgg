@@ -47,7 +47,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const fetchChampion = async () => {
     const res = await fetch(
-      `http://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/champion.json`
+      `http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/data/en_US/champion.json`
     );
     const champ = await res.json();
     const champData: any = Object.entries(champ.data);
@@ -64,7 +64,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     axios
       .get(
-        `http://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/summoner.json`
+        `http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/data/en_US/summoner.json`
       )
       .then(function (response) {
         console.log("spell", response.data.data);
@@ -87,7 +87,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     axios
       .get(
-        `http://ddragon.leagueoflegends.com/cdn/${latest}/data/ja_JP/runesReforged.json`
+        `http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/data/ja_JP/runesReforged.json`
       )
       .then(function (response) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
