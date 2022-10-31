@@ -70,7 +70,7 @@ const HistoryChild = (props: data) => {
   return (
     <div
       key={data.id}
-      className="text-white flex text-center cursor-pointer justify-between w-[60%]"
+      className="text-white flex text-center cursor-pointer justify-between"
     >
       <div
         onClick={() => handleClick(`/matchlog/${data.name}`)}
@@ -90,7 +90,7 @@ const HistoryChild = (props: data) => {
       {/* <button className="" onClick={favAdd}>
         {fav ? <div>orini</div> : <div>zako</div>}
       </button> */}
-      <input type="checkbox" checked={fav} onClick={favAdd} />
+      <input type="checkbox" checked={fav} onChange={favAdd} />
     </div>
   );
 };

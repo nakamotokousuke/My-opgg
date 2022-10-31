@@ -1,12 +1,14 @@
+import axios from "axios";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
-import Favorite from "../../components/matchlog/Favorite";
-import History from "../../components/matchlog/History";
+import useSWR from "swr";
 import LogFav from "../../components/matchlog/LogFav";
 import MatchLogList from "../../components/matchlog/MatchLogList";
 import Profile from "../../components/matchlog/Profile";
+import { useAuth } from "../../context/auth";
 import { db } from "../../firebase";
+import { getQuery } from "../../lib/getQuery";
 import { PlayerData } from "../../types/PlayerType";
 import { Data } from "../_app";
 
@@ -55,12 +57,19 @@ type MatchLogProps = {
 
 const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
   const { setPlayer } = useContext(Data);
+  const [matchList, setMatchList] = useState<string[]>([]);
+  const [matchType, setMatchType] = useState({
+    all: true,
+    rank: false,
+    normal: false,
+  });
+  const { user } = useAuth();
 
   useEffect(() => {
     setPlayer(data);
     console.log(data);
     console.log(matchIDs);
-
+    setMatchList(matchIDs);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, matchIDs]);
 
@@ -91,6 +100,25 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
     }
   };
 
+  const getMatchList = async (Type: string) => {
+    const matchList = await axios
+      .get(`http://localhost:3000/api/matchType/${Type}`, {
+        params: {
+          puuid: data.puuid,
+          region: getQuery("region", user?.region),
+        },
+      })
+      .then(function (response) {
+        console.log("Type", response.data);
+
+        return response.data;
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+    setMatchList(matchList.matchList);
+  };
+
   return (
     <>
       {data.puuid !== undefined ? (
@@ -99,9 +127,59 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
             <Profile data={data} />
           </div>
           <div className="col-span-2">
-            <ul className="w-[500px] h-max sm:w-[710px] p-[10px] bg-[#2e2e4e] mt-8 m-auto">
-              {Array.isArray(matchIDs)
-                ? matchIDs.slice(0, loadIndex)?.map((matchId: string) => (
+            <div className="flex space-x-3 mx-auto w-[500px] sm:w-[710px] mt-8 text-white font-bold text-xl bg-gray-600 rounded-t-sm">
+              <div
+                className={`p-2 hover:text-blue-500 cursor-pointer ${
+                  matchType.all ? "text-blue-500" : ""
+                }`}
+                onClick={() => {
+                  setMatchList(matchIDs);
+                  setMatchType((prev) => ({
+                    ...prev,
+                    all: true,
+                    rank: false,
+                    normal: false,
+                  }));
+                }}
+              >
+                All Game
+              </div>
+              <div
+                className={`p-2 hover:text-blue-500 cursor-pointer ${
+                  matchType.rank ? "text-blue-500" : ""
+                }`}
+                onClick={() => {
+                  getMatchList("ranked");
+                  setMatchType((prev) => ({
+                    ...prev,
+                    all: false,
+                    rank: true,
+                    normal: false,
+                  }));
+                }}
+              >
+                Ranked
+              </div>
+              <div
+                className={`p-2 hover:text-blue-500 cursor-pointer ${
+                  matchType.normal ? "text-blue-500" : ""
+                }`}
+                onClick={() => {
+                  getMatchList("normal");
+                  setMatchType((prev) => ({
+                    ...prev,
+                    all: false,
+                    rank: false,
+                    normal: true,
+                  }));
+                }}
+              >
+                Nomal
+              </div>
+            </div>
+            <ul className="w-[500px] h-max sm:w-[710px] p-[10px] bg-[#2e2e4e] mx-auto rounded-b-sm">
+              {Array.isArray(matchList)
+                ? matchList.slice(0, loadIndex)?.map((matchId: string) => (
                     <div key={matchId}>
                       <div className="rounded-l-lg mb-2">
                         <MatchLogList
@@ -122,7 +200,7 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
               </button>
             </ul>
           </div>
-          <div className="flex justify-center md:justify-start">
+          <div className="flex justify-center md:justify-start ml-3">
             <LogFav name={data.name} />
           </div>
         </div>

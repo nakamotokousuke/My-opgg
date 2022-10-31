@@ -27,7 +27,7 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
   const { player, region } = useContext(Data);
   const [gameTime, setGameTime] = useState<string>("");
   const [damage, setDamage] = useState<number>(0);
-  const { fbUser, user } = useAuth();
+  const { user } = useAuth();
 
   const [timeLine, setTimeLine] = useState<any>({});
 
@@ -100,6 +100,7 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
     );
     setDamage((prev) => (prev = tmp));
   }, [data]);
+
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
 
