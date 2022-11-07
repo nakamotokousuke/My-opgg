@@ -110,7 +110,7 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
       <div className="flex">
         <div
           className={`rounded-l-lg w-[670px] ${
-            time < 720000
+            time < 320000
               ? "bg-[#5a5a5a]"
               : issue
               ? "bg-[#496191]"
@@ -123,7 +123,6 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
                 {Array.isArray(matchParticipants) &&
                   matchParticipants.map((data: ParticipantsType) => (
                     <div key={uuidv4()}>
-                      {/* uniquekeyerr */}
                       {data.puuid === player?.puuid && (
                         <PlayerMatchData
                           cs={

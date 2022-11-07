@@ -19,6 +19,14 @@ export async function getServerSideProps(params: {
     `https://${params.query.platform}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${params.query.name}?api_key=${process.env.API_KEY}`
   );
   const data = await res.json();
+  if (data.puuid === undefined) {
+    return {
+      props: {
+        data,
+        matchIDs: [],
+      },
+    };
+  }
   console.log(data.puuid);
   const URL: string = `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=100&api_key=${process.env.API_KEY}`;
 
@@ -36,9 +44,11 @@ export async function getServerSideProps(params: {
       matchIDs: arrayUnion(...matchIDs.reverse()),
     });
   } else {
-    await setDoc(doc(db, data.puuid, "matchIDs"), {
-      matchIDs: matchIDs.reverse(),
-    });
+    if (data !== undefined) {
+      await setDoc(doc(db, data.puuid, "matchIDs"), {
+        matchIDs: matchIDs.reverse(),
+      });
+    }
   }
 
   const newdocSnap = await getDoc(doc(db, data.puuid, "matchIDs"));
@@ -205,7 +215,7 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
           </div>
         </div>
       ) : (
-        <>empty</>
+        <div className="h-screen">empty</div>
       )}
     </>
   );

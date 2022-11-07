@@ -30,6 +30,7 @@ const Profile = ({ data }: ProfileType) => {
       console.log(history.length);
       let history2 = history.filter((local: any) => data.name !== local.name);
       data.platform = getQuery("platform", user?.platform);
+      data.region = getQuery("region", user?.region);
       history2.push(data);
       if (history2.length > 5) {
         history2.shift();
@@ -62,10 +63,10 @@ const Profile = ({ data }: ProfileType) => {
   }, [data.id]);
 
   return (
-    <div className="flex justify-center md:mt-10">
+    <div className="flex justify-center md:mt-10 mt-6">
       <div className="mr-5">
         <Image
-          className=""
+          className="rounded-sm"
           src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/profileicon/${data.profileIconId}.png`}
           alt=""
           height={150}
@@ -75,11 +76,12 @@ const Profile = ({ data }: ProfileType) => {
         />
       </div>
       <div className="flex flex-col justify-center text-white font-bold">
-        <div>{data.name}</div>
-        <div>
+        <div className="text-2xl">{data.name}</div>
+        <div className="text-xl">
           {tier?.rank !== undefined ? (
             <div>
-              {tier?.tier} {tier?.rank} {tier?.leaguePoints}LP
+              {tier?.tier} {tier?.rank}{" "}
+              <span className="text-base">{tier?.leaguePoints}LP</span>
             </div>
           ) : (
             <div>unranked</div>
@@ -95,12 +97,6 @@ const Profile = ({ data }: ProfileType) => {
             {((tier?.wins / (tier?.wins + tier?.losses)) * 100).toFixed(0)}%
           </div>
         )}
-        {/* <div className="w-6 h-6 bg-[#17172e]"></div>
-        <div className="w-6 h-6 bg-[#31334a]"></div>
-        <div className="w-6 h-6 bg-[#28283e]"></div>
-        <div className="w-6 h-6 bg-[#08a6ff]"></div>
-        <div className="w-6 h-6 bg-[#383864]"></div>
-        <div className="w-6 h-6 bg-[#064b80]"></div> */}
       </div>
     </div>
   );

@@ -8,5 +8,6 @@ export type PlayerData = {
   //   revisionDate: number;
   summonerLevel: number;
   platform?: string;
+  region?: string;
   //   };
 };

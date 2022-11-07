@@ -1,24 +1,12 @@
-import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import type { NextPage } from "next";
-import MyPage from "../components/MyPage/Mypage";
-import Signin from "../components/MyPage/Signin";
-import Signout from "../components/MyPage/Signout";
-import { useAuth } from "../context/auth";
-import { db } from "../firebase";
-import { PlayerData } from "../types/PlayerType";
+import Input from "../components/Input";
 
 const Home: NextPage = () => {
-  const { fbUser } = useAuth();
   return (
-    <div className="min-h-screen">
-      {fbUser ? (
-        <div>
-          <Signout />
-          <MyPage />
-        </div>
-      ) : (
-        <Signin />
-      )}
+    <div className="min-h-screen flex justify-center items-center">
+      <div className="w-full h-10">
+        <Input style="w-[30%] text-2xl" />
+      </div>
     </div>
   );
 };

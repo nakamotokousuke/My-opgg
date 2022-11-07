@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from "react";
-import FavChild from "./FavChild";
-type name = {
-  name: string;
-};
+import HistoryChild from "./matchlog/HistoryChild";
 
-const Favorite = (name: name) => {
-  const [fav, setFav] = useState([]);
+const SearchLog = () => {
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    const t = localStorage.getItem("favorite");
+    const t = localStorage.getItem("history");
     if (t) {
-      let fav = JSON.parse(t);
-      setFav(fav);
+      let history = JSON.parse(t);
+      setHistory(history);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="bg-[#2e2e4e]  p-4 ">
+    <div className="bg-[#2e2e4e] p-4">
       <ul className="flex flex-col">
-        {fav.map(
+        {history.map(
           (
             data: {
               name: string;
@@ -31,7 +27,7 @@ const Favorite = (name: name) => {
             index
           ) => (
             <div key={data.id} style={{ order: -index }} className="my-1">
-              <FavChild data={data} />
+              <HistoryChild data={data} />
             </div>
           )
         )}
@@ -40,4 +36,4 @@ const Favorite = (name: name) => {
   );
 };
 
-export default Favorite;
+export default SearchLog;

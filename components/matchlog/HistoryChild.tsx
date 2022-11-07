@@ -5,12 +5,17 @@ import { useAuth } from "../../context/auth";
 import { getQuery } from "../../lib/getQuery";
 
 type data = {
-  data: { name: string; platform: string; profileIconId: number; id: string };
+  data: {
+    name: string;
+    platform: string;
+    region: string;
+    profileIconId: number;
+    id: string;
+  };
 };
 
 const HistoryChild = (props: data) => {
   const [fav, setFav] = useState(false);
-  const [button, setBtton] = useState(false);
   const data = props.data;
 
   useEffect(() => {
@@ -36,7 +41,7 @@ const HistoryChild = (props: data) => {
     } else {
       let favorite = JSON.parse(json);
       if (fav) {
-        favorite.forEach((fav: { name: string }, index: number) => {
+        favorite.forEach((fav: { name: string }) => {
           if (fav.name === data.name) {
             let newFav = favorite.filter(
               (fav: { name: string }) => data.name !== fav.name
@@ -57,12 +62,12 @@ const HistoryChild = (props: data) => {
   const { user } = useAuth();
   const router = useRouter();
 
-  const handleClick = (path: string) => {
+  const handleClick = (path: string, region: string, platform: string) => {
     router.push({
       pathname: path,
       query: {
-        region: getQuery("region", user?.region),
-        platform: getQuery("platform", user?.platform),
+        region: region,
+        platform: platform,
       },
     });
   };
@@ -73,8 +78,10 @@ const HistoryChild = (props: data) => {
       className="text-white flex text-center cursor-pointer justify-between"
     >
       <div
-        onClick={() => handleClick(`/matchlog/${data.name}`)}
-        className="flex"
+        onClick={() =>
+          handleClick(`/matchlog/${data.name}`, data.region, data.platform)
+        }
+        className="flex w-full text-left"
       >
         <Image
           className="rounded-md"
@@ -85,7 +92,7 @@ const HistoryChild = (props: data) => {
           objectFit="contain"
           priority={false}
         />
-        <div className="text-xl ml-2">{data.name}</div>
+        <div className="text-xl ml-2 truncate ... w-[100%]">{data.name}</div>
       </div>
       {/* <button className="" onClick={favAdd}>
         {fav ? <div>orini</div> : <div>zako</div>}

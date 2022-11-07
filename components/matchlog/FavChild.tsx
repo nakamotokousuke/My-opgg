@@ -1,10 +1,17 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { platform } from "os";
 import React, { useState } from "react";
 import { useAuth } from "../../context/auth";
 import { getQuery } from "../../lib/getQuery";
 type data = {
-  data: { name: string; platform: string; profileIconId: number; id: string };
+  data: {
+    name: string;
+    platform: string;
+    region: string;
+    profileIconId: number;
+    id: string;
+  };
 };
 
 const FavChild = (props: data) => {
@@ -13,12 +20,12 @@ const FavChild = (props: data) => {
   const [fav, setFav] = useState(true);
   const data = props.data;
 
-  const handleClick = (path: string) => {
+  const handleClick = (path: string, region: string, platform: string) => {
     router.push({
       pathname: path,
       query: {
-        region: getQuery("region", user?.region),
-        platform: getQuery("platform", user?.platform),
+        region: region,
+        platform: platform,
       },
     });
   };
@@ -56,7 +63,9 @@ const FavChild = (props: data) => {
       className="text-white flex text-center cursor-pointer justify-between"
     >
       <div
-        onClick={() => handleClick(`/matchlog/${data.name}`)}
+        onClick={() =>
+          handleClick(`/matchlog/${data.name}`, data.region, data.platform)
+        }
         className="flex"
       >
         <Image
