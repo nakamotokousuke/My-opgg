@@ -35,7 +35,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="h-6">
-        <Input style="w-[15%]" />
+        <Input style="w-[40%] sm:w-[15%]" />
       </div>
     </div>
   );

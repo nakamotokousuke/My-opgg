@@ -37,11 +37,54 @@ const BuildPlayer = (data: BuildPlayerType) => {
   let Tindex = data.index + 1;
 
   const words = data.matchId.split("_");
+  //firestore変更前
+  // const { data: timeline, error } = useSWR(
+  //   data.matchId + "TimeLine",
+  //   async () => {
+  //     const ref = doc(db, data.Player.puuid, "matchIDs", "TimeLine", words[1]);
+  //     const snap = await getDoc(ref);
+  //     if (snap.exists()) {
+  //       return snap.data();
+  //     } else {
+  //       const TimeLineData = await axios
+  //         .get(`http://localhost:3000/api/timeline/${data.matchId}`, {
+  //           params: {
+  //             region: getQuery("region", user?.region),
+  //             platform: getQuery("platform", user?.region),
+  //           },
+  //         })
+  //         .then(function (response) {
+  //           return response.data;
+  //         })
+  //         .catch(function (err) {
+  //           console.log(err);
+  //         });
 
+  //       await setDoc(
+  //         doc(db, data.Player.puuid, "matchIDs", "TimeLine", words[1]),
+  //         {
+  //           data: TimeLineData,
+  //         }
+  //       );
+
+  //       const ref = doc(
+  //         db,
+  //         data.Player.puuid,
+  //         "matchIDs",
+  //         "TimeLine",
+  //         words[1]
+  //       );
+  //       const newSnap = await getDoc(ref);
+
+  //       return newSnap.data();
+  //     }
+  //   }
+  // );
+  //firestore変更後
   const { data: timeline, error } = useSWR(
     data.matchId + "TimeLine",
     async () => {
-      const ref = doc(db, data.Player.puuid, "matchIDs", "TimeLine", words[1]);
+      const ref = doc(db, "TimeLine", words[1]);
       const snap = await getDoc(ref);
       if (snap.exists()) {
         return snap.data();
@@ -60,20 +103,11 @@ const BuildPlayer = (data: BuildPlayerType) => {
             console.log(err);
           });
 
-        await setDoc(
-          doc(db, data.Player.puuid, "matchIDs", "TimeLine", words[1]),
-          {
-            data: TimeLineData,
-          }
-        );
+        await setDoc(doc(db, "TimeLine", words[1]), {
+          data: TimeLineData,
+        });
 
-        const ref = doc(
-          db,
-          data.Player.puuid,
-          "matchIDs",
-          "TimeLine",
-          words[1]
-        );
+        const ref = doc(db, "TimeLine", words[1]);
         const newSnap = await getDoc(ref);
 
         return newSnap.data();

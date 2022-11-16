@@ -5,7 +5,7 @@ const Home: NextPage = () => {
   return (
     <div className="min-h-screen flex justify-center items-center">
       <div className="w-full h-10">
-        <Input style="w-[30%] text-2xl" />
+        <Input style="w-[50%] sm:w-[30%] text-2xl" />
       </div>
     </div>
   );

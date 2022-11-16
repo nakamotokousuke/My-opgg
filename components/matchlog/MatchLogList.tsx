@@ -43,9 +43,40 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
   //////////////////////////////////////////////////
 
   const words = matchId.split("_");
+  //firestore変更前
+  // const { data, error } = useSWR(matchId, async () => {
+  //   const ref = doc(db, Player.puuid, "matchIDs", "matchData", words[1]);
+  //   const snap = await getDoc(ref);
+  //   if (snap.exists()) {
+  //     return snap.data();
+  //   } else {
+  //     const matchData = await axios
+  //       .get(`http://localhost:3000/api/lol/${matchId}`, {
+  //         params: {
+  //           region: getQuery("region", user?.region),
+  //           platform: getQuery("platform", user?.region),
+  //         },
+  //       })
+  //       .then(function (response) {
+  //         return response.data;
+  //       })
+  //       .catch(function (err) {
+  //         console.log(err);
+  //       });
 
+  //     await setDoc(doc(db, Player.puuid, "matchIDs", "matchData", words[1]), {
+  //       data: matchData,
+  //     });
+
+  //     const ref = doc(db, Player.puuid, "matchIDs", "matchData", words[1]);
+  //     const newSnap = await getDoc(ref);
+
+  //     return newSnap.data();
+  //   }
+  // });
+  //firestore変更後
   const { data, error } = useSWR(matchId, async () => {
-    const ref = doc(db, Player.puuid, "matchIDs", "matchData", words[1]);
+    const ref = doc(db, "matchList", words[1]);
     const snap = await getDoc(ref);
     if (snap.exists()) {
       return snap.data();
@@ -64,16 +95,17 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
           console.log(err);
         });
 
-      await setDoc(doc(db, Player.puuid, "matchIDs", "matchData", words[1]), {
+      await setDoc(doc(db, "matchList", words[1]), {
         data: matchData,
       });
 
-      const ref = doc(db, Player.puuid, "matchIDs", "matchData", words[1]);
+      const ref = doc(db, "matchList", words[1]);
       const newSnap = await getDoc(ref);
 
       return newSnap.data();
     }
   });
+
   const gameMode = data?.data.matchData.info.queueId;
   const time =
     data?.data.matchData.info.gameEndTimestamp -
