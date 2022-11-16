@@ -77,7 +77,7 @@ const FavChild = (props: data) => {
           objectFit="contain"
           priority={false}
         />
-        <div className="text-xl ml-2">{data.name}</div>
+        <div className="text-xl ml-2 truncate ... w-[100%]">{data.name}</div>
       </div>
       {/* <button className="" onClick={favAdd}>
         {fav ? <div>orini</div> : <div>zako</div>}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FavChild from "./FavChild";
 type name = {
-  name: string;
+  name?: string | string[];
 };
 
 const Favorite = (name: name) => {

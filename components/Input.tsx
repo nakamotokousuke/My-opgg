@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Data } from "../pages/_app";
-import SearchLog from "./SearchLog";
+import InputLogFav from "./InputLogFav";
 
 type InputStylesType = {
   style: string;
@@ -12,6 +12,7 @@ const Input = (style: InputStylesType) => {
   const [searchLog, setSearchLog] = useState(false);
   const router = useRouter();
   const ref = useRef<any>();
+  const [effect, setEffect] = useState<string | string[] | undefined>("");
   const { regionChange, setPlayerRegion, playerRegion, region } =
     useContext(Data);
   const handleClick = (path: string) => {
@@ -36,6 +37,23 @@ const Input = (style: InputStylesType) => {
     options[playerRegion].selected = true;
     console.log(playerRegion);
   }, [playerRegion]);
+
+  useEffect(() => {
+    router.events.on("routeChangeComplete", () => {
+      setSearchLog(false);
+      setEffect(router.query.name);
+    });
+
+    return () => {
+      router.events.off("routeChangeComplete", () => {
+        setSearchLog(false);
+        setEffect(router.query.name);
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log(router.query.name);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -86,15 +104,13 @@ const Input = (style: InputStylesType) => {
           </svg>
         </button>
       </div>
-      <div
-        className={`flex justify-center text-center w-full h-full pl-4 ${
-          searchLog ? "" : "hidden"
-        }`}
-      >
-        <div className={`${style.style} text-left z-50`}>
-          <SearchLog />
+      {searchLog && (
+        <div className={`flex justify-center text-center w-full h-full pl-4`}>
+          <div className={`${style.style} text-left z-50`}>
+            <InputLogFav name={effect} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

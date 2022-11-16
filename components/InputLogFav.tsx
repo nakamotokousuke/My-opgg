@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
-import Favorite from "./Favorite";
-import History from "./History";
+import Favorite from "./matchlog/Favorite";
+import History from "./matchlog/History";
+
 type data = {
-  name: string;
+  name?: string | string[];
 };
 
-const LogFav = (data: data) => {
+const InputLogFav = (data: data) => {
   const [button, setButton] = useState(true);
   useEffect(() => {
     console.log(button);
   }, [button]);
   return (
-    <div className="text-white mt-8 w-[60%] rounded-t-sm">
+    <div className="">
+      {/* <button onClick={() => setButton((prev) => (prev = !prev))}>ggg</button> */}
       <div className="grid grid-cols-2 w-full">
         <div
           className={`${
             button ? "bg-[#2e2e4e]" : "bg-[#191931]"
-          } w-full text-center rounded-tl-sm font-bold`}
+          } w-full text-center font-bold text-white`}
           onClick={() => setButton((prev) => (prev = !prev))}
         >
           Log
@@ -24,7 +26,7 @@ const LogFav = (data: data) => {
         <div
           className={`${
             !button ? "bg-[#2e2e4e]" : "bg-[#191931]"
-          } w-full text-center rounded-tr-sm font-bold`}
+          } w-full text-center font-bold text-white`}
           onClick={() => setButton((prev) => (prev = !prev))}
         >
           Fav
@@ -35,4 +37,4 @@ const LogFav = (data: data) => {
   );
 };
 
-export default LogFav;
+export default InputLogFav;
