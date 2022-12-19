@@ -1,18 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Data } from "../../pages/_app";
 import { BuildPlayerType } from "../../types/BuildPlayer";
 import StatusRune from "../../data/StatusRune.json";
 import StatRune from "./StatRune";
 import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../../firebase";
-import { getQuery } from "../../lib/getQuery";
 import useSWR from "swr/immutable";
 import RuneTree from "./RuneTree";
 import SubRuneTree from "./SubRuneTree";
+import { useFetchFBTimeLine, useFetchSkillSet } from "../../lib/CustomHook";
 
 const BuildPlayer = (data: BuildPlayerType) => {
   const { RuneLists, runeIcon, latest } = useContext(Data);
@@ -35,11 +33,11 @@ const BuildPlayer = (data: BuildPlayerType) => {
   let Tindex = data.index + 1;
 
   const words = data.matchId.split("_");
-  //firestore変更前
+
   // const { data: timeline, error } = useSWR(
   //   data.matchId + "TimeLine",
   //   async () => {
-  //     const ref = doc(db, data.Player.puuid, "matchIDs", "TimeLine", words[1]);
+  //     const ref = doc(db, "TimeLine", words[1]);
   //     const snap = await getDoc(ref);
   //     if (snap.exists()) {
   //       return snap.data();
@@ -47,8 +45,8 @@ const BuildPlayer = (data: BuildPlayerType) => {
   //       const TimeLineData = await axios
   //         .get(`http://localhost:3000/api/timeline/${data.matchId}`, {
   //           params: {
-  //             region: getQuery("region", user?.region),
-  //             platform: getQuery("platform", user?.region),
+  //             region: getQuery("region"),
+  //             platform: getQuery("platform"),
   //           },
   //         })
   //         .then(function (response) {
@@ -58,60 +56,20 @@ const BuildPlayer = (data: BuildPlayerType) => {
   //           console.log(err);
   //         });
 
-  //       await setDoc(
-  //         doc(db, data.Player.puuid, "matchIDs", "TimeLine", words[1]),
-  //         {
-  //           data: TimeLineData,
-  //         }
-  //       );
+  //       await setDoc(doc(db, "TimeLine", words[1]), {
+  //         data: TimeLineData,
+  //       });
 
-  //       const ref = doc(
-  //         db,
-  //         data.Player.puuid,
-  //         "matchIDs",
-  //         "TimeLine",
-  //         words[1]
-  //       );
+  //       const ref = doc(db, "TimeLine", words[1]);
   //       const newSnap = await getDoc(ref);
 
   //       return newSnap.data();
   //     }
   //   }
   // );
-  //firestore変更後
-  const { data: timeline, error } = useSWR(
-    data.matchId + "TimeLine",
-    async () => {
-      const ref = doc(db, "TimeLine", words[1]);
-      const snap = await getDoc(ref);
-      if (snap.exists()) {
-        return snap.data();
-      } else {
-        const TimeLineData = await axios
-          .get(`http://localhost:3000/api/timeline/${data.matchId}`, {
-            params: {
-              region: getQuery("region"),
-              platform: getQuery("platform"),
-            },
-          })
-          .then(function (response) {
-            return response.data;
-          })
-          .catch(function (err) {
-            console.log(err);
-          });
 
-        await setDoc(doc(db, "TimeLine", words[1]), {
-          data: TimeLineData,
-        });
-
-        const ref = doc(db, "TimeLine", words[1]);
-        const newSnap = await getDoc(ref);
-
-        return newSnap.data();
-      }
-    }
-  );
+  //customHookに変更
+  const { timeline, error } = useFetchFBTimeLine(data, words);
 
   useEffect(() => {
     console.log("timelinedesu", timeline);
@@ -147,7 +105,7 @@ const BuildPlayer = (data: BuildPlayerType) => {
     setSkillLog(skillArry);
   }, [timeline]);
 
-  useEffect(() => {
+  const setRuneList = useCallback(() => {
     RuneLists.forEach((runeList: { id: number; icon: string }) => {
       if (runeList.id === data.perks.styles[0].selections[0].perk) {
         setRune((prev) => ({ ...prev, mainRune: runeList.icon }));
@@ -168,27 +126,15 @@ const BuildPlayer = (data: BuildPlayerType) => {
         setRune((prev) => ({ ...prev, subRune2: runeList.icon }));
       }
     });
+  }, [RuneLists, data.perks.styles]);
+
+  useEffect(() => {
+    // setTimeLine();
+    setRuneList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useSWR(data.champion + "champion", async () => {
-    const URL = `http://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/champion/${
-      data.champion !== "FiddleSticks" ? data.champion : "Fiddlesticks"
-    }.json`;
-    axios
-      .get(URL)
-      .then(function (response) {
-        var tmp = Object.entries(response.data.data).map(
-          ([key, value]: any) => ({ key: key, value: value })
-        );
-        setSkillSet(tmp[0].value.spells);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  });
-
-  // useEffect(() => {
+  // useSWR(data.champion + "champion", async () => {
   //   const URL = `http://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/champion/${
   //     data.champion !== "FiddleSticks" ? data.champion : "Fiddlesticks"
   //   }.json`;
@@ -203,9 +149,9 @@ const BuildPlayer = (data: BuildPlayerType) => {
   //     .catch(function (error) {
   //       console.log(error);
   //     });
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [data.champion]);
+  // });
+  //customHookに変更
+  useFetchSkillSet(data, setSkillSet);
 
   function skillCheck(skill: number, index: number) {
     if (skill === 1) {

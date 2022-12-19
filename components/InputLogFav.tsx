@@ -8,9 +8,7 @@ type data = {
 
 const InputLogFav = (data: data) => {
   const [button, setButton] = useState(true);
-  useEffect(() => {
-    console.log(button);
-  }, [button]);
+
   return (
     <div className="">
       {/* <button onClick={() => setButton((prev) => (prev = !prev))}>ggg</button> */}

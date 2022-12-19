@@ -15,6 +15,7 @@ const Input = (style: InputStylesType) => {
   const [effect, setEffect] = useState<string | string[] | undefined>("");
   const { regionChange, setPlayerRegion, playerRegion, region } =
     useContext(Data);
+
   const handleClick = (path: string) => {
     router.push({
       pathname: path,

@@ -16,3 +16,6 @@ useAuthを消す
 MyPageを消す
 historyにundefindユーザーが入ってしまうバグ　解決済み
 localStorageのhistoryにdataではなくdata.nameを入れていたためバグが起きていた。
+
+12/20
+BuildPlayer.tsxのリファクタリング

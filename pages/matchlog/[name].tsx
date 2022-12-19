@@ -78,8 +78,7 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
     console.log(data);
     console.log(matchIDs);
     setMatchList(matchIDs);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, matchIDs]);
+  }, [data, matchIDs, setPlayer]);
 
   // console.log("レンダリング");
   const [loadIndex, setLoadIndex] = useState(5);

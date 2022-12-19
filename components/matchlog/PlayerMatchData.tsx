@@ -102,7 +102,7 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
             <div>{data.gameMode}</div>
           )}
           <div className="h-[1px] w-full bg-white opacity-10"></div>
-          {data.time < 720000 ? (
+          {data.time < 180000 ? (
             <div className="text-sm">Remake</div>
           ) : data.win ? (
             <div className="text-blue-500">WIN</div>
