@@ -11,7 +11,6 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { getQuery } from "../../lib/getQuery";
 import useSWR from "swr/immutable";
-import { useAuth } from "../../context/auth";
 import RuneTree from "./RuneTree";
 import SubRuneTree from "./SubRuneTree";
 
@@ -31,7 +30,6 @@ const BuildPlayer = (data: BuildPlayerType) => {
     statRune3: "",
   });
   const [skillSet, setSkillSet] = useState<any[]>([]);
-  const { user } = useAuth();
   let itemArry2: any[] = [];
   let skillArry: number[] = [];
   let Tindex = data.index + 1;
@@ -92,8 +90,8 @@ const BuildPlayer = (data: BuildPlayerType) => {
         const TimeLineData = await axios
           .get(`http://localhost:3000/api/timeline/${data.matchId}`, {
             params: {
-              region: getQuery("region", user?.region),
-              platform: getQuery("platform", user?.region),
+              region: getQuery("region"),
+              platform: getQuery("platform"),
             },
           })
           .then(function (response) {

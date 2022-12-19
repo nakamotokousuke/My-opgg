@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../context/auth";
-import { getQuery } from "../../lib/getQuery";
 
 type data = {
   data: {
@@ -59,7 +57,6 @@ const HistoryChild = (props: data) => {
       }
     }
   };
-  const { user } = useAuth();
   const router = useRouter();
 
   const handleClick = (path: string, region: string, platform: string) => {
@@ -73,10 +70,7 @@ const HistoryChild = (props: data) => {
   };
 
   return (
-    <div
-      key={data.id}
-      className="text-white flex text-center cursor-pointer justify-between"
-    >
+    <div className="text-white flex text-center cursor-pointer justify-between">
       <div
         onClick={() =>
           handleClick(`/matchlog/${data.name}`, data.region, data.platform)

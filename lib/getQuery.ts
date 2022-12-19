@@ -9,8 +9,8 @@ import {
 import { db } from "../firebase";
 // myPageならregionPlatをreturnする
 export const getQuery = (
-  query: string,
-  regionPlat: string | undefined | null
+  query: string
+  // regionPlat: string | undefined | null
 ) => {
   let url = new URL(window.location.href); // URLを取得
   let params = url.searchParams; // URLSearchParamsオブジェクトを取得
@@ -18,7 +18,7 @@ export const getQuery = (
   if (platform) {
     return platform;
   }
-  if (regionPlat) {
-    return regionPlat;
-  }
+  // if (regionPlat) {
+  //   return regionPlat;
+  // }
 };

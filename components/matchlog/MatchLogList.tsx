@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from "uuid";
 import BuildLog from "../BuildLog/BuildLog";
 import { msConversion } from "../../lib/msConverter";
 import { getQuery } from "../../lib/getQuery";
-import { useAuth } from "../../context/auth";
 import useSWR from "swr";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
@@ -27,7 +26,6 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
   const { player, region } = useContext(Data);
   const [gameTime, setGameTime] = useState<string>("");
   const [damage, setDamage] = useState<number>(0);
-  const { user } = useAuth();
 
   const [timeLine, setTimeLine] = useState<any>({});
 
@@ -84,8 +82,8 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
       const matchData = await axios
         .get(`http://localhost:3000/api/lol/${matchId}`, {
           params: {
-            region: getQuery("region", user?.region),
-            platform: getQuery("platform", user?.region),
+            region: getQuery("region"),
+            platform: getQuery("platform"),
           },
         })
         .then(function (response) {

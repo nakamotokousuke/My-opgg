@@ -17,6 +17,8 @@ const History = (name: name) => {
     const t = localStorage.getItem("history");
     if (t) {
       let history = JSON.parse(t);
+      console.log("history", history);
+
       setHistory(history);
     }
   };

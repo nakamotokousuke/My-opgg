@@ -6,7 +6,6 @@ import useSWR from "swr";
 import LogFav from "../../components/matchlog/LogFav";
 import MatchLogList from "../../components/matchlog/MatchLogList";
 import Profile from "../../components/matchlog/Profile";
-import { useAuth } from "../../context/auth";
 import { db } from "../../firebase";
 import { getQuery } from "../../lib/getQuery";
 import { PlayerData } from "../../types/PlayerType";
@@ -73,7 +72,6 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
     rank: false,
     normal: false,
   });
-  const { user } = useAuth();
 
   useEffect(() => {
     setPlayer(data);
@@ -115,7 +113,7 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
       .get(`http://localhost:3000/api/matchType/${Type}`, {
         params: {
           puuid: data.puuid,
-          region: getQuery("region", user?.region),
+          region: getQuery("region"),
         },
       })
       .then(function (response) {

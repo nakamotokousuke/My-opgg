@@ -9,3 +9,10 @@ process.env.環境変数名
 NEXT_PUBLIC_ を追記
 
 riotapiが死んでる時用の処理をいつかやる
+
+12/19
+やること
+useAuthを消す
+MyPageを消す
+historyにundefindユーザーが入ってしまうバグ　解決済み
+localStorageのhistoryにdataではなくdata.nameを入れていたためバグが起きていた。

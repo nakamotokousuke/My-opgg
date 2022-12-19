@@ -1,8 +1,6 @@
-import { DEV_CLIENT_PAGES_MANIFEST } from "next/dist/shared/lib/constants";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
-import { useAuth } from "../../context/auth";
 import { getQuery } from "../../lib/getQuery";
 import { Data } from "../../pages/_app";
 import { BuidlPlayerListProps } from "../../types/BuildPlayerListProps";
@@ -15,7 +13,6 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
   const [mainrune, setMainrune] = useState("");
   const [subrune, setSubrune] = useState("");
   const router = useRouter();
-  const { fbUser, user } = useAuth();
   const [dmg, setDmg] = useState("50");
   const [cpm, setCpm] = useState(0);
 
@@ -59,8 +56,8 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
     router.push({
       pathname: path,
       query: {
-        region: getQuery("region", user?.region),
-        platform: getQuery("platform", user?.platform),
+        region: getQuery("region"),
+        platform: getQuery("platform"),
       },
     });
   };

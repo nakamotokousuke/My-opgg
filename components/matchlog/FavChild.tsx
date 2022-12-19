@@ -1,9 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { platform } from "os";
 import React, { useState } from "react";
-import { useAuth } from "../../context/auth";
-import { getQuery } from "../../lib/getQuery";
+
 type data = {
   data: {
     name: string;
@@ -15,7 +13,6 @@ type data = {
 };
 
 const FavChild = (props: data) => {
-  const { user } = useAuth();
   const router = useRouter();
   const [fav, setFav] = useState(true);
   const data = props.data;
