@@ -19,3 +19,4 @@ localStorageのhistoryにdataではなくdata.nameを入れていたためバグ
 
 12/20
 BuildPlayer.tsxのリファクタリング
+BuildPlayerList.tsxのitemのコンポーネント化

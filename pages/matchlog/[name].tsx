@@ -6,6 +6,7 @@ import useSWR from "swr";
 import LogFav from "../../components/matchlog/LogFav";
 import MatchLogList from "../../components/matchlog/MatchLogList";
 import Profile from "../../components/matchlog/Profile";
+import NotExist from "../../components/NotExist";
 import { db } from "../../firebase";
 import { getQuery } from "../../lib/getQuery";
 import { PlayerData } from "../../types/PlayerType";
@@ -212,7 +213,7 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
           </div>
         </div>
       ) : (
-        <div className="h-screen">empty</div>
+        <NotExist />
       )}
     </>
   );

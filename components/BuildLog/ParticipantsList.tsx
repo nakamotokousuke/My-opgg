@@ -9,7 +9,6 @@ type ParticipantsListType = {
 };
 
 const ParticipantsList = (data: ParticipantsListType) => {
-  const { latest } = useContext(Data);
   const handleClick = () => {
     data.setParticipantID(data.participantId);
   };

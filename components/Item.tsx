@@ -2,14 +2,15 @@ import Image from "next/image";
 import React from "react";
 type itemType = {
   item: number;
-  latest: string;
+  style: string;
 };
 
-const Item = ({ item, latest }: itemType) => {
+const Item = ({ item, style }: itemType) => {
   return (
     <>
       {item !== 0 ? (
-        <div className="h-5 w-5 sm:h-8 sm:w-8 relative">
+        <div className={`${style} relative`}>
+          {/* <div className="h-5 w-5 sm:h-8 sm:w-8 relative"> */}
           <Image
             layout="fill"
             objectFit="contain"
@@ -19,7 +20,8 @@ const Item = ({ item, latest }: itemType) => {
           />
         </div>
       ) : (
-        <div className="h-5 w-5 sm:h-8 sm:w-8 bg-white rounded-md opacity-20"></div>
+        <div className={`${style} bg-white rounded-md opacity-20`}></div>
+        // <div className="h-5 w-5 sm:h-8 sm:w-8 bg-white rounded-md opacity-20"></div>
       )}
     </>
   );

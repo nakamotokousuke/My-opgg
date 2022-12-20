@@ -12,6 +12,9 @@ import { getQuery } from "../../lib/getQuery";
 import useSWR from "swr";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import { useFetchFBMatchData } from "../../lib/CustomHook";
+import BuildLogButton from "./BuildLogButton";
+import LogIndex from "./LogIndex";
 
 type MatchIDsType = {
   matchId: string;
@@ -41,68 +44,7 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
   //////////////////////////////////////////////////
 
   const words = matchId.split("_");
-  //firestore変更前
-  // const { data, error } = useSWR(matchId, async () => {
-  //   const ref = doc(db, Player.puuid, "matchIDs", "matchData", words[1]);
-  //   const snap = await getDoc(ref);
-  //   if (snap.exists()) {
-  //     return snap.data();
-  //   } else {
-  //     const matchData = await axios
-  //       .get(`http://localhost:3000/api/lol/${matchId}`, {
-  //         params: {
-  //           region: getQuery("region", user?.region),
-  //           platform: getQuery("platform", user?.region),
-  //         },
-  //       })
-  //       .then(function (response) {
-  //         return response.data;
-  //       })
-  //       .catch(function (err) {
-  //         console.log(err);
-  //       });
-
-  //     await setDoc(doc(db, Player.puuid, "matchIDs", "matchData", words[1]), {
-  //       data: matchData,
-  //     });
-
-  //     const ref = doc(db, Player.puuid, "matchIDs", "matchData", words[1]);
-  //     const newSnap = await getDoc(ref);
-
-  //     return newSnap.data();
-  //   }
-  // });
-  //firestore変更後
-  const { data, error } = useSWR(matchId, async () => {
-    const ref = doc(db, "matchList", words[1]);
-    const snap = await getDoc(ref);
-    if (snap.exists()) {
-      return snap.data();
-    } else {
-      const matchData = await axios
-        .get(`http://localhost:3000/api/lol/${matchId}`, {
-          params: {
-            region: getQuery("region"),
-            platform: getQuery("platform"),
-          },
-        })
-        .then(function (response) {
-          return response.data;
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
-
-      await setDoc(doc(db, "matchList", words[1]), {
-        data: matchData,
-      });
-
-      const ref = doc(db, "matchList", words[1]);
-      const newSnap = await getDoc(ref);
-
-      return newSnap.data();
-    }
-  });
+  const { data, error } = useFetchFBMatchData(matchId, words);
 
   const gameMode = data?.data.matchData.info.queueId;
   const time =
@@ -135,19 +77,18 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
   if (!data) return <div>loading...</div>;
 
   return (
-    //修正が必要
     <>
       <div className="flex">
         <div
           className={`rounded-l-lg w-[670px] ${
-            time < 320000
+            time < 180000
               ? "bg-[#5a5a5a]"
               : issue
               ? "bg-[#496191]"
               : "bg-[#84515a]"
           }`}
         >
-          <div className="">
+          {/* <div className="">
             <div className="grid grid-cols-4 content-center items-center">
               <div className="col-span-3">
                 {Array.isArray(matchParticipants) &&
@@ -197,46 +138,23 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
+          <LogIndex
+            matchParticipants={matchParticipants}
+            player={player}
+            setIssue={setIssue}
+            gameTime={gameTime}
+            gameMode={gameMode}
+            time={time}
+            blueTeam={blueTeam}
+            redTeam={redTeam}
+          />
         </div>
-        <div
-          onClick={() => handleBuild(matchId)}
-          className="flex rounded-r-lg bg-zinc-400 max-h-max items-end"
-        >
-          <div className="w-[20px] flex justify-center">
-            {button === matchId ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75"
-                />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75"
-                />
-              </svg>
-            )}
-          </div>
-        </div>
+        <BuildLogButton
+          handleBuild={handleBuild}
+          matchId={matchId}
+          button={button}
+        />
       </div>
       <div className="w-[480px] sm:w-[690px]">
         {button === matchId && (

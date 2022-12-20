@@ -4,13 +4,20 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Data } from "../../pages/_app";
 import { BuildPlayerType } from "../../types/BuildPlayer";
 import StatusRune from "../../data/StatusRune.json";
-import StatRune from "./StatRune";
+import StatRune from "./Runes/StatRune";
 import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import useSWR from "swr/immutable";
-import RuneTree from "./RuneTree";
-import SubRuneTree from "./SubRuneTree";
+import RuneTree from "./Runes/RuneTree";
+import SubRuneTree from "./Runes/SubRuneTree";
 import { useFetchFBTimeLine, useFetchSkillSet } from "../../lib/CustomHook";
+import SubRuneTreeList from "./Runes/SubRuneTreeList";
+import MainRuneTreeList from "./Runes/MainRuneTreeList";
+import SkillLevelTimeLine from "./SkillLevelTimeLine/SkillLevelTimeLine";
+import StatRuneTree from "./Runes/StatRuneTree";
+import RuneBuild from "./Runes/RuneBuild";
+import ItemBuild from "./ItemBuild/ItemBuild";
+import SkillBuild from "./SkillLevelTimeLine/SkillBuild";
 
 const BuildPlayer = (data: BuildPlayerType) => {
   const { RuneLists, runeIcon, latest } = useContext(Data);
@@ -30,7 +37,7 @@ const BuildPlayer = (data: BuildPlayerType) => {
   const [skillSet, setSkillSet] = useState<any[]>([]);
   let itemArry2: any[] = [];
   let skillArry: number[] = [];
-  let Tindex = data.index + 1;
+  let participantIndex = data.index + 1;
 
   const words = data.matchId.split("_");
 
@@ -89,7 +96,7 @@ const BuildPlayer = (data: BuildPlayerType) => {
             itemId: number;
             skillSlot: number;
           }) => {
-            if (event.participantId === Tindex) {
+            if (event.participantId === participantIndex) {
               if (event.type === "ITEM_PURCHASED") {
                 itemArry2[framIndex].push(event.itemId);
               }
@@ -152,308 +159,19 @@ const BuildPlayer = (data: BuildPlayerType) => {
   // });
   //customHookに変更
   useFetchSkillSet(data, setSkillSet);
+  //コンポーネント可済み
 
-  function skillCheck(skill: number, index: number) {
-    if (skill === 1) {
-      return (
-        <div className="">
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
-            {index + 1}
-          </div>
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-        </div>
-      );
-    }
-    if (skill === 2) {
-      return (
-        <div className="">
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
-            {index + 1}
-          </div>
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-        </div>
-      );
-    }
-    if (skill === 3) {
-      return (
-        <div className="">
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
-            {index + 1}
-          </div>
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-        </div>
-      );
-    }
-    if (skill === 4) {
-      return (
-        <div className="">
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
-          <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
-            {index + 1}
-          </div>
-        </div>
-      );
-    }
-  }
-
-  function mainRuneTree() {
-    if (8100 === data.perks.styles[0].style) {
-      return (
-        <RuneTree
-          runeIcon={runeIcon}
-          rune={rune}
-          runeIconIndex={0}
-          perks={data.perks}
-        />
-      );
-    }
-    if (8300 === data.perks.styles[0].style) {
-      return (
-        <RuneTree
-          runeIcon={runeIcon}
-          rune={rune}
-          runeIconIndex={1}
-          perks={data.perks}
-        />
-      );
-    }
-    if (8000 === data.perks.styles[0].style) {
-      return (
-        <RuneTree
-          runeIcon={runeIcon}
-          rune={rune}
-          runeIconIndex={2}
-          perks={data.perks}
-        />
-      );
-    }
-    if (8400 === data.perks.styles[0].style) {
-      return (
-        <RuneTree
-          runeIcon={runeIcon}
-          rune={rune}
-          runeIconIndex={3}
-          perks={data.perks}
-        />
-      );
-    }
-    if (8200 === data.perks.styles[0].style) {
-      return (
-        <RuneTree
-          runeIcon={runeIcon}
-          rune={rune}
-          runeIconIndex={4}
-          perks={data.perks}
-        />
-      );
-    }
-  }
-  function subRuneTree() {
-    if (8100 === data.perks.styles[1].style) {
-      return (
-        <SubRuneTree
-          runeIcon={runeIcon}
-          rune={rune}
-          runeIconIndex={0}
-          perks={data.perks}
-        />
-      );
-    }
-    if (8300 === data.perks.styles[1].style) {
-      return (
-        <SubRuneTree
-          runeIcon={runeIcon}
-          rune={rune}
-          runeIconIndex={1}
-          perks={data.perks}
-        />
-      );
-    }
-    if (8000 === data.perks.styles[1].style) {
-      return (
-        <SubRuneTree
-          runeIcon={runeIcon}
-          rune={rune}
-          runeIconIndex={2}
-          perks={data.perks}
-        />
-      );
-    }
-    if (8400 === data.perks.styles[1].style) {
-      return (
-        <SubRuneTree
-          runeIcon={runeIcon}
-          rune={rune}
-          runeIconIndex={3}
-          perks={data.perks}
-        />
-      );
-    }
-    if (8200 === data.perks.styles[1].style) {
-      return (
-        <SubRuneTree
-          runeIcon={runeIcon}
-          rune={rune}
-          runeIconIndex={4}
-          perks={data.perks}
-        />
-      );
-    }
-  }
-  function StatRuneTree() {
-    return (
-      <>
-        <div className="flex">
-          {StatusRune[0].map((status: { key: any; icon: string }) => (
-            <StatRune
-              key={uuidv4()}
-              runeKey={status.key}
-              data={data.perks.statPerks.offense}
-              icon={status.icon}
-              height={32}
-              width={32}
-            />
-          ))}
-        </div>
-        <div className="flex">
-          {StatusRune[1].map((status: { key: any; icon: string }) => (
-            <StatRune
-              key={uuidv4()}
-              runeKey={status.key}
-              data={data.perks.statPerks.flex}
-              icon={status.icon}
-              height={32}
-              width={32}
-            />
-          ))}
-        </div>
-        <div className="flex">
-          {StatusRune[2].map((status: { key: any; icon: string }) => (
-            <StatRune
-              key={uuidv4()}
-              runeKey={status.key}
-              data={data.perks.statPerks.defense}
-              icon={status.icon}
-              height={32}
-              width={32}
-            />
-          ))}
-        </div>
-      </>
-    );
-  }
-
-  if (Tindex !== data.participantID) return null;
-  if (error) return <div>failed to load</div>;
+  if (participantIndex !== data.participantID) return null;
+  if (error) return <div className="text-white">failed to load</div>;
   if (!timeline) return <div className="text-white">loading...</div>;
   return (
     <>
-      {Tindex === data.participantID && (
+      {participantIndex === data.participantID && (
         <div className="text-gray-300">
           <div className="flex flex-col">
-            <div className="bg-[#172740] mb-2 rounded-md">
-              <div className="bg-[#4b4e87] rounded-t-md font-bold pl-2">
-                Rune Build
-              </div>
-              {rune.mainRune !== "" ? (
-                <div className="flex items-center justify-center m-2">
-                  <div className="">{mainRuneTree()}</div>
-                  <div className="self-end">{subRuneTree()}</div>
-                  <div className="self-end">{StatRuneTree()}</div>
-                </div>
-              ) : null}
-            </div>
-            <div className="bg-[#172740] mb-2 rounded-md">
-              <div className="bg-[#4b4e87] rounded-t-md font-bold pl-2">
-                Item Build
-              </div>
-              {JSON.stringify(itemLog) !== "[]" && (
-                <div className="flex flex-wrap w-[450px] sm:w-[690px] m-2 items-center">
-                  {itemLog.map((items, index) => (
-                    <div key={uuidv4()}>
-                      {items.length !== 0 && (
-                        <div key={uuidv4()} className="flex items-center">
-                          {items.length !== 0 && (
-                            <div className="text-[13px] h-5">{index}min</div>
-                          )}
-                          <div className="flex m-1">
-                            {items.map((item: string) => (
-                              // eslint-disable-next-line react/jsx-key
-                              <Image
-                                key={uuidv4()}
-                                height={20}
-                                width={20}
-                                src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${item}.png`}
-                                alt=""
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="bg-[#172740] rounded-md">
-              <div className="bg-[#4b4e87] rounded-t-md font-bold pl-2">
-                Skill Build
-              </div>
-              <div className="flex items-center mt-3 mb-2">
-                <div>
-                  <div className="h-5 w-5 sm:h-6 sm:w-6 sm:ml-1 mb-1 text-center">
-                    Q
-                  </div>
-                  <div className="h-5 w-5 sm:h-6 sm:w-6 sm:ml-1 mb-1 text-center">
-                    W
-                  </div>
-                  <div className="h-5 w-5 sm:h-6 sm:w-6 sm:ml-1 mb-1 text-center">
-                    E
-                  </div>
-                  <div className="h-5 w-5 sm:h-6 sm:w-6 sm:ml-1 mb-1 text-center">
-                    R
-                  </div>
-                </div>
-                {JSON.stringify(skillSet) !== "[]" ? (
-                  <div className="">
-                    {skillSet.map((skill) => (
-                      <div
-                        key={skill.image.full}
-                        className="h-5 w-5 sm:h-6 sm:w-6 ml-1 mb-1 relative"
-                      >
-                        <Image
-                          className=""
-                          layout="fill"
-                          objectFit="contain"
-                          src={`
-                        https://ddragon.leagueoflegends.com/cdn/${latest}/img/spell/${skill.image.full}`}
-                          alt=""
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <></>
-                )}
-                {skillLog.length !== 0 ? (
-                  <>
-                    {skillLog.map((skill, index) => (
-                      <div key={index}>{skillCheck(skill, index)}</div>
-                    ))}
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
+            <RuneBuild data={data} runeIcon={runeIcon} rune={rune} />
+            <ItemBuild itemLog={itemLog} />
+            <SkillBuild skillLog={skillLog} skillSet={skillSet} />
           </div>
         </div>
       )}
@@ -462,3 +180,203 @@ const BuildPlayer = (data: BuildPlayerType) => {
 };
 
 export default BuildPlayer;
+
+// function skillCheck(skill: number, index: number) {
+//   if (skill === 1) {
+//     return (
+//       <div className="">
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
+//           {index + 1}
+//         </div>
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+//       </div>
+//     );
+//   }
+//   if (skill === 2) {
+//     return (
+//       <div className="">
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
+//           {index + 1}
+//         </div>
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+//       </div>
+//     );
+//   }
+//   if (skill === 3) {
+//     return (
+//       <div className="">
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
+//           {index + 1}
+//         </div>
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+//       </div>
+//     );
+//   }
+//   if (skill === 4) {
+//     return (
+//       <div className="">
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1"></div>
+//         <div className="h-5 w-5 sm:h-6 sm:w-6 bg-[#4b4e87] ml-1 mb-1 text-center">
+//           {index + 1}
+//         </div>
+//       </div>
+//     );
+//   }
+// }
+// //コンポーネント可済み
+// function mainRuneTree() {
+//   if (8100 === data.perks.styles[0].style) {
+//     return (
+//       <RuneTree
+//         runeIcon={runeIcon}
+//         rune={rune}
+//         runeIconIndex={0}
+//         perks={data.perks}
+//       />
+//     );
+//   }
+//   if (8300 === data.perks.styles[0].style) {
+//     return (
+//       <RuneTree
+//         runeIcon={runeIcon}
+//         rune={rune}
+//         runeIconIndex={1}
+//         perks={data.perks}
+//       />
+//     );
+//   }
+//   if (8000 === data.perks.styles[0].style) {
+//     return (
+//       <RuneTree
+//         runeIcon={runeIcon}
+//         rune={rune}
+//         runeIconIndex={2}
+//         perks={data.perks}
+//       />
+//     );
+//   }
+//   if (8400 === data.perks.styles[0].style) {
+//     return (
+//       <RuneTree
+//         runeIcon={runeIcon}
+//         rune={rune}
+//         runeIconIndex={3}
+//         perks={data.perks}
+//       />
+//     );
+//   }
+//   if (8200 === data.perks.styles[0].style) {
+//     return (
+//       <RuneTree
+//         runeIcon={runeIcon}
+//         rune={rune}
+//         runeIconIndex={4}
+//         perks={data.perks}
+//       />
+//     );
+//   }
+// }
+// //コンポーネント可済み
+// function subRuneTree() {
+//   if (8100 === data.perks.styles[1].style) {
+//     return (
+//       <SubRuneTree
+//         runeIcon={runeIcon}
+//         rune={rune}
+//         runeIconIndex={0}
+//         perks={data.perks}
+//       />
+//     );
+//   }
+//   if (8300 === data.perks.styles[1].style) {
+//     return (
+//       <SubRuneTree
+//         runeIcon={runeIcon}
+//         rune={rune}
+//         runeIconIndex={1}
+//         perks={data.perks}
+//       />
+//     );
+//   }
+//   if (8000 === data.perks.styles[1].style) {
+//     return (
+//       <SubRuneTree
+//         runeIcon={runeIcon}
+//         rune={rune}
+//         runeIconIndex={2}
+//         perks={data.perks}
+//       />
+//     );
+//   }
+//   if (8400 === data.perks.styles[1].style) {
+//     return (
+//       <SubRuneTree
+//         runeIcon={runeIcon}
+//         rune={rune}
+//         runeIconIndex={3}
+//         perks={data.perks}
+//       />
+//     );
+//   }
+//   if (8200 === data.perks.styles[1].style) {
+//     return (
+//       <SubRuneTree
+//         runeIcon={runeIcon}
+//         rune={rune}
+//         runeIconIndex={4}
+//         perks={data.perks}
+//       />
+//     );
+//   }
+// }
+// //コンポーネント可済み
+// function StatRuneTree1() {
+//   return (
+//     <>
+//       <div className="flex">
+//         {StatusRune[0].map((status: { key: any; icon: string }) => (
+//           <StatRune
+//             key={uuidv4()}
+//             runeKey={status.key}
+//             data={data.perks.statPerks.offense}
+//             icon={status.icon}
+//             height={32}
+//             width={32}
+//           />
+//         ))}
+//       </div>
+//       <div className="flex">
+//         {StatusRune[1].map((status: { key: any; icon: string }) => (
+//           <StatRune
+//             key={uuidv4()}
+//             runeKey={status.key}
+//             data={data.perks.statPerks.flex}
+//             icon={status.icon}
+//             height={32}
+//             width={32}
+//           />
+//         ))}
+//       </div>
+//       <div className="flex">
+//         {StatusRune[2].map((status: { key: any; icon: string }) => (
+//           <StatRune
+//             key={uuidv4()}
+//             runeKey={status.key}
+//             data={data.perks.statPerks.defense}
+//             icon={status.icon}
+//             height={32}
+//             width={32}
+//           />
+//         ))}
+//       </div>
+//     </>
+//   );
+// }

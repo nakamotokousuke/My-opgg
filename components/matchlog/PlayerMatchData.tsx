@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Data } from "../../pages/_app";
 import { PlayerMatchDataType } from "../../types/PlayerMatchDataType";
-import Item from "./Item";
+import Item from "../Item";
 
 const PlayerMatchData = (data: PlayerMatchDataType) => {
   const { spellList, RuneLists, latest, player, runeIcon } = useContext(Data);
@@ -35,8 +35,13 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
         }
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.puuid]);
+  }, [
+    data.puuid,
+    data.summoner1Id,
+    data.summoner2Id,
+    player?.puuid,
+    spellList,
+  ]);
 
   useEffect(() => {
     if (player?.puuid === data.puuid) {
@@ -192,21 +197,13 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
       <div className="flex justify-center items-center col-span-2">
         <div className="flex">
           <div className="grid grid-cols-4 gap-[2px]">
-            <Item item={data.item0} latest={latest} />
-            <Item item={data.item1} latest={latest} />
-            <Item item={data.item2} latest={latest} />
-            <div className="h-5 w-5 sm:h-8 sm:w-8 relative">
-              <Image
-                className="rounded-md ml-[2px] mb-[2px] max-h-max"
-                layout="fill"
-                objectFit="contain"
-                src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item6}.png`}
-                alt=""
-              />
-            </div>
-            <Item item={data.item3} latest={latest} />
-            <Item item={data.item4} latest={latest} />
-            <Item item={data.item5} latest={latest} />
+            <Item item={data.item0} style={"h-5 w-5 sm:h-8 sm:w-8"} />
+            <Item item={data.item1} style={"h-5 w-5 sm:h-8 sm:w-8"} />
+            <Item item={data.item2} style={"h-5 w-5 sm:h-8 sm:w-8"} />
+            <Item item={data.item6} style={"h-5 w-5 sm:h-8 sm:w-8"} />
+            <Item item={data.item3} style={"h-5 w-5 sm:h-8 sm:w-8"} />
+            <Item item={data.item4} style={"h-5 w-5 sm:h-8 sm:w-8"} />
+            <Item item={data.item5} style={"h-5 w-5 sm:h-8 sm:w-8"} />
           </div>
         </div>
       </div>

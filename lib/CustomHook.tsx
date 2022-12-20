@@ -101,6 +101,41 @@ export const useFetchRuneList = () => {
   return { RuneLists, runeIcon };
 };
 
+//マッチデータの取得
+export const useFetchFBMatchData = (matchId: string, words: string[]) => {
+  const { data, error } = useSWR(matchId, async () => {
+    const ref = doc(db, "matchList", words[1]);
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      return snap.data();
+    } else {
+      const matchData = await axios
+        .get(`http://localhost:3000/api/lol/${matchId}`, {
+          params: {
+            region: getQuery("region"),
+            platform: getQuery("platform"),
+          },
+        })
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+
+      await setDoc(doc(db, "matchList", words[1]), {
+        data: matchData,
+      });
+
+      const ref = doc(db, "matchList", words[1]);
+      const newSnap = await getDoc(ref);
+
+      return newSnap.data();
+    }
+  });
+  return { data, error };
+};
+
 //タイムラインの取得
 export const useFetchFBTimeLine = (data: BuildPlayerType, words: string[]) => {
   const { data: timeline, error } = useSWR(

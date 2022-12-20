@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { getQuery } from "../../lib/getQuery";
 import { Data } from "../../pages/_app";
 import { BuidlPlayerListProps } from "../../types/BuildPlayerListProps";
+import Item from "../Item";
 
 const BuildPlayerList = (data: BuidlPlayerListProps) => {
   const { spellList, runeIcon, RuneLists, latest, region, player } =
@@ -35,10 +36,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
         setSpell2ID(spell.value.id);
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  useEffect(() => {
     RuneLists.forEach((runeList: { id: number; icon: string }) => {
       if (runeList.id === data.perks.styles[0].selections[0].perk) {
         setMainrune(runeList.icon);
@@ -51,6 +49,10 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // useEffect(() => {
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const handleClick = (path: string) => {
     router.push({
@@ -108,9 +110,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
                 alt=""
               />
             </div>
-          ) : (
-            <></>
-          )}
+          ) : null}
           {mainrune !== "" ? (
             <div className="flex flex-col">
               <Image
@@ -126,9 +126,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
                 alt=""
               />
             </div>
-          ) : (
-            <></>
-          )}
+          ) : null}
         </div>
         <div
           className="font-bold truncate ... w-[60%] cursor-pointer"
@@ -162,97 +160,13 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
       </div>
 
       <div className="grid grid-cols-4 w-max ml-2 gap-[2px]">
-        {data.item0 !== 0 ? (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 relative">
-            <Image
-              className="rounded-md"
-              layout="fill"
-              objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item0}.png`}
-              alt=""
-            />
-          </div>
-        ) : (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 bg-white rounded-md opacity-20"></div>
-        )}
-        {data.item1 !== 0 ? (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 relative">
-            <Image
-              className="rounded-md"
-              layout="fill"
-              objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item1}.png`}
-              alt=""
-            />
-          </div>
-        ) : (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 bg-white rounded-md opacity-20"></div>
-        )}
-        {data.item2 !== 0 ? (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 relative">
-            <Image
-              className="rounded-md"
-              layout="fill"
-              objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item2}.png`}
-              alt=""
-            />
-          </div>
-        ) : (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 bg-white rounded-md opacity-20"></div>
-        )}
-        {data.item6 !== 0 ? (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 relative">
-            <Image
-              className="rounded-md"
-              layout="fill"
-              objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item6}.png`}
-              alt=""
-            />
-          </div>
-        ) : (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 bg-white rounded-md opacity-20"></div>
-        )}
-        {data.item3 !== 0 ? (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 relative">
-            <Image
-              className="rounded-md"
-              layout="fill"
-              objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item3}.png`}
-              alt=""
-            />
-          </div>
-        ) : (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 bg-white rounded-md opacity-20"></div>
-        )}
-        {data.item4 !== 0 ? (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 relative">
-            <Image
-              className="rounded-md"
-              layout="fill"
-              objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item4}.png`}
-              alt=""
-            />
-          </div>
-        ) : (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 bg-white rounded-md opacity-20"></div>
-        )}
-        {data.item5 !== 0 ? (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 relative">
-            <Image
-              className="rounded-md"
-              layout="fill"
-              objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${data.item5}.png`}
-              alt=""
-            />
-          </div>
-        ) : (
-          <div className="h-[15px] w-[15px] sm:h-5 sm:w-5 bg-white rounded-md opacity-20"></div>
-        )}
+        <Item item={data.item0} style={"h-[15px] w-[15px] sm:h-5 sm:w-5"} />
+        <Item item={data.item1} style={"h-[15px] w-[15px] sm:h-5 sm:w-5"} />
+        <Item item={data.item2} style={"h-[15px] w-[15px] sm:h-5 sm:w-5"} />
+        <Item item={data.item6} style={"h-[15px] w-[15px] sm:h-5 sm:w-5"} />
+        <Item item={data.item3} style={"h-[15px] w-[15px] sm:h-5 sm:w-5"} />
+        <Item item={data.item4} style={"h-[15px] w-[15px] sm:h-5 sm:w-5"} />
+        <Item item={data.item5} style={"h-[15px] w-[15px] sm:h-5 sm:w-5"} />
       </div>
     </li>
   );
