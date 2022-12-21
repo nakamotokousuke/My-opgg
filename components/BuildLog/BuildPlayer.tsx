@@ -18,9 +18,12 @@ import StatRuneTree from "./Runes/StatRuneTree";
 import RuneBuild from "./Runes/RuneBuild";
 import ItemBuild from "./ItemBuild/ItemBuild";
 import SkillBuild from "./SkillLevelTimeLine/SkillBuild";
+import { PlayerDataContext } from "../../context/Context";
 
 const BuildPlayer = (data: BuildPlayerType) => {
-  const { RuneLists, runeIcon, latest } = useContext(Data);
+  const { RuneLists, runeIcon } = useContext(Data);
+  const { latest } = useContext(PlayerDataContext);
+  // const { RuneLists, runeIcon, latest } = useContext(Data);
   const [itemLog, setItemLog] = useState<any[]>([]);
   const [skillLog, setSkillLog] = useState<number[]>([]);
   const [rune, setRune] = useState({

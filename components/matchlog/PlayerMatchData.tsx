@@ -1,11 +1,14 @@
 import Image from "next/image";
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import { PlayerDataContext } from "../../context/Context";
 import { Data } from "../../pages/_app";
 import { PlayerMatchDataType } from "../../types/PlayerMatchDataType";
 import Item from "../Item";
 
 const PlayerMatchData = (data: PlayerMatchDataType) => {
-  const { spellList, RuneLists, latest, player, runeIcon } = useContext(Data);
+  const { spellList, RuneLists, runeIcon } = useContext(Data);
+  const { latest, player } = useContext(PlayerDataContext);
+  // const { spellList, RuneLists, latest, player, runeIcon } = useContext(Data);
   const [spell, setSpell] = useState({
     spell1: "",
     spell2: "",

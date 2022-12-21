@@ -1,20 +1,11 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import axios from "axios";
-import PlayerMatchData from "./PlayerMatchData";
+import React, { useContext, useEffect, useState } from "react";
 import { Data } from "../../pages/_app";
-import { ParticipantsType } from "../../types/matchParticipants";
-import { TeamType } from "../../types/teamType";
-import PlayerList from "./PlayerList";
-import { v4 as uuidv4 } from "uuid";
 import BuildLog from "../BuildLog/BuildLog";
 import { msConversion } from "../../lib/msConverter";
-import { getQuery } from "../../lib/getQuery";
-import useSWR from "swr";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../../firebase";
 import { useFetchFBMatchData } from "../../lib/CustomHook";
 import BuildLogButton from "./BuildLogButton";
 import LogIndex from "./LogIndex";
+import { PlayerDataContext } from "../../context/Context";
 
 type MatchIDsType = {
   matchId: string;
@@ -26,7 +17,8 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
   const [redTeam, setRedTeam] = useState<any>([]);
   const [blueTeam, setBlueTeam] = useState<any>([]);
   const [issue, setIssue] = useState(true);
-  const { player, region } = useContext(Data);
+  const { player, region } = useContext(PlayerDataContext);
+  // const { player, region } = useContext(Data);
   const [gameTime, setGameTime] = useState<string>("");
   const [damage, setDamage] = useState<number>(0);
 
@@ -88,57 +80,6 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
               : "bg-[#84515a]"
           }`}
         >
-          {/* <div className="">
-            <div className="grid grid-cols-4 content-center items-center">
-              <div className="col-span-3">
-                {Array.isArray(matchParticipants) &&
-                  matchParticipants.map((data: ParticipantsType) => (
-                    <div key={uuidv4()}>
-                      {data.puuid === player?.puuid && (
-                        <PlayerMatchData
-                          cs={
-                            data.totalMinionsKilled + data.neutralMinionsKilled
-                          }
-                          {...data}
-                          setIssue={setIssue}
-                          gameTime={gameTime}
-                          gameMode={gameMode}
-                          time={time}
-                        />
-                      )}
-                    </div>
-                  ))}
-              </div>
-              <div className="grid grid-cols-2">
-                <div key={uuidv4()}>
-                  {Array.isArray(blueTeam) &&
-                    blueTeam.map((data: TeamType, index: number) => (
-                      <PlayerList
-                        key={index}
-                        cs={data.totalMinionsKilled + data.neutralMinionsKilled}
-                        {...data}
-                        wardsKilled={data.wardsKilled}
-                        summonerName={data.summonerName}
-                        puuid={data.puuid}
-                      />
-                    ))}
-                </div>
-                <div key={uuidv4()}>
-                  {Array.isArray(redTeam) &&
-                    redTeam.map((data: TeamType, index: number) => (
-                      <PlayerList
-                        key={index}
-                        cs={data.totalMinionsKilled + data.neutralMinionsKilled}
-                        {...data}
-                        wardsKilled={data.wardsKilled}
-                        summonerName={data.summonerName}
-                        puuid={data.puuid}
-                      />
-                    ))}
-                </div>
-              </div>
-            </div>
-          </div> */}
           <LogIndex
             matchParticipants={matchParticipants}
             player={player}

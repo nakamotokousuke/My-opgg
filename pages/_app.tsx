@@ -10,26 +10,29 @@ import {
   useFetchChampion,
   useFetchRuneList,
   useFetchSpellList,
+  useTest,
 } from "../lib/CustomHook";
+import Context from "../context/Context";
 
 export const Data = createContext({} as ContextData);
 function MyApp({ Component, pageProps }: AppProps) {
-  const [player, setPlayer] = useState<PlayerData>();
-  const latest = "12.18.1";
-  const [region, setRegion] = useState({ platform: "jp1", region: "asia" });
-  const [playerRegion, setPlayerRegion] = useState<number>(0);
+  // const [player, setPlayer] = useState<PlayerData>();
+  // const latest = "12.18.1";
+  // const [region, setRegion] = useState({ platform: "jp1", region: "asia" });
+  // const [playerRegion, setPlayerRegion] = useState<number>(0);
 
-  const regionArry = [
-    { platform: "jp1", region: "asia" },
-    { platform: "kr", region: "asia" },
-  ];
+  // const regionArry = [
+  //   { platform: "jp1", region: "asia" },
+  //   { platform: "kr", region: "asia" },
+  // ];
 
-  const regionChange = (value: number) => {
-    // console.log(value);
-    const newnumber = Number(value);
-    // console.log(newnumber);
-    setRegion(regionArry[newnumber]);
-  };
+  // //app.tsxにいらなくね？
+  // const regionChange = (value: number) => {
+  //   // console.log(value);
+  //   const newnumber = Number(value);
+  //   // console.log(newnumber);
+  //   setRegion(regionArry[newnumber]);
+  // };
 
   //ChampionData
   // const [champs, setChamp] = useState<any[]>([]);
@@ -69,7 +72,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   //       console.log(err);
   //     });
   // }, []);
-  const spellList = useFetchSpellList();
+  const { data: spellList } = useFetchSpellList();
 
   //ddragon rune
   // let runes: any[] = [];
@@ -120,32 +123,38 @@ function MyApp({ Component, pageProps }: AppProps) {
   //   // console.log(runes);
   //   // console.log("main", mainRunes);
   // }, []);
-  const { RuneLists, runeIcon } = useFetchRuneList();
+
+  const { runeLists: RuneLists, runeIcon } = useFetchRuneList();
+  console.count("レンダリング");
+  console.log(champs);
+  console.log(spellList);
+  console.log(runeIcon);
+  console.log(RuneLists);
 
   const value = {
-    player,
-    setPlayer,
-    latest,
+    // player,
+    // setPlayer,
+    // latest,
     champs,
     spellList,
     runeIcon,
     RuneLists,
-    region,
-    setRegion,
-    setPlayerRegion,
-    regionChange,
-    regionArry,
-    playerRegion,
+    // region,
+    // setRegion,
+    // setPlayerRegion,
+    // regionChange,
+    // regionArry,
+    // playerRegion,
   };
   return (
-    <AuthProvider>
-      <Data.Provider value={value}>
+    <Data.Provider value={value}>
+      <Context>
         <div className="bg-slate-900 min-w-max w-screen overflow-hidden">
           <Navbar />
           <Component {...pageProps} />
         </div>
-      </Data.Provider>
-    </AuthProvider>
+      </Context>
+    </Data.Provider>
   );
 }
 

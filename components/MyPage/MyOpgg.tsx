@@ -2,6 +2,7 @@ import axios from "axios";
 import { doc, getDoc } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "../../context/auth";
+import { PlayerDataContext } from "../../context/Context";
 import { db } from "../../firebase";
 import { Data } from "../../pages/_app";
 import { PlayerData } from "../../types/PlayerType";
@@ -11,7 +12,7 @@ import Profile from "../matchlog/Profile";
 const MyOpgg = () => {
   const [data, setData] = useState<PlayerData>();
   const [matchIDs, setMatchIDs] = useState<string[]>([]);
-  const { setPlayer, player } = useContext(Data);
+  const { setPlayer, player } = useContext(PlayerDataContext);
   const { fbUser } = useAuth();
   const getData = async () => {
     if (fbUser) {

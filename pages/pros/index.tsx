@@ -8,9 +8,12 @@ import SUPPros from "../../data/PlayerData/SUPPros.json";
 import { Data } from "../_app";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { PlayerDataContext } from "../../context/Context";
 
 const Index = () => {
-  const { setPlayerRegion, setRegion, regionArry, region } = useContext(Data);
+  const { setPlayerRegion, setRegion, regionArry, region } =
+    useContext(PlayerDataContext);
+  // const { setPlayerRegion, setRegion, regionArry, region } = useContext(Data);
 
   const router = useRouter();
 

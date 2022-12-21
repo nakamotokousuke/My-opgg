@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { PlayerDataContext } from "../context/Context";
 import { Data } from "../pages/_app";
 import InputLogFav from "./InputLogFav";
 
@@ -14,7 +15,9 @@ const Input = (style: InputStylesType) => {
   const ref = useRef<any>();
   const [effect, setEffect] = useState<string | string[] | undefined>("");
   const { regionChange, setPlayerRegion, playerRegion, region } =
-    useContext(Data);
+    useContext(PlayerDataContext);
+  // const { regionChange, setPlayerRegion, playerRegion, region } =
+  //   useContext(Data);
 
   const handleClick = (path: string) => {
     router.push({

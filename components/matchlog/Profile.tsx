@@ -1,6 +1,8 @@
 import axios from "axios";
 import Image from "next/image";
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import { PlayerDataContext } from "../../context/Context";
+import { useFetchTier } from "../../lib/CustomHook";
 import { getQuery } from "../../lib/getQuery";
 import { Data } from "../../pages/_app";
 import { PlayerData } from "../../types/PlayerType";
@@ -10,11 +12,11 @@ type ProfileType = {
 };
 
 const Profile = ({ data }: ProfileType) => {
-  const { region, latest } = useContext(Data);
+  // const { region, latest } = useContext(Data);
+  const { region, latest } = useContext(PlayerDataContext);
+
   const [tier, setTier] = useState<TierType | null>(null);
   useEffect(() => {
-    getTier();
-
     if (!localStorage) return;
     const t = localStorage.getItem("history");
     if (t === null) {
@@ -43,23 +45,7 @@ const Profile = ({ data }: ProfileType) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.puuid]);
 
-  const getTier = useCallback(() => {
-    axios
-      .get(`http://localhost:3000/api/tier`, {
-        params: { id: data.id, platform: getQuery("platform") },
-      })
-      .then(function (res) {
-        console.log("tier", res.data.tier);
-        console.log(getQuery("platform"));
-
-        setTier(res.data.tier[0]);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.id]);
-  console.log("icon", data.profileIconId);
+  useFetchTier(data, setTier);
 
   return (
     <div className="flex justify-center md:mt-10 mt-6">

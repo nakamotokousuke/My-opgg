@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { db } from "../firebase";
 import { BuildPlayerType } from "../types/BuildPlayer";
+import { PlayerData } from "../types/PlayerType";
+import { TierType } from "../types/TierType";
 import { getQuery } from "./getQuery";
+
+export const useTest = () => {
+  console.count("TEST");
+};
 
 //チャンピオンデータの取得
 export const useFetchChampion = () => {
@@ -16,89 +22,142 @@ export const useFetchChampion = () => {
     );
     const champ = await res.json();
     const champData: any = Object.entries(champ.data);
-    setChamp(champData);
+    // setChamp(champData);
     console.log(champData);
+    return champData;
   };
 
-  useEffect(() => {
-    fetchChampion();
-  }, []);
-  return champs;
+  // useEffect(() => {
+  //   fetchChampion();
+  // }, []);
+  // return champs;
+  const { data, error } = useSWR("championList", fetchChampion);
+  return { data };
 };
 
 //スペルデータの取得
 export const useFetchSpellList = () => {
-  const [spellList, setSpellList] = useState<any>([]);
-  useEffect(() => {
-    axios
+  console.count("スペルデータの取得");
+
+  // const [spellList, setSpellList] = useState<any>([]);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/data/en_US/summoner.json`
+  //     )
+  //     .then(function (response) {
+  //       console.log("spell", response.data.data);
+  //       var tmp = Object.entries(response.data.data).map(
+  //         ([key, value]: any) => ({ key: key, value: value })
+  //       );
+  //       setSpellList(tmp);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+  // return spellList;
+  const { data, error } = useSWR("spellList", () => {
+    const res = axios
       .get(
         `http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/data/en_US/summoner.json`
       )
       .then(function (response) {
         console.log("spell", response.data.data);
+        console.count("スペルデータの内部");
         var tmp = Object.entries(response.data.data).map(
           ([key, value]: any) => ({ key: key, value: value })
         );
-        setSpellList(tmp);
+        // setSpellList(tmp);
+        return tmp;
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-  return spellList;
+    return res;
+  });
+  return { data, error };
 };
 
 //ルーンデータの取得
+// export const useFetchRuneList = () => {
+//   let runes: any[] = [];
+//   let mainRunes: any[] = [];
+//   let runeList: any[] = [];
+//   const [RuneLists, setRuneLists] = useState<any>([]);
+//   const [runeIcon, setRuneIcon] = useState<any>([]);
+//   useSWR("RuneList", () => {
+//     axios
+//       .get(
+//         `http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/data/ja_JP/runesReforged.json`
+//       )
+//       .then(function (response) {
+//         // eslint-disable-next-line react-hooks/exhaustive-deps
+//         runes = [];
+//         // eslint-disable-next-line react-hooks/exhaustive-deps
+//         mainRunes = [];
+//         // eslint-disable-next-line react-hooks/exhaustive-deps
+//         runeList = [];
+//         // console.log("rune", response.data);
+//         setRuneIcon(response.data);
+//         let tmp = response.data;
+//         var tmp1 = Object.entries(tmp).map(([key, value]: any) => ({
+//           key: key,
+//           value: value,
+//         }));
+//         console.log("rune", tmp1);
+//         tmp1.forEach((tmp1_1) => {
+//           // console.log(tmp1_1.value.slots);
+//           runes.push(tmp1_1.value.slots);
+//         });
+//         runes.forEach((rune) => {
+//           // console.log(rune[0]);
+//           mainRunes.push(rune[0].runes);
+//           mainRunes.push(rune[1].runes);
+//           mainRunes.push(rune[2].runes);
+//           mainRunes.push(rune[3].runes);
+//         });
+//         mainRunes.forEach((mainRune) => {
+//           mainRune.forEach((main: any) => {
+//             runeList.push(main);
+//           });
+//         });
+//         setRuneLists(runeList);
+//         console.log(runeList);
+//         console.count("ルーンデータ内部");
+//       })
+//       .catch((err) => err);
+//   });
+//   return { RuneLists, runeIcon };
+// };
+
+//chatGPIによるリファクタリング
 export const useFetchRuneList = () => {
-  let runes: any[] = [];
-  let mainRunes: any[] = [];
-  let runeList: any[] = [];
-  const [RuneLists, setRuneLists] = useState<any>([]);
+  const [runeLists, setRuneLists] = useState<any[]>([]);
   const [runeIcon, setRuneIcon] = useState<any>([]);
-  useEffect(() => {
+
+  useSWR("RuneList", () => {
     axios
       .get(
         `http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/data/ja_JP/runesReforged.json`
       )
-      .then(function (response) {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        runes = [];
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        mainRunes = [];
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        runeList = [];
-        console.log("rune", response.data);
+      .then((response) => {
         setRuneIcon(response.data);
-        let tmp = response.data;
-        var tmp1 = Object.entries(tmp).map(([key, value]: any) => ({
-          key: key,
-          value: value,
-        }));
-        console.log(tmp1);
-        tmp1.forEach((tmp1_1) => {
-          // console.log(tmp1_1.value.slots);
-          runes.push(tmp1_1.value.slots);
-        });
-        runes.forEach((rune) => {
-          // console.log(rune[0]);
-          mainRunes.push(rune[0].runes);
-          mainRunes.push(rune[1].runes);
-          mainRunes.push(rune[2].runes);
-          mainRunes.push(rune[3].runes);
-        });
-        mainRunes.forEach((mainRune) => {
-          mainRune.forEach((main: any) => {
-            runeList.push(main);
-          });
-        });
+
+        const runes = Object.values(response.data).map(
+          (value: any) => value.slots
+        );
+        const mainRunes = runes.flatMap((slot: any) =>
+          slot.map((rune: any) => rune.runes)
+        );
+        const runeList = mainRunes.flat();
+
         setRuneLists(runeList);
-        console.log(runeList);
       })
       .catch((err) => err);
-    // console.log(runes);
-    // console.log("main", mainRunes);
-  }, []);
-  return { RuneLists, runeIcon };
+  });
+
+  return { runeLists, runeIcon };
 };
 
 //マッチデータの取得
@@ -172,6 +231,27 @@ export const useFetchFBTimeLine = (data: BuildPlayerType, words: string[]) => {
     }
   );
   return { timeline, error };
+};
+
+//ランクの取得
+export const useFetchTier = (
+  data: PlayerData,
+  setFunction: (value: React.SetStateAction<TierType | null>) => void
+) => {
+  useSWR(data.puuid + "tier", async () => {
+    axios
+      .get(`http://localhost:3000/api/tier`, {
+        params: { id: data.id, platform: getQuery("platform") },
+      })
+      .then((res) => {
+        // console.log("useFetchTier", res.data.tier);
+        // console.log(getQuery("platform"));
+        setFunction(res.data.tier[0]);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  });
 };
 
 //スキルセットの取得

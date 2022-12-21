@@ -1,14 +1,17 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
+import { PlayerDataContext } from "../../context/Context";
 import { getQuery } from "../../lib/getQuery";
 import { Data } from "../../pages/_app";
 import { BuidlPlayerListProps } from "../../types/BuildPlayerListProps";
 import Item from "../Item";
 
 const BuildPlayerList = (data: BuidlPlayerListProps) => {
-  const { spellList, runeIcon, RuneLists, latest, region, player } =
-    useContext(Data);
+  const { spellList, runeIcon, RuneLists } = useContext(Data);
+  const { latest, region, player } = useContext(PlayerDataContext);
+  // const { spellList, runeIcon, RuneLists, latest, region, player } =
+  //   useContext(Data);
   const [spell1ID, setSpell1ID] = useState("");
   const [spell2ID, setSpell2ID] = useState("");
   const [mainrune, setMainrune] = useState("");

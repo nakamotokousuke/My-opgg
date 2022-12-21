@@ -7,6 +7,7 @@ import LogFav from "../../components/matchlog/LogFav";
 import MatchLogList from "../../components/matchlog/MatchLogList";
 import Profile from "../../components/matchlog/Profile";
 import NotExist from "../../components/NotExist";
+import { PlayerDataContext } from "../../context/Context";
 import { db } from "../../firebase";
 import { getQuery } from "../../lib/getQuery";
 import { PlayerData } from "../../types/PlayerType";
@@ -66,7 +67,8 @@ type MatchLogProps = {
 };
 
 const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
-  const { setPlayer } = useContext(Data);
+  const { setPlayer } = useContext(PlayerDataContext);
+  // const { setPlayer } = useContext(Data);
   const [matchList, setMatchList] = useState<string[]>([]);
   const [matchType, setMatchType] = useState({
     all: true,

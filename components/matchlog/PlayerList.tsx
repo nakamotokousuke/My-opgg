@@ -5,9 +5,11 @@ import { getQuery } from "../../lib/getQuery";
 import { Data } from "../../pages/_app";
 import { PlayerListType } from "../../types/PlayerListType";
 import { v4 as uuidv4 } from "uuid";
+import { PlayerDataContext } from "../../context/Context";
 
 const PlayerList = (data: PlayerListType) => {
-  const { latest, player } = useContext(Data);
+  const { latest, player } = useContext(PlayerDataContext);
+  // const { latest, player } = useContext(Data);
   const router = useRouter();
 
   const handleClick = (path: string) => {

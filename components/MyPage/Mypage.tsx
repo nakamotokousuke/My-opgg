@@ -1,6 +1,7 @@
 import { doc, setDoc } from "firebase/firestore";
 import React, { RefObject, useContext, useRef, useState } from "react";
 import { useAuth } from "../../context/auth";
+import { PlayerDataContext } from "../../context/Context";
 import { db } from "../../firebase";
 import { Data } from "../../pages/_app";
 import { PlayerData } from "../../types/PlayerType";
@@ -10,7 +11,8 @@ const MyPage = () => {
   const { fbUser } = useAuth();
   const [name, setName] = useState("");
   const [region, setRegion] = useState({ platform: "jp1", region: "asia" });
-  const { regionArry } = useContext(Data);
+  const { regionArry } = useContext(PlayerDataContext);
+  // const { regionArry } = useContext(Data);
   const ref = useRef<any>();
 
   if (!fbUser) {
