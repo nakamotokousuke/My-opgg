@@ -7,9 +7,8 @@ interface BuildLogProps {
   blueTeam: any;
   redTeam: any;
   participants: any;
-  timeLine: any;
   damage: number;
-  Player: PlayerData;
+  Player?: PlayerData;
   time: number;
 }
 
@@ -18,7 +17,6 @@ const BuildLog = ({
   blueTeam,
   redTeam,
   participants,
-  timeLine,
   damage,
   Player,
   time,
@@ -32,11 +30,11 @@ const BuildLog = ({
 
   useEffect(() => {
     participants.forEach((data: { puuid: string; participantId: number }) => {
-      if (Player.puuid === data.puuid) {
+      if (Player?.puuid === data.puuid) {
         setParticipantID(data.participantId);
       }
     });
-  }, [Player.puuid, participants]);
+  }, [Player?.puuid, participants]);
 
   const handleSwitch = () => {
     setBuildLog((prev) => ({ ...prev, BuildPlayerList: true }));
@@ -82,9 +80,8 @@ const BuildLog = ({
             participantID={participantID}
             setParticipantID={setParticipantID}
             participants={participants}
-            timeLine={timeLine}
             matchId={matchId}
-            Player={Player}
+            // Player={Player}
           />
         )}
       </div>

@@ -4,7 +4,7 @@ import { PlayerData } from "./PlayerType";
 export type PlayerDataContextType = {
   player: PlayerData | undefined;
   setPlayer: Dispatch<SetStateAction<PlayerData | undefined>>;
-  latest: string;
+  latest?: string;
   region: {
     platform: string;
     region: string;

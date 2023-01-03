@@ -1,5 +1,6 @@
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
+import { PlayerDataContext } from "../../../context/Context";
 import SkillLevelTimeLine from "./SkillLevelTimeLine";
 
 type SkillBuild = {
@@ -8,6 +9,8 @@ type SkillBuild = {
 };
 
 const SkillBuild = ({ skillLog, skillSet }: SkillBuild) => {
+  const { latest } = useContext(PlayerDataContext);
+  // if (!latest) return null;
   return (
     <div className="bg-[#172740] rounded-md">
       <div className="bg-[#4b4e87] rounded-t-md font-bold pl-2">
@@ -40,7 +43,7 @@ const SkillBuild = ({ skillLog, skillSet }: SkillBuild) => {
                   layout="fill"
                   objectFit="contain"
                   src={`
-                        https://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/spell/${skill.image.full}`}
+                        https://ddragon.leagueoflegends.com/cdn/${latest}/img/spell/${skill.image.full}`}
                   alt=""
                 />
               </div>

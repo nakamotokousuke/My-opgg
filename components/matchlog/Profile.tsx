@@ -52,7 +52,7 @@ const Profile = ({ data }: ProfileType) => {
       <div className="mr-5">
         <Image
           className="rounded-sm"
-          src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/profileicon/${data.profileIconId}.png`}
+          src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/profileicon/${data.profileIconId}.png`}
           alt=""
           height={150}
           width={150}

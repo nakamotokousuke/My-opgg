@@ -55,6 +55,6 @@ export type Champion = {
   };
 };
 
-export type data = {
+export type champsType = {
   data: Champion[];
 };

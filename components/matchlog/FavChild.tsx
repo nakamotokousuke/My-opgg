@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { PlayerDataContext } from "../../context/Context";
 
 type data = {
   data: {
@@ -16,6 +17,7 @@ const FavChild = (props: data) => {
   const router = useRouter();
   const [fav, setFav] = useState(true);
   const data = props.data;
+  const { latest } = useContext(PlayerDataContext);
 
   const handleClick = (path: string, region: string, platform: string) => {
     router.push({
@@ -67,7 +69,7 @@ const FavChild = (props: data) => {
       >
         <Image
           className="rounded-md"
-          src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/profileicon/${data.profileIconId}.png`}
+          src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/profileicon/${data.profileIconId}.png`}
           alt=""
           height={30}
           width={30}

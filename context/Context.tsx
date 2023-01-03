@@ -1,17 +1,5 @@
-import React, {
-  createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useContext,
-  useState,
-} from "react";
-import {
-  useFetchChampion,
-  useFetchRuneList,
-  useFetchSpellList,
-} from "../lib/CustomHook";
-import { ContextData } from "../types/ContextDataType";
+import React, { createContext, ReactNode, useState } from "react";
+import { useFetchVersion } from "../lib/CustomHook";
 import { PlayerDataContextType } from "../types/PlayerDataContextType";
 import { PlayerData } from "../types/PlayerType";
 type ContextType = {
@@ -22,9 +10,10 @@ export const PlayerDataContext = createContext({} as PlayerDataContextType);
 
 const Context = ({ children }: ContextType) => {
   const [player, setPlayer] = useState<PlayerData>();
-  const latest = "12.18.1";
+  // const latest = "12.18.1";
   const [region, setRegion] = useState({ platform: "jp1", region: "asia" });
   const [playerRegion, setPlayerRegion] = useState<number>(0);
+  const latest: string | undefined = useFetchVersion();
 
   const regionArry = [
     { platform: "jp1", region: "asia" },
@@ -57,6 +46,7 @@ const Context = ({ children }: ContextType) => {
     playerRegion,
   };
 
+  if (!latest) return null;
   return (
     <PlayerDataContext.Provider value={value}>
       {children}

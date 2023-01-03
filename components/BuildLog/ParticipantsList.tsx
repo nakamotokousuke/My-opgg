@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React, { useContext } from "react";
+import { PlayerDataContext } from "../../context/Context";
 import { Data } from "../../pages/_app";
 type ParticipantsListType = {
   champion: string;
@@ -9,6 +10,7 @@ type ParticipantsListType = {
 };
 
 const ParticipantsList = (data: ParticipantsListType) => {
+  const { latest } = useContext(PlayerDataContext);
   const handleClick = () => {
     data.setParticipantID(data.participantId);
   };
@@ -20,9 +22,7 @@ const ParticipantsList = (data: ParticipantsListType) => {
         }`}
         height={32}
         width={32}
-        src={`http://ddragon.leagueoflegends.com/cdn/${
-          process.env.NEXT_PUBLIC_LATEST
-        }/img/champion/${
+        src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/champion/${
           data.champion !== "FiddleSticks" ? data.champion : "Fiddlesticks"
         }.png`}
         alt=""

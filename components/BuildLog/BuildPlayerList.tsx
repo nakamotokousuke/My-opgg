@@ -2,13 +2,16 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { PlayerDataContext } from "../../context/Context";
+import { useFetchRuneList, useFetchSpellList } from "../../lib/CustomHook";
 import { getQuery } from "../../lib/getQuery";
 import { Data } from "../../pages/_app";
 import { BuidlPlayerListProps } from "../../types/BuildPlayerListProps";
 import Item from "../Item";
 
 const BuildPlayerList = (data: BuidlPlayerListProps) => {
-  const { spellList, runeIcon, RuneLists } = useContext(Data);
+  // const { spellList, runeIcon, RuneLists } = useContext(Data);
+  const { runeIcon, runeList: RuneLists } = useFetchRuneList();
+  const spellList = useFetchSpellList();
   const { latest, region, player } = useContext(PlayerDataContext);
   // const { spellList, runeIcon, RuneLists, latest, region, player } =
   //   useContext(Data);
@@ -31,7 +34,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
     const min = (data.time / 1000 / 60) % 60;
     setCpm(data.cs / min);
 
-    spellList.forEach((spell: { value: { key: string; id: string } }) => {
+    spellList?.forEach((spell: { value: { key: string; id: string } }) => {
       if (spell.value.key === String(data.spell1)) {
         setSpell1ID(spell.value.id);
       }
@@ -40,12 +43,12 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
       }
     });
 
-    RuneLists.forEach((runeList: { id: number; icon: string }) => {
+    RuneLists?.forEach((runeList: { id: number; icon: string }) => {
       if (runeList.id === data.perks.styles[0].selections[0].perk) {
         setMainrune(runeList.icon);
       }
     });
-    runeIcon.forEach((rune: { id: number; icon: string }) => {
+    runeIcon?.forEach((rune: { id: number; icon: string }) => {
       if (rune.id === data.perks.styles[1].style) {
         setSubrune(rune.icon);
       }
@@ -85,9 +88,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
               className="w-full"
               height={32}
               width={32}
-              src={`http://ddragon.leagueoflegends.com/cdn/${
-                process.env.NEXT_PUBLIC_LATEST
-              }/img/champion/${
+              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/champion/${
                 data.championName !== "FiddleSticks"
                   ? data.championName
                   : "Fiddlesticks"
@@ -103,13 +104,13 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
               <Image
                 height={16}
                 width={16}
-                src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/spell/${spell1ID}.png`}
+                src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/spell/${spell1ID}.png`}
                 alt=""
               />
               <Image
                 height={16}
                 width={16}
-                src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/spell/${spell2ID}.png`}
+                src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/spell/${spell2ID}.png`}
                 alt=""
               />
             </div>

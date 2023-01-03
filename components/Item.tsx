@@ -1,11 +1,13 @@
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
+import { PlayerDataContext } from "../context/Context";
 type itemType = {
   item: number;
   style: string;
 };
 
 const Item = ({ item, style }: itemType) => {
+  const { latest } = useContext(PlayerDataContext);
   return (
     <>
       {item !== 0 ? (
@@ -15,7 +17,7 @@ const Item = ({ item, style }: itemType) => {
             layout="fill"
             objectFit="contain"
             className="rounded-md"
-            src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${item}.png`}
+            src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${item}.png`}
             alt=""
           />
         </div>

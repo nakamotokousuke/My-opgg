@@ -9,9 +9,8 @@ type BuildPlayerPage = {
   participantID: number;
   setParticipantID: React.Dispatch<React.SetStateAction<number>>;
   participants: any;
-  timeLine: any;
   matchId: string;
-  Player: PlayerData;
+  // Player: PlayerData;
 };
 
 const BuildPlayerPage = ({
@@ -20,10 +19,9 @@ const BuildPlayerPage = ({
   participantID,
   setParticipantID,
   participants,
-  timeLine,
   matchId,
-  Player,
-}: BuildPlayerPage) => {
+}: // Player,
+BuildPlayerPage) => {
   return (
     <div id="div2" className="rounded-md">
       <div className="flex justify-center">
@@ -68,13 +66,11 @@ const BuildPlayerPage = ({
             {participantID === data.participantId && (
               <BuildPlayer
                 key={data.puuid}
-                timeLine={timeLine}
                 puuid={data.puuid}
                 index={index}
                 perks={data.perks}
                 champion={data.championName}
                 matchId={matchId}
-                Player={Player}
                 participantID={participantID}
               />
             )}

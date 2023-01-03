@@ -10,20 +10,19 @@ import { v4 as uuidv4 } from "uuid";
 import useSWR from "swr/immutable";
 import RuneTree from "./Runes/RuneTree";
 import SubRuneTree from "./Runes/SubRuneTree";
-import { useFetchFBTimeLine, useFetchSkillSet } from "../../lib/CustomHook";
+import {
+  useFetchFBTimeLine,
+  useFetchRuneList,
+  useFetchSkillSet,
+} from "../../lib/CustomHook";
 import SubRuneTreeList from "./Runes/SubRuneTreeList";
-import MainRuneTreeList from "./Runes/MainRuneTreeList";
-import SkillLevelTimeLine from "./SkillLevelTimeLine/SkillLevelTimeLine";
-import StatRuneTree from "./Runes/StatRuneTree";
 import RuneBuild from "./Runes/RuneBuild";
 import ItemBuild from "./ItemBuild/ItemBuild";
 import SkillBuild from "./SkillLevelTimeLine/SkillBuild";
-import { PlayerDataContext } from "../../context/Context";
 
 const BuildPlayer = (data: BuildPlayerType) => {
-  const { RuneLists, runeIcon } = useContext(Data);
-  const { latest } = useContext(PlayerDataContext);
-  // const { RuneLists, runeIcon, latest } = useContext(Data);
+  const { runeIcon, runeList: RuneLists } = useFetchRuneList();
+
   const [itemLog, setItemLog] = useState<any[]>([]);
   const [skillLog, setSkillLog] = useState<number[]>([]);
   const [rune, setRune] = useState({
@@ -116,7 +115,7 @@ const BuildPlayer = (data: BuildPlayerType) => {
   }, [timeline]);
 
   const setRuneList = useCallback(() => {
-    RuneLists.forEach((runeList: { id: number; icon: string }) => {
+    RuneLists?.forEach((runeList: { id: number; icon: string }) => {
       if (runeList.id === data.perks.styles[0].selections[0].perk) {
         setRune((prev) => ({ ...prev, mainRune: runeList.icon }));
       }

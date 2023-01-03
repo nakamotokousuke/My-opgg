@@ -1,14 +1,16 @@
 import Image from "next/image";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { PlayerDataContext } from "../../context/Context";
+import { useFetchRuneList, useFetchSpellList } from "../../lib/CustomHook";
 import { Data } from "../../pages/_app";
 import { PlayerMatchDataType } from "../../types/PlayerMatchDataType";
 import Item from "../Item";
 
 const PlayerMatchData = (data: PlayerMatchDataType) => {
-  const { spellList, RuneLists, runeIcon } = useContext(Data);
+  const { runeIcon, runeList: RuneLists } = useFetchRuneList();
+  const spellList = useFetchSpellList();
   const { latest, player } = useContext(PlayerDataContext);
-  // const { spellList, RuneLists, latest, player, runeIcon } = useContext(Data);
+
   const [spell, setSpell] = useState({
     spell1: "",
     spell2: "",
@@ -22,6 +24,7 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
     subRune1: "",
     subRune2: "",
   });
+  // const { data: spellList } = useFetchSpellList();
 
   // console.log(data);
   useEffect(() => {
@@ -29,7 +32,7 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
     if (player?.puuid === data.puuid) {
       // console.log("spellre");
 
-      spellList.forEach((spell: { value: { key: string; id: string } }) => {
+      spellList?.forEach((spell: { value: { key: string; id: string } }) => {
         if (spell.value.key === String(data.summoner1Id)) {
           setSpell((prev) => ({ ...prev, spell1: spell.value.id }));
         }
@@ -46,42 +49,18 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
     spellList,
   ]);
 
-  useEffect(() => {
-    if (player?.puuid === data.puuid) {
-      setRuneImg();
-      data.setIssue(data.win);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.puuid]);
-
   const setRuneImg = useCallback(() => {
-    RuneLists.forEach((runeList: { id: any; icon: string }) => {
+    RuneLists?.forEach((runeList: { id: any; icon: string }) => {
       if (runeList.id === data.perks.styles[0].selections[0].perk) {
         setRune((prev) => ({ ...prev, mainRune: runeList.icon }));
       }
-      // if (runeList.id === data.perks.styles[0].selections[1].perk) {
-      //   setRune((prev) => ({ ...prev, mainRune1: runeList.icon }));
-      // }
-      // if (runeList.id === data.perks.styles[0].selections[2].perk) {
-      //   setRune((prev) => ({ ...prev, mainRune2: runeList.icon }));
-      // }
-      // if (runeList.id === data.perks.styles[0].selections[3].perk) {
-      //   setRune((prev) => ({ ...prev, mainRune3: runeList.icon }));
-      // }
-      // if (runeList.id === data.perks.styles[1].selections[0].perk) {
-      //   setRune((prev) => ({ ...prev, subRune1: runeList.icon }));
-      // }
-      // if (runeList.id === data.perks.styles[1].selections[1].perk) {
-      //   setRune((prev) => ({ ...prev, subRune2: runeList.icon }));
-      // }
     });
-    runeIcon.forEach((rune: { id: number; icon: string }) => {
+    runeIcon?.forEach((rune: { id: number; icon: string }) => {
       if (rune.id === data.perks.styles[1].style) {
         setRune((prev) => ({ ...prev, subRune: rune.icon }));
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.puuid]);
+  }, [RuneLists, data.perks.styles, runeIcon]);
 
   const setKda = () => {
     const kda = data.challenges.kda.toFixed(2);
@@ -92,8 +71,13 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
     const min = (data.time / 1000 / 60) % 60;
     return (data.cs / min).toFixed(1);
   };
+  useEffect(() => {
+    if (player?.puuid === data.puuid) {
+      setRuneImg();
+      data.setIssue(data.win);
+    }
+  }, [data, data.puuid, player?.puuid, setRuneImg]);
 
-  // console.log("レンダリング");
   return (
     <div className="grid grid-cols-7">
       <div className="flex justify-between col-span-3">
@@ -125,9 +109,7 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
             <Image
               layout="fill"
               objectFit="contain"
-              src={`http://ddragon.leagueoflegends.com/cdn/${
-                process.env.NEXT_PUBLIC_LATEST
-              }/img/champion/${
+              src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/champion/${
                 data.championName !== "FiddleSticks"
                   ? data.championName
                   : "Fiddlesticks"
@@ -136,26 +118,28 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
               className="rounded-full"
             />
           </div>
-          <div className="flex flex-col gap-[4px]">
-            <div className="relative sm:h-7 sm:w-7 w-[20px] h-[20px]">
-              <Image
-                layout="fill"
-                objectFit="contain"
-                src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/spell/${spell.spell1}.png`}
-                alt=""
-                className="rounded-md"
-              ></Image>
+          {spell.spell1 !== "" && (
+            <div className="flex flex-col gap-[4px]">
+              <div className="relative sm:h-7 sm:w-7 w-[20px] h-[20px]">
+                <Image
+                  layout="fill"
+                  objectFit="contain"
+                  src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/spell/${spell.spell1}.png`}
+                  alt=""
+                  className="rounded-md"
+                ></Image>
+              </div>
+              <div className="relative sm:h-7 sm:w-7 w-[20px] h-[20px]">
+                <Image
+                  layout="fill"
+                  objectFit="contain"
+                  src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/spell/${spell.spell2}.png`}
+                  alt=""
+                  className="rounded-md"
+                ></Image>
+              </div>
             </div>
-            <div className="relative sm:h-7 sm:w-7 w-[20px] h-[20px]">
-              <Image
-                layout="fill"
-                objectFit="contain"
-                src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/spell/${spell.spell2}.png`}
-                alt=""
-                className="rounded-md"
-              ></Image>
-            </div>
-          </div>
+          )}
           {rune.mainRune !== "" && (
             <div className="flex flex-col justify-center gap-[4px] ml-1">
               <div className="relative sm:h-7 sm:w-7 w-[20px] h-[20px] bg-black rounded-full">

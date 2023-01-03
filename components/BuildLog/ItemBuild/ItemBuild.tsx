@@ -1,12 +1,14 @@
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { PlayerDataContext } from "../../../context/Context";
 
 type ItemBuild = {
   itemLog: any[];
 };
 
 const ItemBuild = ({ itemLog }: ItemBuild) => {
+  const { latest } = useContext(PlayerDataContext);
   return (
     <div className="bg-[#172740] mb-2 rounded-md">
       <div className="bg-[#4b4e87] rounded-t-md font-bold pl-2">Item Build</div>
@@ -26,7 +28,7 @@ const ItemBuild = ({ itemLog }: ItemBuild) => {
                         key={uuidv4()}
                         height={20}
                         width={20}
-                        src={`http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/img/item/${item}.png`}
+                        src={`http://ddragon.leagueoflegends.com/cdn/${latest}/img/item/${item}.png`}
                         alt=""
                       />
                     ))}

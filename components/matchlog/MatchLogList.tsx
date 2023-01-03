@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Data } from "../../pages/_app";
 import BuildLog from "../BuildLog/BuildLog";
 import { msConversion } from "../../lib/msConverter";
@@ -9,20 +9,18 @@ import { PlayerDataContext } from "../../context/Context";
 
 type MatchIDsType = {
   matchId: string;
-  Player: any;
+  index: number;
 };
 
-const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
+const MatchLogList = ({ matchId, index }: MatchIDsType) => {
   const [matchParticipants, setMatchPaticipants] = useState<any>([]);
   const [redTeam, setRedTeam] = useState<any>([]);
   const [blueTeam, setBlueTeam] = useState<any>([]);
   const [issue, setIssue] = useState(true);
-  const { player, region } = useContext(PlayerDataContext);
+  const { player: Player } = useContext(PlayerDataContext);
   // const { player, region } = useContext(Data);
   const [gameTime, setGameTime] = useState<string>("");
   const [damage, setDamage] = useState<number>(0);
-
-  const [timeLine, setTimeLine] = useState<any>({});
 
   const [button, setButton] = useState("");
   const handleBuild = (matchData: string) => {
@@ -34,26 +32,37 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
   };
 
   //////////////////////////////////////////////////
-
-  const words = matchId.split("_");
-  const { data, error } = useFetchFBMatchData(matchId, words);
+  console.count("レンダリング回数");
+  const { data, error } = useFetchFBMatchData(matchId);
 
   const gameMode = data?.data.matchData.info.queueId;
   const time =
     data?.data.matchData.info.gameEndTimestamp -
     data?.data.matchData.info.gameStartTimestamp;
 
-  useEffect(() => {
-    console.log("index", data);
-    setGameTime(
-      msConversion(
-        data?.data.matchData.info.gameEndTimestamp -
-          data?.data.matchData.info.gameStartTimestamp
-      )
-    );
-    setMatchPaticipants(data?.data.matchData.info.participants);
-    setBlueTeam(data?.data.matchData.info.participants.slice(0, 5));
-    setRedTeam(data?.data.matchData.info.participants.slice(5, 10));
+  // useEffect(() => {
+  //   console.count("useEffect");
+  //   setGameTime(
+  //     msConversion(
+  //       data?.data.matchData.info.gameEndTimestamp -
+  //         data?.data.matchData.info.gameStartTimestamp
+  //     )
+  //   );
+  //   setMatchPaticipants(data?.data.matchData.info.participants);
+  //   setBlueTeam(data?.data.matchData.info.participants.slice(0, 5));
+  //   setRedTeam(data?.data.matchData.info.participants.slice(5, 10));
+  //   let tmp = 0;
+  //   data?.data.matchData.info.participants.forEach(
+  //     (data: { totalDamageDealtToChampions: number }) => {
+  //       if (tmp < data.totalDamageDealtToChampions) {
+  //         tmp = data.totalDamageDealtToChampions;
+  //       }
+  //     }
+  //   );
+  //   setDamage((prev) => (prev = tmp));
+  // }, [data?.data.matchData.info.participants]);
+
+  const getMaxDamage = useMemo(() => {
     let tmp = 0;
     data?.data.matchData.info.participants.forEach(
       (data: { totalDamageDealtToChampions: number }) => {
@@ -62,14 +71,27 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
         }
       }
     );
-    setDamage((prev) => (prev = tmp));
-  }, [data]);
+    return tmp;
+  }, [data?.data.matchData.info.participants]);
+
+  // const getMaxDamage = useMemo(() => {
+  //   const participants: any[] = data?.data.matchData.info.participants;
+  //   return Math.max(
+  //     ...participants.map(
+  //       ({
+  //         totalDamageDealtToChampions,
+  //       }: {
+  //         totalDamageDealtToChampions: number;
+  //       }) => totalDamageDealtToChampions
+  //     )
+  //   );
+  // }, [data?.data.matchData.info.participants]);
 
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
 
   return (
-    <>
+    <div className="rounded-l-lg mb-2">
       <div className="flex">
         <div
           className={`rounded-l-lg w-[670px] ${
@@ -81,14 +103,21 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
           }`}
         >
           <LogIndex
-            matchParticipants={matchParticipants}
-            player={player}
+            // matchParticipants={matchParticipants}
+            matchParticipants={data?.data.matchData.info.participants}
+            player={Player}
             setIssue={setIssue}
-            gameTime={gameTime}
+            // gameTime={gameTime}
+            gameTime={msConversion(
+              data?.data.matchData.info.gameEndTimestamp -
+                data?.data.matchData.info.gameStartTimestamp
+            )}
             gameMode={gameMode}
             time={time}
-            blueTeam={blueTeam}
-            redTeam={redTeam}
+            // blueTeam={blueTeam}
+            // redTeam={redTeam}
+            blueTeam={data?.data.matchData.info.participants.slice(0, 5)}
+            redTeam={data?.data.matchData.info.participants.slice(5, 10)}
           />
         </div>
         <BuildLogButton
@@ -101,11 +130,13 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
         {button === matchId && (
           <BuildLog
             matchId={matchId}
-            blueTeam={blueTeam}
-            redTeam={redTeam}
-            participants={matchParticipants}
-            timeLine={timeLine}
-            damage={damage}
+            // blueTeam={blueTeam}
+            // redTeam={redTeam}
+            blueTeam={data?.data.matchData.info.participants.slice(0, 5)}
+            redTeam={data?.data.matchData.info.participants.slice(5, 10)}
+            participants={data?.data.matchData.info.participants}
+            // participants={matchParticipants}
+            damage={getMaxDamage}
             Player={Player}
             time={
               data?.data.matchData.info.gameEndTimestamp -
@@ -114,7 +145,7 @@ const MatchLogList = ({ matchId, Player }: MatchIDsType) => {
           />
         )}
       </div>
-    </>
+    </div>
   );
 };
 

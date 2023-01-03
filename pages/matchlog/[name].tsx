@@ -29,9 +29,11 @@ export async function getServerSideProps(params: {
     };
   }
   console.log(data.puuid);
-  const URL: string = `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=100&api_key=${process.env.API_KEY}`;
+  // const URL: string = `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=100&api_key=${process.env.API_KEY}`;
 
-  const matchID = await fetch(URL);
+  const matchID = await fetch(
+    `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=100&api_key=${process.env.API_KEY}`
+  );
   let matchIDs = await matchID.json();
 
   const docSnap = await getDoc(doc(db, data.puuid, "matchIDs"));
@@ -61,6 +63,7 @@ export async function getServerSideProps(params: {
     },
   };
 }
+
 type MatchLogProps = {
   data: PlayerData;
   matchIDs: string[];
@@ -75,6 +78,9 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
     rank: false,
     normal: false,
   });
+  const [loadIndex, setLoadIndex] = useState(5);
+  const [isEmpty, setIsEmpty] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setPlayer(data);
@@ -84,10 +90,6 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
   }, [data, matchIDs, setPlayer]);
 
   // console.log("レンダリング");
-  const [loadIndex, setLoadIndex] = useState(5);
-  const [isEmpty, setIsEmpty] = useState(false);
-
-  const router = useRouter();
 
   useEffect(() => {
     router.events.on("routeChangeComplete", handleChangeRoute);
@@ -128,6 +130,7 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
       });
     setMatchList(matchList.matchList);
   };
+  console.count("renda2");
 
   return (
     <>
@@ -189,17 +192,15 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
             </div>
             <ul className="w-[500px] h-max sm:w-[710px] p-[10px] bg-[#2e2e4e] mx-auto rounded-b-sm">
               {Array.isArray(matchList)
-                ? matchList.slice(0, loadIndex)?.map((matchId: string) => (
-                    <div key={matchId}>
-                      <div className="rounded-l-lg mb-2">
-                        <MatchLogList
-                          key={matchId}
-                          matchId={matchId}
-                          Player={data}
-                        />
-                      </div>
-                    </div>
-                  ))
+                ? matchList
+                    .slice(0, loadIndex)
+                    ?.map((matchId: string, index: number) => (
+                      <MatchLogList
+                        key={matchId}
+                        matchId={matchId}
+                        index={index}
+                      />
+                    ))
                 : null}
               <button
                 disabled={isEmpty ? true : false}
