@@ -3,11 +3,6 @@ import type { AppProps } from "next/app";
 import Navbar from "../components/Navbar";
 import { ContextData } from "../types/ContextDataType";
 import { createContext } from "react";
-import {
-  useFetchChampion,
-  useFetchRuneList,
-  useFetchSpellList,
-} from "../lib/CustomHook";
 import Context from "../context/Context";
 
 export const Data = createContext({} as ContextData);

@@ -1,13 +1,11 @@
 export type PlayerData = {
-  //   data: {
   id: string;
-  //   accoungId: string;
+  accoungId: string;
   puuid: string;
   name: string;
   profileIconId: number;
-  //   revisionDate: number;
+  revisionDate: number;
   summonerLevel: number;
   platform?: string;
   region?: string;
-  //   };
 };

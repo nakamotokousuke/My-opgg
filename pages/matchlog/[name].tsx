@@ -2,7 +2,6 @@ import axios from "axios";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
-import useSWR from "swr";
 import LogFav from "../../components/matchlog/LogFav";
 import MatchLogList from "../../components/matchlog/MatchLogList";
 import Profile from "../../components/matchlog/Profile";
@@ -11,15 +10,39 @@ import { PlayerDataContext } from "../../context/Context";
 import { db } from "../../firebase";
 import { getQuery } from "../../lib/getQuery";
 import { PlayerData } from "../../types/PlayerType";
-import { Data } from "../_app";
 
 export async function getServerSideProps(params: {
   query: { name: string; region: string; platform: string };
 }) {
-  const res = await fetch(
-    `https://${params.query.platform}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${params.query.name}?api_key=${process.env.API_KEY}`
-  );
-  const data = await res.json();
+  //precode
+  // const res = await fetch(
+  //   `https://${params.query.platform}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${params.query.name}?api_key=${process.env.API_KEY}`
+  // );
+  // const data = await res.json();
+
+  ////////////////////
+  // test code
+  console.log("queryname", encodeURI(params.query.name));
+
+  const data: PlayerData = await axios
+    .get(
+      `https://${
+        params.query.platform
+      }.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURI(
+        params.query.name
+      )}?api_key=${process.env.API_KEY}`
+    )
+    .then((response) => {
+      console.log("then", response.data);
+
+      return response.data;
+    })
+    .catch((err) => {
+      console.log("catch", err);
+      return {};
+    });
+  ////////////////////
+
   if (data.puuid === undefined) {
     return {
       props: {
@@ -31,17 +54,34 @@ export async function getServerSideProps(params: {
   console.log(data.puuid);
   // const URL: string = `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=100&api_key=${process.env.API_KEY}`;
 
-  const matchID = await fetch(
-    `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=100&api_key=${process.env.API_KEY}`
-  );
-  let matchIDs = await matchID.json();
+  //precode
+  // const matchID = await fetch(
+  //   `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=100&api_key=${process.env.API_KEY}`
+  // );
+  // let matchIDs = await matchID.json();
+
+  //testcode
+  ////////////////////////////
+  let matchIDs = await axios
+    .get(
+      `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=100&api_key=${process.env.API_KEY}`
+    )
+    .then((response) => {
+      console.log("then", response.data);
+      return response.data;
+    })
+    .catch((err) => {
+      console.log(err);
+      return [];
+    });
+  ////////////////////////////
 
   const docSnap = await getDoc(doc(db, data.puuid, "matchIDs"));
 
   //RiotAPI error用
   if (docSnap.exists()) {
-    if (data === undefined) {
-      matchIDs = docSnap.data();
+    if (data.puuid === undefined) {
+      matchIDs = [];
     }
     await updateDoc(doc(db, data.puuid, "matchIDs"), {
       matchIDs: arrayUnion(...matchIDs.reverse()),
@@ -130,7 +170,6 @@ const MatchLog = ({ data, matchIDs }: MatchLogProps) => {
       });
     setMatchList(matchList.matchList);
   };
-  console.count("renda2");
 
   return (
     <>
