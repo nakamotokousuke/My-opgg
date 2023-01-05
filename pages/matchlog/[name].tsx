@@ -14,14 +14,6 @@ import { PlayerData } from "../../types/PlayerType";
 export async function getServerSideProps(params: {
   query: { name: string; region: string; platform: string };
 }) {
-  //precode
-  // const res = await fetch(
-  //   `https://${params.query.platform}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${params.query.name}?api_key=${process.env.API_KEY}`
-  // );
-  // const data = await res.json();
-
-  ////////////////////
-  // test code
   console.log("queryname", encodeURI(params.query.name));
 
   const data: PlayerData = await axios
@@ -33,7 +25,7 @@ export async function getServerSideProps(params: {
       )}?api_key=${process.env.API_KEY}`
     )
     .then((response) => {
-      console.log("then", response.data);
+      // console.log("then", response.data);
 
       return response.data;
     })
@@ -41,7 +33,6 @@ export async function getServerSideProps(params: {
       console.log("catch", err);
       return {};
     });
-  ////////////////////
 
   if (data.puuid === undefined) {
     return {
@@ -52,29 +43,19 @@ export async function getServerSideProps(params: {
     };
   }
   console.log(data.puuid);
-  // const URL: string = `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=100&api_key=${process.env.API_KEY}`;
 
-  //precode
-  // const matchID = await fetch(
-  //   `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=100&api_key=${process.env.API_KEY}`
-  // );
-  // let matchIDs = await matchID.json();
-
-  //testcode
-  ////////////////////////////
   let matchIDs = await axios
     .get(
       `https://${params.query.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids?count=100&api_key=${process.env.API_KEY}`
     )
     .then((response) => {
-      console.log("then", response.data);
+      // console.log("then", response.data);
       return response.data;
     })
     .catch((err) => {
       console.log(err);
       return [];
     });
-  ////////////////////////////
 
   const docSnap = await getDoc(doc(db, data.puuid, "matchIDs"));
 

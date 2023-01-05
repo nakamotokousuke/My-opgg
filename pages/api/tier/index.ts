@@ -15,9 +15,9 @@ export default async function handler(
       `https://${req.query.platform}.api.riotgames.com/lol/league/v4/entries/by-summoner/${req.query.id}?api_key=${process.env.API_KEY}`
     )
     .then((response) => response.data)
-    .catch((err) => err);
+    .catch((err) => console.log(err));
 
-  console.log(tier);
+  // console.log(tier);
   res.status(200).json({
     tier,
   });

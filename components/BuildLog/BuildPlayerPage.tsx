@@ -1,5 +1,4 @@
 import React from "react";
-import { PlayerData } from "../../types/PlayerType";
 import BuildPlayer from "./BuildPlayer";
 import ParticipantsList from "./ParticipantsList";
 
@@ -10,7 +9,6 @@ type BuildPlayerPage = {
   setParticipantID: React.Dispatch<React.SetStateAction<number>>;
   participants: any;
   matchId: string;
-  // Player: PlayerData;
 };
 
 const BuildPlayerPage = ({
@@ -20,8 +18,7 @@ const BuildPlayerPage = ({
   setParticipantID,
   participants,
   matchId,
-}: // Player,
-BuildPlayerPage) => {
+}: BuildPlayerPage) => {
   return (
     <div id="div2" className="rounded-md">
       <div className="flex justify-center">

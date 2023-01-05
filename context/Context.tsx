@@ -10,9 +10,9 @@ export const PlayerDataContext = createContext({} as PlayerDataContextType);
 
 const Context = ({ children }: ContextType) => {
   const [player, setPlayer] = useState<PlayerData>();
-  // const latest = "12.18.1";
   const [region, setRegion] = useState({ platform: "jp1", region: "asia" });
   const [playerRegion, setPlayerRegion] = useState<number>(0);
+
   const latest: string | undefined = useFetchVersion();
 
   const regionArry = [
@@ -20,24 +20,15 @@ const Context = ({ children }: ContextType) => {
     { platform: "kr", region: "asia" },
   ];
 
-  //app.tsxにいらなくね？
   const regionChange = (value: number) => {
-    // console.log(value);
     const newnumber = Number(value);
-    // console.log(newnumber);
     setRegion(regionArry[newnumber]);
   };
-  //   const champs = useFetchChampion();
-  //   const spellList = useFetchSpellList();
-  //   const { RuneLists, runeIcon } = useFetchRuneList();
+
   const value = {
     player,
     setPlayer,
     latest,
-    // champs,
-    // spellList,
-    // runeIcon,
-    // RuneLists,
     region,
     setRegion,
     setPlayerRegion,

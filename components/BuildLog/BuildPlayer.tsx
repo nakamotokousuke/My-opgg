@@ -1,21 +1,10 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import axios from "axios";
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Data } from "../../pages/_app";
+import React, { useCallback, useEffect, useState } from "react";
 import { BuildPlayerType } from "../../types/BuildPlayer";
-import StatusRune from "../../data/StatusRune.json";
-import StatRune from "./Runes/StatRune";
-import Image from "next/image";
-import { v4 as uuidv4 } from "uuid";
-import useSWR from "swr/immutable";
-import RuneTree from "./Runes/RuneTree";
-import SubRuneTree from "./Runes/SubRuneTree";
 import {
   useFetchFBTimeLine,
   useFetchRuneList,
   useFetchSkillSet,
 } from "../../lib/CustomHook";
-import SubRuneTreeList from "./Runes/SubRuneTreeList";
 import RuneBuild from "./Runes/RuneBuild";
 import ItemBuild from "./ItemBuild/ItemBuild";
 import SkillBuild from "./SkillLevelTimeLine/SkillBuild";
@@ -36,83 +25,15 @@ const BuildPlayer = (data: BuildPlayerType) => {
     statRune2: "",
     statRune3: "",
   });
-  const [skillSet, setSkillSet] = useState<any[]>([]);
-  let itemArry2: any[] = [];
-  let skillArry: number[] = [];
   let participantIndex = data.index + 1;
 
   const words = data.matchId.split("_");
 
-  // const { data: timeline, error } = useSWR(
-  //   data.matchId + "TimeLine",
-  //   async () => {
-  //     const ref = doc(db, "TimeLine", words[1]);
-  //     const snap = await getDoc(ref);
-  //     if (snap.exists()) {
-  //       return snap.data();
-  //     } else {
-  //       const TimeLineData = await axios
-  //         .get(`http://localhost:3000/api/timeline/${data.matchId}`, {
-  //           params: {
-  //             region: getQuery("region"),
-  //             platform: getQuery("platform"),
-  //           },
-  //         })
-  //         .then(function (response) {
-  //           return response.data;
-  //         })
-  //         .catch(function (err) {
-  //           console.log(err);
-  //         });
-
-  //       await setDoc(doc(db, "TimeLine", words[1]), {
-  //         data: TimeLineData,
-  //       });
-
-  //       const ref = doc(db, "TimeLine", words[1]);
-  //       const newSnap = await getDoc(ref);
-
-  //       return newSnap.data();
-  //     }
-  //   }
-  // );
-
   //customHookに変更
   const { timeline, error } = useFetchFBTimeLine(data, words);
 
-  useEffect(() => {
-    console.log("timelinedesu", timeline);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    itemArry2 = [];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    skillArry = [];
-    // console.log("time", data.timeLine);
-
-    timeline?.data.timeLineData.info.frames.forEach(
-      (frame: { events: any }, framIndex: number) => {
-        itemArry2.push([]);
-        frame.events.forEach(
-          (event: {
-            participantId: number;
-            type: string;
-            itemId: number;
-            skillSlot: number;
-          }) => {
-            if (event.participantId === participantIndex) {
-              if (event.type === "ITEM_PURCHASED") {
-                itemArry2[framIndex].push(event.itemId);
-              }
-              if (event.type === "SKILL_LEVEL_UP") {
-                skillArry.push(event.skillSlot);
-              }
-            }
-          }
-        );
-      }
-    );
-    setItemLog(itemArry2);
-    setSkillLog(skillArry);
-  }, [timeline]);
+  //customHookに変更
+  const skillSet = useFetchSkillSet(data);
 
   const setRuneList = useCallback(() => {
     RuneLists?.forEach((runeList: { id: number; icon: string }) => {
@@ -138,10 +59,41 @@ const BuildPlayer = (data: BuildPlayerType) => {
   }, [RuneLists, data.perks.styles]);
 
   useEffect(() => {
-    // setTimeLine();
+    console.log("timelinedesu", timeline);
+
+    let itemArry2: any[] = [];
+    let skillArry: number[] = [];
+
+    timeline?.data.timeLineData.info.frames.forEach(
+      (frame: { events: any }, framIndex: number) => {
+        itemArry2.push([]);
+        frame.events.forEach(
+          (event: {
+            participantId: number;
+            type: string;
+            itemId: number;
+            skillSlot: number;
+          }) => {
+            if (event.participantId === participantIndex) {
+              if (event.type === "ITEM_PURCHASED") {
+                itemArry2[framIndex].push(event.itemId);
+              }
+              if (event.type === "SKILL_LEVEL_UP") {
+                skillArry.push(event.skillSlot);
+              }
+            }
+          }
+        );
+      }
+    );
+    setItemLog(itemArry2);
+    setSkillLog(skillArry);
     setRuneList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [participantIndex, setRuneList, timeline]);
+  // useEffect(() => {
+  //   // setTimeLine();
+  //   setRuneList();
+  // }, [setRuneList]);
 
   // useSWR(data.champion + "champion", async () => {
   //   const URL = `http://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/champion/${
@@ -159,9 +111,6 @@ const BuildPlayer = (data: BuildPlayerType) => {
   //       console.log(error);
   //     });
   // });
-  //customHookに変更
-  useFetchSkillSet(data, setSkillSet);
-  //コンポーネント可済み
 
   if (participantIndex !== data.participantID) return null;
   if (error) return <div className="text-white">failed to load</div>;

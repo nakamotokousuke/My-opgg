@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ParticipantsType } from "../../types/matchParticipants";
 import { TeamType } from "../../types/teamType";
 import PlayerList from "./PlayerList";
 import PlayerMatchData from "./PlayerMatchData";
 import { v4 as uuidv4 } from "uuid";
 import { PlayerData } from "../../types/PlayerType";
+import { PlayerDataContext } from "../../context/Context";
 
 type LogIndex = {
   matchParticipants: any;
-  player: PlayerData | undefined;
   setIssue: React.Dispatch<React.SetStateAction<boolean>>;
   gameTime: string;
   gameMode: any;
@@ -19,7 +19,6 @@ type LogIndex = {
 
 const LogIndex = ({
   matchParticipants,
-  player,
   setIssue,
   gameTime,
   gameMode,
@@ -27,6 +26,7 @@ const LogIndex = ({
   blueTeam,
   redTeam,
 }: LogIndex) => {
+  const { player } = useContext(PlayerDataContext);
   return (
     <div className="">
       <div className="grid grid-cols-4 content-center items-center">

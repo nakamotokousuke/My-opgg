@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React, { useContext } from "react";
 import { PlayerDataContext } from "../../context/Context";
-import { Data } from "../../pages/_app";
 type ParticipantsListType = {
   champion: string;
   participantId: number;

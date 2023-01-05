@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { PlayerDataContext } from "../../context/Context";
 import { PlayerData } from "../../types/PlayerType";
 import BuildPlayerListPage from "./BuildPlayerListPage";
 import BuildPlayerPage from "./BuildPlayerPage";
@@ -8,7 +9,7 @@ interface BuildLogProps {
   redTeam: any;
   participants: any;
   damage: number;
-  Player?: PlayerData;
+  // Player?: PlayerData;
   time: number;
 }
 
@@ -18,13 +19,14 @@ const BuildLog = ({
   redTeam,
   participants,
   damage,
-  Player,
+  // Player,
   time,
 }: BuildLogProps) => {
   const [buildLog, setBuildLog] = useState({
     BuildPlayerList: true,
     BuildPlayer: false,
   });
+  const { player: Player } = useContext(PlayerDataContext);
 
   const [participantID, setParticipantID] = useState(0);
 
@@ -81,7 +83,6 @@ const BuildLog = ({
             setParticipantID={setParticipantID}
             participants={participants}
             matchId={matchId}
-            // Player={Player}
           />
         )}
       </div>

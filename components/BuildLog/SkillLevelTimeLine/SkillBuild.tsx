@@ -1,16 +1,20 @@
 import Image from "next/image";
 import React, { useContext } from "react";
 import { PlayerDataContext } from "../../../context/Context";
+import { SkillSetType } from "../../../types/SkillSet";
 import SkillLevelTimeLine from "./SkillLevelTimeLine";
 
-type SkillBuild = {
-  skillSet: any[];
+type SkillBuildType = {
+  // skillSet: any[];
+  skillSet: SkillSetType[];
   skillLog: number[];
 };
 
-const SkillBuild = ({ skillLog, skillSet }: SkillBuild) => {
+const SkillBuild = ({ skillLog, skillSet }: SkillBuildType) => {
   const { latest } = useContext(PlayerDataContext);
   // if (!latest) return null;
+  console.log("skillBuild", skillSet);
+
   return (
     <div className="bg-[#172740] rounded-md">
       <div className="bg-[#4b4e87] rounded-t-md font-bold pl-2">
@@ -33,7 +37,7 @@ const SkillBuild = ({ skillLog, skillSet }: SkillBuild) => {
         </div>
         {JSON.stringify(skillSet) !== "[]" ? (
           <div className="">
-            {skillSet.map((skill) => (
+            {skillSet?.map((skill) => (
               <div
                 key={skill.image.full}
                 className="h-5 w-5 sm:h-6 sm:w-6 ml-1 mb-1 relative"

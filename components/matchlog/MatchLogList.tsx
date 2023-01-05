@@ -40,28 +40,6 @@ const MatchLogList = ({ matchId, index }: MatchIDsType) => {
     data?.data.matchData.info.gameEndTimestamp -
     data?.data.matchData.info.gameStartTimestamp;
 
-  // useEffect(() => {
-  //   console.count("useEffect");
-  //   setGameTime(
-  //     msConversion(
-  //       data?.data.matchData.info.gameEndTimestamp -
-  //         data?.data.matchData.info.gameStartTimestamp
-  //     )
-  //   );
-  //   setMatchPaticipants(data?.data.matchData.info.participants);
-  //   setBlueTeam(data?.data.matchData.info.participants.slice(0, 5));
-  //   setRedTeam(data?.data.matchData.info.participants.slice(5, 10));
-  //   let tmp = 0;
-  //   data?.data.matchData.info.participants.forEach(
-  //     (data: { totalDamageDealtToChampions: number }) => {
-  //       if (tmp < data.totalDamageDealtToChampions) {
-  //         tmp = data.totalDamageDealtToChampions;
-  //       }
-  //     }
-  //   );
-  //   setDamage((prev) => (prev = tmp));
-  // }, [data?.data.matchData.info.participants]);
-
   const getMaxDamage = useMemo(() => {
     let tmp = 0;
     data?.data.matchData.info.participants.forEach(
@@ -73,19 +51,6 @@ const MatchLogList = ({ matchId, index }: MatchIDsType) => {
     );
     return tmp;
   }, [data?.data.matchData.info.participants]);
-
-  // const getMaxDamage = useMemo(() => {
-  //   const participants: any[] = data?.data.matchData.info.participants;
-  //   return Math.max(
-  //     ...participants.map(
-  //       ({
-  //         totalDamageDealtToChampions,
-  //       }: {
-  //         totalDamageDealtToChampions: number;
-  //       }) => totalDamageDealtToChampions
-  //     )
-  //   );
-  // }, [data?.data.matchData.info.participants]);
 
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
@@ -105,7 +70,6 @@ const MatchLogList = ({ matchId, index }: MatchIDsType) => {
           <LogIndex
             // matchParticipants={matchParticipants}
             matchParticipants={data?.data.matchData.info.participants}
-            player={Player}
             setIssue={setIssue}
             // gameTime={gameTime}
             gameTime={msConversion(
@@ -137,7 +101,7 @@ const MatchLogList = ({ matchId, index }: MatchIDsType) => {
             participants={data?.data.matchData.info.participants}
             // participants={matchParticipants}
             damage={getMaxDamage}
-            Player={Player}
+            // Player={Player}
             time={
               data?.data.matchData.info.gameEndTimestamp -
               data?.data.matchData.info.gameStartTimestamp

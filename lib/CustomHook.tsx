@@ -6,6 +6,7 @@ import { db } from "../firebase";
 import { BuildPlayerType } from "../types/BuildPlayer";
 import { PlayerData } from "../types/PlayerType";
 import { Perk, PerkSlot } from "../types/RuneLists";
+import { SkillSetType } from "../types/SkillSet";
 import { TierType } from "../types/TierType";
 import { getQuery } from "./getQuery";
 
@@ -17,9 +18,9 @@ export const useFetchVersion = () => {
   const { data: version, error } = useSWR<string>("version", async () => {
     const version: string = await axios
       .get("https://ddragon.leagueoflegends.com/api/versions.json")
-      .then((res) => {
-        console.log(res.data[0]);
-        return res.data[0];
+      .then((response) => {
+        console.log(response.data[0]);
+        return response.data[0];
       })
       .catch((error) => {
         console.error(error);
@@ -56,7 +57,7 @@ export const useFetchSpellList = () => {
       .get(
         `http://ddragon.leagueoflegends.com/cdn/${process.env.NEXT_PUBLIC_LATEST}/data/en_US/summoner.json`
       )
-      .then(function (response) {
+      .then((response) => {
         // console.log("spell", response.data.data);
         // console.count("スペルデータの内部");
         var tmp = Object.entries(response.data.data).map(
@@ -73,7 +74,6 @@ export const useFetchSpellList = () => {
   return spellList;
 };
 
-//chatGPIによるリファクタリング
 // export const useFetchRuneList2 = () => {
 //   const [runeLists, setRuneLists] = useState<any[]>([]);
 //   const [runeIcon, setRuneIcon] = useState<any>([]);
@@ -101,6 +101,7 @@ export const useFetchSpellList = () => {
 
 //   return { runeLists, runeIcon };
 // };
+
 //ルーンデータ取得
 export const useFetchRuneList = () => {
   const { data, error } = useSWR("RuneList2", async () => {
@@ -162,10 +163,10 @@ export const useFetchFBMatchData = (matchId: string) => {
             platform: getQuery("platform"),
           },
         })
-        .then(function (response) {
+        .then((response) => {
           return response.data;
         })
-        .catch(function (err) {
+        .catch((err) => {
           console.log(err);
         });
 
@@ -199,10 +200,10 @@ export const useFetchFBTimeLine = (data: BuildPlayerType, words: string[]) => {
               platform: getQuery("platform"),
             },
           })
-          .then(function (response) {
+          .then((response) => {
             return response.data;
           })
-          .catch(function (err) {
+          .catch((err) => {
             console.log(err);
           });
 
@@ -230,38 +231,42 @@ export const useFetchTier = (
       .get(`http://localhost:3000/api/tier`, {
         params: { id: data.id, platform: getQuery("platform") },
       })
-      .then((res) => {
+      .then((response) => {
         // console.log("useFetchTier", res.data.tier);
         // console.log(getQuery("platform"));
-        setFunction(res.data.tier[0]);
+        setFunction(response.data.tier[0]);
       })
-      .catch(function (err) {
+      .catch((err) => {
         console.log(err);
       });
   });
 };
 
 //スキルセットの取得
-export const useFetchSkillSet = (
-  data: BuildPlayerType,
-  setSkillSet: (value: React.SetStateAction<any[]>) => void
-) => {
-  useSWR(data.champion + "champion", async () => {
-    const URL = `http://ddragon.leagueoflegends.com/cdn/${
-      process.env.NEXT_PUBLIC_LATEST
-    }/data/en_US/champion/${
-      data.champion !== "FiddleSticks" ? data.champion : "Fiddlesticks"
-    }.json`;
-    axios
-      .get(URL)
-      .then(function (response) {
-        var tmp = Object.entries(response.data.data).map(
-          ([key, value]: any) => ({ key: key, value: value })
-        );
-        setSkillSet(tmp[0].value.spells);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  });
+export const useFetchSkillSet = (data: BuildPlayerType): SkillSetType[] => {
+  const { data: skillSet, error } = useSWR(
+    data.champion + "champion",
+    async () => {
+      return axios
+        .get(
+          `http://ddragon.leagueoflegends.com/cdn/${
+            process.env.NEXT_PUBLIC_LATEST
+          }/data/en_US/champion/${
+            data.champion !== "FiddleSticks" ? data.champion : "Fiddlesticks"
+          }.json`
+        )
+        .then((response) => {
+          var tmp = Object.entries(response.data.data).map(
+            ([key, value]: any) => ({ key: key, value: value })
+          );
+          return tmp[0].value.spells;
+        })
+        .catch((err) => {
+          console.log(error);
+        });
+    }
+  );
+  console.log("skillSet", skillSet);
+
+  return skillSet;
 };

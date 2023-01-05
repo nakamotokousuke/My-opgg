@@ -4,17 +4,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { PlayerDataContext } from "../../context/Context";
 import { useFetchRuneList, useFetchSpellList } from "../../lib/CustomHook";
 import { getQuery } from "../../lib/getQuery";
-import { Data } from "../../pages/_app";
 import { BuidlPlayerListProps } from "../../types/BuildPlayerListProps";
 import Item from "../Item";
 
 const BuildPlayerList = (data: BuidlPlayerListProps) => {
-  // const { spellList, runeIcon, RuneLists } = useContext(Data);
   const { runeIcon, runeList: RuneLists } = useFetchRuneList();
   const spellList = useFetchSpellList();
-  const { latest, region, player } = useContext(PlayerDataContext);
-  // const { spellList, runeIcon, RuneLists, latest, region, player } =
-  //   useContext(Data);
+  const { latest, player } = useContext(PlayerDataContext);
   const [spell1ID, setSpell1ID] = useState("");
   const [spell2ID, setSpell2ID] = useState("");
   const [mainrune, setMainrune] = useState("");
@@ -56,10 +52,6 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   const handleClick = (path: string) => {
     router.push({
       pathname: path,
@@ -68,10 +60,6 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
         platform: getQuery("platform"),
       },
     });
-  };
-  const setKda = () => {
-    const kda = data.challenges.kda.toFixed(2);
-    return kda;
   };
 
   return (
@@ -144,7 +132,7 @@ const BuildPlayerList = (data: BuidlPlayerListProps) => {
         <div>
           {data.kills}/{data.deaths}/{data.assists}
         </div>
-        <div className="">{setKda()}</div>
+        <div>{data.challenges.kda.toFixed(2)}</div>
       </div>
       <div className="font-bold ml-2 w-[10%] text-right text-sm">
         <div>{data.totalDamageDealtToChampions}</div>
