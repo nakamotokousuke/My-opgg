@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { Data } from "../../pages/_app";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import BuildLog from "../BuildLog/BuildLog";
 import { msConversion } from "../../lib/msConverter";
 import { useFetchFBMatchData } from "../../lib/CustomHook";
 import BuildLogButton from "./BuildLogButton";
 import LogIndex from "./LogIndex";
 import { PlayerDataContext } from "../../context/Context";
+import { GameInfoType } from "../../types/GameInfo";
 
 type MatchIDsType = {
   matchId: string;
@@ -14,12 +14,12 @@ type MatchIDsType = {
 
 const MatchLogList = ({ matchId, index }: MatchIDsType) => {
   const [matchParticipants, setMatchPaticipants] = useState<any>([]);
-  const [redTeam, setRedTeam] = useState<any>([]);
-  const [blueTeam, setBlueTeam] = useState<any>([]);
+  // const [redTeam, setRedTeam] = useState<any>([]);
+  // const [blueTeam, setBlueTeam] = useState<any>([]);
   const [issue, setIssue] = useState(true);
-  const { player: Player } = useContext(PlayerDataContext);
+  const { player } = useContext(PlayerDataContext);
   // const { player, region } = useContext(Data);
-  const [gameTime, setGameTime] = useState<string>("");
+  // const [gameTime, setGameTime] = useState<string>("");
   const [damage, setDamage] = useState<number>(0);
 
   const [button, setButton] = useState("");
@@ -34,11 +34,17 @@ const MatchLogList = ({ matchId, index }: MatchIDsType) => {
   //////////////////////////////////////////////////
   console.count("レンダリング回数");
   const { data, error } = useFetchFBMatchData(matchId);
+  const infoData: GameInfoType = data?.data.matchData.info;
+  console.log(infoData);
 
-  const gameMode = data?.data.matchData.info.queueId;
-  const time =
-    data?.data.matchData.info.gameEndTimestamp -
-    data?.data.matchData.info.gameStartTimestamp;
+  const gameMode = infoData?.queueId;
+  const time = infoData?.gameEndTimestamp - infoData?.gameStartTimestamp;
+  const gameTime = msConversion(
+    infoData?.gameEndTimestamp - infoData?.gameStartTimestamp
+  );
+  const allParticipants = infoData?.participants;
+  const blueTeam = infoData?.participants.slice(0, 5);
+  const redTeam = infoData?.participants.slice(5, 10);
 
   const getMaxDamage = useMemo(() => {
     let tmp = 0;
@@ -52,9 +58,17 @@ const MatchLogList = ({ matchId, index }: MatchIDsType) => {
     return tmp;
   }, [data?.data.matchData.info.participants]);
 
+  const getIssue = useCallback(() => {
+    const issue = infoData?.participants.find(
+      (data) => player?.puuid === data.puuid
+    );
+    // console.log(issue.win);
+    return issue.win;
+  }, [infoData?.participants, player?.puuid]);
+
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
-
+  console.count("return ander");
   return (
     <div className="rounded-l-lg mb-2">
       <div className="flex">
@@ -62,26 +76,23 @@ const MatchLogList = ({ matchId, index }: MatchIDsType) => {
           className={`rounded-l-lg w-[670px] ${
             time < 180000
               ? "bg-[#5a5a5a]"
-              : issue
+              : getIssue()
               ? "bg-[#496191]"
               : "bg-[#84515a]"
           }`}
         >
           <LogIndex
             // matchParticipants={matchParticipants}
-            matchParticipants={data?.data.matchData.info.participants}
-            setIssue={setIssue}
+            matchParticipants={allParticipants}
+            // setIssue={setIssue}
             // gameTime={gameTime}
-            gameTime={msConversion(
-              data?.data.matchData.info.gameEndTimestamp -
-                data?.data.matchData.info.gameStartTimestamp
-            )}
+            gameTime={gameTime}
             gameMode={gameMode}
             time={time}
             // blueTeam={blueTeam}
             // redTeam={redTeam}
-            blueTeam={data?.data.matchData.info.participants.slice(0, 5)}
-            redTeam={data?.data.matchData.info.participants.slice(5, 10)}
+            blueTeam={blueTeam}
+            redTeam={redTeam}
           />
         </div>
         <BuildLogButton
@@ -96,16 +107,13 @@ const MatchLogList = ({ matchId, index }: MatchIDsType) => {
             matchId={matchId}
             // blueTeam={blueTeam}
             // redTeam={redTeam}
-            blueTeam={data?.data.matchData.info.participants.slice(0, 5)}
-            redTeam={data?.data.matchData.info.participants.slice(5, 10)}
-            participants={data?.data.matchData.info.participants}
+            blueTeam={blueTeam}
+            redTeam={redTeam}
+            participants={allParticipants}
             // participants={matchParticipants}
             damage={getMaxDamage}
             // Player={Player}
-            time={
-              data?.data.matchData.info.gameEndTimestamp -
-              data?.data.matchData.info.gameStartTimestamp
-            }
+            time={time}
           />
         )}
       </div>

@@ -2,7 +2,6 @@ import Image from "next/image";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { PlayerDataContext } from "../../context/Context";
 import { useFetchRuneList, useFetchSpellList } from "../../lib/CustomHook";
-import { Data } from "../../pages/_app";
 import { PlayerMatchDataType } from "../../types/PlayerMatchDataType";
 import Item from "../Item";
 
@@ -74,7 +73,7 @@ const PlayerMatchData = (data: PlayerMatchDataType) => {
   useEffect(() => {
     if (player?.puuid === data.puuid) {
       setRuneImg();
-      data.setIssue(data.win);
+      // data.setIssue(data.win);
     }
   }, [data, data.puuid, player?.puuid, setRuneImg]);
 

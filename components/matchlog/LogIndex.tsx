@@ -9,7 +9,7 @@ import { PlayerDataContext } from "../../context/Context";
 
 type LogIndex = {
   matchParticipants: any;
-  setIssue: React.Dispatch<React.SetStateAction<boolean>>;
+  // setIssue: React.Dispatch<React.SetStateAction<boolean>>;
   gameTime: string;
   gameMode: any;
   time: number;
@@ -19,7 +19,7 @@ type LogIndex = {
 
 const LogIndex = ({
   matchParticipants,
-  setIssue,
+  // setIssue,
   gameTime,
   gameMode,
   time,
@@ -38,7 +38,7 @@ const LogIndex = ({
                   <PlayerMatchData
                     cs={data.totalMinionsKilled + data.neutralMinionsKilled}
                     {...data}
-                    setIssue={setIssue}
+                    // setIssue={setIssue}
                     gameTime={gameTime}
                     gameMode={gameMode}
                     time={time}
